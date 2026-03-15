@@ -27,7 +27,9 @@ const PingMetricsSchema = new mongoose.Schema({
   
   // Collection metadata
   error: String, // Error message if ping failed
-  ping_method: { type: String, enum: ['icmp', 'tcp', 'http'], default: 'icmp' }
+  ping_method: { type: String, enum: ['icmp', 'tcp', 'http'], default: 'icmp' },
+  source: String,
+  epc_id: String
 }, {
   timestamps: { createdAt: 'timestamp', updatedAt: false }
 });
@@ -45,6 +47,7 @@ PingMetricsSchema.index({ timestamp: 1 }, { expireAfterSeconds: 604800 }); // 7 
 // Compound index for common queries
 PingMetricsSchema.index({ tenant_id: 1, device_id: 1, timestamp: -1 });
 PingMetricsSchema.index({ tenant_id: 1, ip_address: 1, timestamp: -1 });
+PingMetricsSchema.index({ epc_id: 1, timestamp: -1 });
 
 const PingMetrics = mongoose.model('PingMetrics', PingMetricsSchema);
 

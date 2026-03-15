@@ -799,6 +799,34 @@ do_checkin() {
             echo "$(date +%s)" > "$last_sweep_file"
             log "Subnet ping sweep started in background (PID: $sweep_pid)"
         fi
+        
+        # Run SNMP metrics collection (every 10 min) - data stored in backend for graphs
+        local last_snmp_file="/tmp/last-snmp-cycle"
+        local snmp_interval=600
+        local should_snmp=true
+        if [ -f "$last_snmp_file" ]; then
+            local last_snmp=$(cat "$last_snmp_file" 2>/dev/null || echo "0")
+            local now=$(date +%s)
+            local elapsed=$((now - last_snmp))
+            [ $elapsed -lt $snmp_interval ] && should_snmp=false
+        fi
+        if [ ! -f /opt/wisptools/epc-snmp-monitor.js ]; then
+            if [ -d "$GIT_REPO_DIR" ] && [ -f "${SCRIPTS_SOURCE_DIR}/epc-snmp-monitor.js" ]; then
+                cp "${SCRIPTS_SOURCE_DIR}/epc-snmp-monitor.js" /opt/wisptools/epc-snmp-monitor.js
+                chmod +x /opt/wisptools/epc-snmp-monitor.js
+            else
+                curl -fsSL "https://${CENTRAL_SERVER}/downloads/scripts/epc-snmp-monitor.js" -o /opt/wisptools/epc-snmp-monitor.js 2>/dev/null && chmod +x /opt/wisptools/epc-snmp-monitor.js || true
+            fi
+        fi
+        if [ "$should_snmp" = true ] && [ -f /opt/wisptools/epc-snmp-monitor.js ]; then
+            log "Running SNMP metrics cycle (data stored for graphs)..."
+            if node /opt/wisptools/epc-snmp-monitor.js cycle >> "$LOG_FILE" 2>&1; then
+                echo "$(date +%s)" > "$last_snmp_file"
+                log "SNMP cycle completed"
+            else
+                log "WARNING: SNMP cycle exited with error"
+            fi
+        fi
     fi
     
     # Collect service status - build JSON manually
@@ -1145,6 +1173,7 @@ install_agent() {
         [ -f "${SCRIPTS_SOURCE_DIR}/epc-snmp-discovery.js" ] && cp "${SCRIPTS_SOURCE_DIR}/epc-snmp-discovery.js" /opt/wisptools/ && chmod +x /opt/wisptools/epc-snmp-discovery.js && echo "Node.js SNMP discovery script installed"
         [ -f "${SCRIPTS_SOURCE_DIR}/epc-snmp-discovery.sh" ] && cp "${SCRIPTS_SOURCE_DIR}/epc-snmp-discovery.sh" /opt/wisptools/ && chmod +x /opt/wisptools/epc-snmp-discovery.sh && echo "Bash SNMP discovery script installed"
         [ -f "${SCRIPTS_SOURCE_DIR}/epc-ping-monitor.js" ] && cp "${SCRIPTS_SOURCE_DIR}/epc-ping-monitor.js" /opt/wisptools/ && chmod +x /opt/wisptools/epc-ping-monitor.js && echo "Ping monitoring script installed"
+        [ -f "${SCRIPTS_SOURCE_DIR}/epc-snmp-monitor.js" ] && cp "${SCRIPTS_SOURCE_DIR}/epc-snmp-monitor.js" /opt/wisptools/ && chmod +x /opt/wisptools/epc-snmp-monitor.js && echo "SNMP metrics script installed"
     else
         # Fallback to download method
         echo "Downloading scripts from server..."
@@ -1167,6 +1196,12 @@ install_agent() {
         if [ -f /opt/wisptools/epc-ping-monitor.js ]; then
             chmod +x /opt/wisptools/epc-ping-monitor.js
             echo "Ping monitoring script downloaded"
+        fi
+        # Download SNMP metrics script (for graphs)
+        curl -fsSL "https://${CENTRAL_SERVER}/downloads/scripts/epc-snmp-monitor.js" -o /opt/wisptools/epc-snmp-monitor.js 2>/dev/null || true
+        if [ -f /opt/wisptools/epc-snmp-monitor.js ]; then
+            chmod +x /opt/wisptools/epc-snmp-monitor.js
+            echo "SNMP metrics script downloaded"
         fi
     fi
     

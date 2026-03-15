@@ -57,9 +57,10 @@ const SNMPMetricsSchema = new mongoose.Schema({
   raw_oids: mongoose.Schema.Types.Mixed,
   
   // Collection metadata
-  collection_method: { type: String, enum: ['poll', 'trap'], default: 'poll' },
+  collection_method: { type: String, enum: ['poll', 'trap', 'remote_epc_agent'], default: 'poll' },
   poll_duration_ms: Number, // How long the SNMP poll took
-  error: String // Error message if collection failed
+  error: String, // Error message if collection failed
+  epc_id: String
 }, {
   timestamps: { createdAt: 'timestamp', updatedAt: false }
 });

@@ -35,7 +35,8 @@ async function checkForUpdates(epc_id, currentVersions = {}) {
     'epc-checkin-agent.sh',
     'epc-snmp-discovery.sh',
     'epc-snmp-discovery.js',  // Node.js version
-    'epc-ping-monitor.js'     // Ping monitoring script
+    'epc-ping-monitor.js',   // Ping monitoring script
+    'epc-snmp-monitor.js'    // SNMP metrics for graphs
   ];
   
   const updates = {};

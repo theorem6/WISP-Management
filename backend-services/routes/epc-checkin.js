@@ -487,7 +487,9 @@ router.get('/checkin/monitoring-devices', async (req, res) => {
             name: equipment.name || 'Unknown Device',
             type: equipment.type || 'other',
             ip_address: ipAddress.trim(),
-            source: 'network_equipment'
+            source: 'network_equipment',
+            snmp_community: notes.snmp_community || notes.snmp_community_string || 'public',
+            snmp_version: notes.snmp_version || '2c'
           });
         }
       } catch (e) {
@@ -530,7 +532,9 @@ router.get('/checkin/monitoring-devices', async (req, res) => {
             name: equipment.name || 'Unknown Device',
             type: equipment.type || 'other',
             ip_address: ipAddress.trim(),
-            source: 'network_equipment'
+            source: 'network_equipment',
+            snmp_community: notes.snmp_community || notes.snmp_community_string || 'public',
+            snmp_version: notes.snmp_version || '2c'
           });
           addedDeviceIds.add(equipment._id.toString());
         }
