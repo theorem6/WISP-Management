@@ -122,7 +122,7 @@ export class AuthService {
           // If this is a Google user and we're on the login page, trigger a custom event
           // This helps the login page detect the sign-in even if getRedirectResult() didn't work
           const isGoogleUser = user.providerData.some(p => p.providerId === 'google.com');
-          if (isGoogleUser && typeof window !== 'undefined' && window.location.pathname === '/login') {
+          if (isGoogleUser && typeof window !== 'undefined' && (window.location.pathname === '/login' || window.location.pathname.endsWith('/login'))) {
             // Wait a moment to ensure the user is fully loaded
             await new Promise(resolve => setTimeout(resolve, 100));
             

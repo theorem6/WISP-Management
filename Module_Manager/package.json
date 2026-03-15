@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "cross-env PUBLIC_ARCGIS_API_KEY=AAPTxy8BH1VEsoebNVZXo8HurGbnlTRSD_LpCIzNN_GYtkaaVGZtaA5vQ2USVJ_79QPe7yOvuh8tFFM0WMguSFCMJ7IG8r9rfuM6fzDUDviu7eAvqgqA9nu1J3mT3jbv_rUPKU2dgp9H8qtEZDOjJ2G_nNM9XWuipReP9xbzFvg8Bo24782l8wWU8RMjLGcxEw_5aKtJZ-XMGb3PlBMj5wTBiF84JeWXIppu_wJ504qzB7A.AT1_12sjSDHZ node --max-old-space-size=6144 node_modules/vite/bin/vite.js build && npm run postbuild",
-    "postbuild": "node scripts/postbuild-wisp-management.js",
+    "build": "cross-env PUBLIC_ARCGIS_API_KEY=AAPTxy8BH1VEsoebNVZXo8HurGbnlTRSD_LpCIzNN_GYtkaaVGZtaA5vQ2USVJ_79QPe7yOvuh8tFFM0WMguSFCMJ7IG8r9rfuM6fzDUDviu7eAvqgqA9nu1J3mT3jbv_rUPKU2dgp9H8qtEZDOjJ2G_nNM9XWuipReP9xbzFvg8Bo24782l8wWU8RMjLGcxEw_5aKtJZ-XMGb3PlBMj5wTBiF84JeWXIppu_wJ504qzB7A.AT1_12sjSDHZ node --max-old-space-size=6144 node_modules/vite/bin/vite.js build",
     "build:check": "npm run build && ls -lh build/client/_app/immutable/entry/",
     "start": "node server.js",
     "start:original": "node build/index.js",

@@ -251,10 +251,20 @@ docs/
 
 **Firebase (recommended):**
 
+Two Hosting sites in this project:
+
+| Site | Target | Content | URL |
+|------|--------|---------|-----|
+| **wisptools-production** | `landing` | Static landing page (`landing/`) | wisptools.io |
+| **wisptools-management** | `management` | WISP Management app (`Module_Manager`) | management.wisptools.io |
+
 ```bash
 firebase deploy
-# Or: firebase deploy --only hosting  |  firebase deploy --only functions
+# Or: firebase deploy --only hosting
+# Or per site: firebase deploy --only hosting:landing  |  firebase deploy --only hosting:management
 ```
+
+Build the app before deploy: `cd Module_Manager && npm run build`. The `landing/` folder is static and needs no build.
 
 **Backend to GCE:** Use [deploy-backend-to-gce.ps1](deploy-backend-to-gce.ps1) (Windows) or [scripts/deployment/update-backend-from-git.sh](scripts/deployment/update-backend-from-git.sh) (on server). See [scripts/README.md](scripts/README.md) and [BACKEND_DEPLOYMENT_INSTRUCTIONS.md](docs/deployment/BACKEND_DEPLOYMENT_INSTRUCTIONS.md).
 

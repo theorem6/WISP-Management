@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+  <defs>
+    <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00f2fe;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#4facfe;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Glow effect -->
+  <ellipse cx="400" cy="400" rx="320" ry="320" fill="url(#glowGradient)" opacity="0.3"/>
+  
+  <!-- Hexagon border -->
+  <path d="M400,150 L580,250 L580,450 L400,550 L220,450 L220,250 Z" 
+        fill="#1a2332" 
+        stroke="#00d9ff" 
+        stroke-width="8"/>
+  
+  <!-- Circuit lines -->
+  <g stroke="#00d9ff" stroke-width="3" fill="none">
+    <!-- Left side -->
+    <line x1="220" y1="300" x2="180" y2="300"/>
+    <circle cx="180" cy="300" r="6" fill="#00d9ff"/>
+    <line x1="220" y1="350" x2="150" y2="350"/>
+    <circle cx="150" cy="350" r="6" fill="#00d9ff"/>
+    <line x1="220" y1="400" x2="120" y2="400"/>
+    <circle cx="120" cy="400" r="6" fill="#00d9ff"/>
+    
+    <!-- Right side -->
+    <line x1="580" y1="300" x2="620" y2="300"/>
+    <circle cx="620" cy="300" r="6" fill="#00d9ff"/>
+    <line x1="580" y1="350" x2="650" y2="350"/>
+    <circle cx="650" cy="350" r="6" fill="#00d9ff"/>
+    <line x1="580" y1="400" x2="680" y2="400"/>
+    <circle cx="680" cy="400" r="6" fill="#00d9ff"/>
+  </g>
+  
+  <!-- W letter made of pixels -->
+  <g fill="#00d9ff">
+    <!-- Left column -->
+    <rect x="280" y="280" width="15" height="15"/>
+    <rect x="280" y="300" width="15" height="15"/>
+    <rect x="280" y="320" width="15" height="15"/>
+    <rect x="280" y="340" width="15" height="15"/>
+    <rect x="280" y="360" width="15" height="15"/>
+    <rect x="280" y="380" width="15" height="15"/>
+    <rect x="280" y="400" width="15" height="15"/>
+    <rect x="280" y="420" width="15" height="15"/>
+    
+    <!-- Left middle -->
+    <rect x="300" y="360" width="15" height="15"/>
+    <rect x="300" y="380" width="15" height="15"/>
+    <rect x="300" y="400" width="15" height="15"/>
+    <rect x="300" y="420" width="15" height="15"/>
+    <rect x="320" y="400" width="15" height="15"/>
+    <rect x="320" y="420" width="15" height="15"/>
+    <rect x="340" y="380" width="15" height="15"/>
+    <rect x="340" y="400" width="15" height="15"/>
+    <rect x="340" y="420" width="15" height="15"/>
+    
+    <!-- Center -->
+    <rect x="360" y="340" width="15" height="15"/>
+    <rect x="360" y="360" width="15" height="15"/>
+    <rect x="360" y="380" width="15" height="15"/>
+    <rect x="360" y="400" width="15" height="15"/>
+    <rect x="360" y="420" width="15" height="15"/>
+    <rect x="380" y="320" width="15" height="15"/>
+    <rect x="380" y="340" width="15" height="15"/>
+    <rect x="380" y="360" width="15" height="15"/>
+    <rect x="380" y="380" width="15" height="15"/>
+    <rect x="380" y="400" width="15" height="15"/>
+    <rect x="380" y="420" width="15" height="15"/>
+    <rect x="400" y="340" width="15" height="15"/>
+    <rect x="400" y="360" width="15" height="15"/>
+    <rect x="400" y="380" width="15" height="15"/>
+    <rect x="400" y="400" width="15" height="15"/>
+    <rect x="400" y="420" width="15" height="15"/>
+    
+    <!-- Right middle -->
+    <rect x="420" y="380" width="15" height="15"/>
+    <rect x="420" y="400" width="15" height="15"/>
+    <rect x="420" y="420" width="15" height="15"/>
+    <rect x="440" y="400" width="15" height="15"/>
+    <rect x="440" y="420" width="15" height="15"/>
+    <rect x="460" y="360" width="15" height="15"/>
+    <rect x="460" y="380" width="15" height="15"/>
+    <rect x="460" y="400" width="15" height="15"/>
+    <rect x="460" y="420" width="15" height="15"/>
+    
+    <!-- Right column -->
+    <rect x="480" y="280" width="15" height="15"/>
+    <rect x="480" y="300" width="15" height="15"/>
+    <rect x="480" y="320" width="15" height="15"/>
+    <rect x="480" y="340" width="15" height="15"/>
+    <rect x="480" y="360" width="15" height="15"/>
+    <rect x="480" y="380" width="15" height="15"/>
+    <rect x="480" y="400" width="15" height="15"/>
+    <rect x="480" y="420" width="15" height="15"/>
+  </g>
+  
+  <!-- Gradient overlay on W -->
+  <g fill="#4facfe" opacity="0.5">
+    <rect x="280" y="280" width="15" height="15"/>
+    <rect x="300" y="300" width="15" height="15"/>
+    <rect x="320" y="320" width="15" height="15"/>
+    <rect x="340" y="340" width="15" height="15"/>
+    <rect x="360" y="320" width="15" height="15"/>
+    <rect x="380" y="300" width="15" height="15"/>
+    <rect x="400" y="320" width="15" height="15"/>
+    <rect x="420" y="340" width="15" height="15"/>
+    <rect x="440" y="360" width="15" height="15"/>
+    <rect x="460" y="340" width="15" height="15"/>
+    <rect x="480" y="280" width="15" height="15"/>
+  </g>
+</svg>

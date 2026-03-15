@@ -5,8 +5,8 @@
   
   let showSettings = false;
   
-  // Check if we're on the dashboard (with or without base path /wisp-management)
-  $: isDashboard = $page.url.pathname === '/dashboard' || $page.url.pathname === '/' || $page.url.pathname === '/wisp-management/dashboard' || $page.url.pathname === '/wisp-management' || $page.url.pathname === '/wisp-management/';
+  // Check if we're on the dashboard
+  $: isDashboard = $page.url.pathname === '/dashboard' || $page.url.pathname === '/';
   
   // Check if we're in a module (hide settings button in modules)
   $: isModule = (() => {

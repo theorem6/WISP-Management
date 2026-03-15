@@ -4,14 +4,12 @@
   },
   "targets": {
     "hosting": {
-      "app": "wisptools-production"
-    },
-    "wisptools-production": {
-      "hosting": {
-        "app": [
-          "wisptools-production"
-        ]
-      }
+      "landing": [
+        "wisptools-production"
+      ],
+      "management": [
+        "wisptools-management"
+      ]
     }
   },
   "etags": {}

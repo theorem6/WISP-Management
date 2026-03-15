@@ -166,7 +166,7 @@
     const errorParam = urlParams.get('error');
     if (errorParam === 'no-tenant') {
       error = 'You do not have access to any organizations. Please contact your administrator to be added to a tenant.';
-      // Clear the error parameter from URL
+      // Clear the error parameter from URL (use base so URL stays under /wisp-management)
       window.history.replaceState({}, '', '/login');
     }
     

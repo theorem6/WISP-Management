@@ -9,25 +9,14 @@
     
     console.log('[Root Page] Checking authentication...');
     
-    // Wait for auth service to initialize
     await new Promise(resolve => setTimeout(resolve, 200));
     
-    // Check Firebase authentication state
     const user = authService.getCurrentUser();
     const isAuthenticated = !!user;
     
-    console.log('[Root Page] Auth check result:', {
-      isAuthenticated,
-      userEmail: user?.email || 'none'
-    });
-    
     if (isAuthenticated) {
-      // User is authenticated, go to dashboard
-      console.log('[Root Page] User authenticated, redirecting to dashboard');
       await goto('/dashboard', { replaceState: true });
     } else {
-      // User is not authenticated, go to login
-      console.log('[Root Page] User not authenticated, redirecting to login');
       await goto('/login', { replaceState: true });
     }
   });
