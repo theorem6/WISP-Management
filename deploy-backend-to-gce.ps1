@@ -137,8 +137,10 @@ if ($DeployMethod -eq "Git") {
     if (-not $remoteFailed) { Invoke-Remote "pm2 save" | Out-Null }
 } else {
     # Upload: move /tmp/backend-services-deploy to BackendDir, preserve .env, npm install, pm2 reload
+    # Remove old .bak and any existing deploy dir so mv never hits "Directory not empty"
     $parentDir = $BackendDir -replace '/[^/]+$', ''
-    if (-not (Invoke-Remote "sudo mkdir -p $parentDir 2>/dev/null; sudo chown -R `$USER:`$USER $parentDir 2>/dev/null; mv $BackendDir ${BackendDir}.bak 2>/dev/null; mv /tmp/backend-services-deploy $BackendDir")) {
+    $remoteCmd = "sudo mkdir -p $parentDir 2>/dev/null; sudo chown -R `$USER:`$USER $parentDir 2>/dev/null; rm -rf ${BackendDir}.bak $BackendDir/backend-services-deploy 2>/dev/null; mv $BackendDir ${BackendDir}.bak 2>/dev/null; mv /tmp/backend-services-deploy $BackendDir"
+    if (-not (Invoke-Remote $remoteCmd)) {
         $remoteFailed = $true
     }
     if (-not $remoteFailed) {

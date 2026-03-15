@@ -47,7 +47,7 @@ if (fs.existsSync(appIndex)) {
   console.log('  created wisp-management/404.html');
 }
 
-// Install landing page at root
+// Install landing page and assets at root
 if (!fs.existsSync(landingSrc)) {
   console.error('✗ static/landing.html not found.');
   process.exit(1);
@@ -55,6 +55,18 @@ if (!fs.existsSync(landingSrc)) {
 fs.copyFileSync(landingSrc, path.join(clientDir, 'index.html'));
 fs.copyFileSync(landingSrc, path.join(clientDir, '404.html'));
 console.log('  installed landing page at index.html and 404.html');
+
+const staticDir = path.join(__dirname, '..', 'static');
+const landingCss = path.join(staticDir, 'landing.css');
+const logo = path.join(staticDir, 'wisptools-logo.svg');
+if (fs.existsSync(landingCss)) {
+  fs.copyFileSync(landingCss, path.join(clientDir, 'landing.css'));
+  console.log('  installed landing.css');
+}
+if (fs.existsSync(logo)) {
+  fs.copyFileSync(logo, path.join(clientDir, 'logo.svg'));
+  console.log('  installed logo.svg');
+}
 
 console.log('✓ Post-build complete: / = landing, /wisp-management = app');
 

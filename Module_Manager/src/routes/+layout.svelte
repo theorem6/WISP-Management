@@ -12,24 +12,35 @@
   let isAuthenticated = false;
   let currentUser: any = null;
   
+  /** Base path when app is served at /wisp-management (wisptools.io) */
+  const BASE = '/wisp-management';
+
   /** Routes that do not require authentication (login, signup, auth callbacks, etc.) */
   function isPublicRoute(pathname: string): boolean {
+    const p = pathname;
     return (
-      pathname === '/' ||
-      pathname === '' ||
-      pathname === '/login' ||
-      pathname === '/signup' ||
-      pathname === '/reset-password' ||
-      pathname.startsWith('/auth/') ||
-      pathname.startsWith('/oauth/') ||
-      pathname.startsWith('/modules/customers/portal/login') ||
-      pathname.startsWith('/modules/customers/portal/signup') ||
-      pathname.startsWith('/portal/')
+      p === '/' ||
+      p === '' ||
+      p === '/login' ||
+      p === '/signup' ||
+      p === '/reset-password' ||
+      p === BASE ||
+      p === `${BASE}/` ||
+      p === `${BASE}/login` ||
+      p === `${BASE}/signup` ||
+      p === `${BASE}/reset-password` ||
+      p.startsWith('/auth/') ||
+      p.startsWith('/oauth/') ||
+      p.startsWith(`${BASE}/auth/`) ||
+      p.startsWith(`${BASE}/oauth/`) ||
+      p.startsWith('/modules/customers/portal/login') ||
+      p.startsWith('/modules/customers/portal/signup') ||
+      p.startsWith('/portal/')
     );
   }
-  
+
   // Check if we're on an admin route
-  $: isAdminRoute = $page.url.pathname.startsWith('/admin');
+  $: isAdminRoute = $page.url.pathname.startsWith('/admin') || $page.url.pathname.startsWith(`${BASE}/admin`);
   
   // Redirect unauthenticated users to login (except on public routes)
   $: if (browser && !isInitializing && !isAuthenticated && !isPublicRoute($page.url.pathname)) {
