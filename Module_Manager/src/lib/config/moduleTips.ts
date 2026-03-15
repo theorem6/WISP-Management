@@ -45,7 +45,7 @@ export const moduleTips: ModuleTipsConfig = {
         <p>Use the <strong>📖 Docs</strong> icon (top right) to open:</p>
         <ul>
           <li><strong>Getting Started</strong> – New users and administrators</li>
-          <li><strong>Using WISPTools</strong> – Dashboard, wizards, and end-user help</li>
+          <li><strong>Using WISP Management</strong> – Dashboard, wizards, and end-user help</li>
           <li><strong>Project Status</strong> – Current status and next steps</li>
         </ul>
         <p>Each module has a <strong>Help</strong> button for module-specific docs. The <strong>⚙️ Settings</strong> gear opens theme, branding, and tenant options.</p>

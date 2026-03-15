@@ -100,7 +100,7 @@
 <div class="reset-password-page">
   <div class="reset-password-container">
     <div class="reset-password-card">
-      <h1>WISPTools.io</h1>
+      <h1>WISP Management</h1>
       <p class="subtitle">Password Reset</p>
 
       {#if error}

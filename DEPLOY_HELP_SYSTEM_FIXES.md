@@ -12,14 +12,14 @@ The following commits have been pushed to GitHub:
 ### Option 1: Wait for GitHub Actions (Automatic)
 
 GitHub Actions should automatically deploy when frontend files change. Check status:
-1. Go to: https://github.com/theorem6/WISPTools/actions
+1. Go to: https://github.com/theorem6/WISP-Management/actions
 2. Look for "Deploy to Firebase Hosting" workflow
 3. It should have triggered from commits `233ab79e`, `5a6b940c`, or `e5ac3e9f`
 4. Wait for it to complete (usually 5-10 minutes)
 
 ### Option 2: Manually Trigger GitHub Actions
 
-1. Go to: https://github.com/theorem6/WISPTools/actions
+1. Go to: https://github.com/theorem6/WISP-Management/actions
 2. Click on "Deploy to Firebase Hosting" workflow
 3. Click "Run workflow" button
 4. Select "main" branch

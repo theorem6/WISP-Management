@@ -9,7 +9,7 @@
 const nodemailer = require('nodemailer');
 
 const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@hss.wisptools.io';
-const FROM_NAME = process.env.FROM_NAME || 'WISPTools';
+const FROM_NAME = process.env.FROM_NAME || 'WISP Management';
 
 // Check if we should use SMTP or sendmail
 const USE_SMTP = process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS;
@@ -99,14 +99,14 @@ async function sendWelcomeEmail(options) {
   <div class="container">
     <div class="card">
       <div class="logo">
-        <h1>🌐 WISPTools</h1>
+        <h1>🌐 WISP Management</h1>
       </div>
       
       <h2>Welcome to ${tenantName}!</h2>
       
       <p>Hi ${firstName},</p>
       
-      <p>${invitedByName ? `${invitedByName} has added you` : 'You have been added'} to <strong>${tenantName}</strong> on WISPTools as a <strong>${roleName}</strong>.</p>
+      <p>${invitedByName ? `${invitedByName} has added you` : 'You have been added'} to <strong>${tenantName}</strong> on WISP Management as a <strong>${roleName}</strong>.</p>
       
       <div class="highlight">
         <strong>Your Role:</strong> ${roleName}<br>
@@ -131,7 +131,7 @@ async function sendWelcomeEmail(options) {
       </div>
       
       <center>
-        <a href="https://wisptools.io/login" class="button">Sign In to WISPTools →</a>
+        <a href="https://wisptools.io/wisp-management/login" class="button">Sign In to WISP Management →</a>
       </center>
       
       <p style="margin-top: 24px; font-size: 14px; color: #6b7280;">
@@ -140,7 +140,7 @@ async function sendWelcomeEmail(options) {
     </div>
     
     <div class="footer">
-      <p>This email was sent by <a href="https://wisptools.io">WISPTools</a></p>
+      <p>This email was sent by <a href="https://wisptools.io">WISP Management</a></p>
       <p>WISP Management Platform</p>
     </div>
   </div>
@@ -153,7 +153,7 @@ Welcome to ${tenantName}!
 
 Hi ${firstName},
 
-${invitedByName ? `${invitedByName} has added you` : 'You have been added'} to ${tenantName} on WISPTools as a ${roleName}.
+${invitedByName ? `${invitedByName} has added you` : 'You have been added'} to ${tenantName} on WISP Management as a ${roleName}.
 
 Your Role: ${roleName}
 Organization: ${tenantName}
@@ -163,12 +163,12 @@ Getting Started:
 2. Sign in with Google or create an account using this email address
 3. You'll automatically have access to ${tenantName}
 
-Sign In: https://wisptools.io/login
+Sign In: https://wisptools.io/wisp-management/login
 
 If you have any questions, please contact your organization administrator.
 
 ---
-WISPTools - WISP Management Platform
+WISP Management - WISP Management Platform
 https://wisptools.io
   `;
 
@@ -176,7 +176,7 @@ https://wisptools.io
     const result = await transport.sendMail({
       from: `"${FROM_NAME}" <${FROM_EMAIL}>`,
       to: email,
-      subject: `Welcome to ${tenantName} - WISPTools`,
+      subject: `Welcome to ${tenantName} - WISP Management`,
       text: textContent,
       html: htmlContent
     });
@@ -222,7 +222,7 @@ async function sendPasswordResetEmail(email, resetLink) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset your WISPTools password</title>
+  <title>Reset your WISP Management password</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1f2937; margin: 0; padding: 0; background: #f3f4f6; }
     .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
@@ -235,7 +235,7 @@ async function sendPasswordResetEmail(email, resetLink) {
   <div class="container">
     <div class="card">
       <h2>Reset your password</h2>
-      <p>We received a request to reset your WISPTools password. Use the button below to choose a new password.</p>
+      <p>We received a request to reset your WISP Management password. Use the button below to choose a new password.</p>
       <p><a class="button" href="${resetLink}">Reset password</a></p>
       <p class="muted">If you did not request this, you can safely ignore this email.</p>
     </div>
@@ -245,7 +245,7 @@ async function sendPasswordResetEmail(email, resetLink) {
   `.trim();
 
   const textContent = `
-Reset your WISPTools password
+Reset your WISP Management password
 
 Use this link to reset your password:
 ${resetLink}
@@ -257,7 +257,7 @@ If you did not request this, you can ignore this email.
     const result = await transport.sendMail({
       from: `"${FROM_NAME}" <${FROM_EMAIL}>`,
       to: email,
-      subject: 'Reset your WISPTools password',
+      subject: 'Reset your WISP Management password',
       text: textContent,
       html: htmlContent
     });
@@ -283,7 +283,7 @@ async function sendVerificationEmail(options) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WISPTools Email Verification</title>
+  <title>WISP Management Email Verification</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1f2937; margin: 0; padding: 0; background: #f3f4f6; }
     .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
@@ -302,14 +302,14 @@ async function sendVerificationEmail(options) {
   <div class="container">
     <div class="card">
       <div class="logo">
-        <h1>🌐 WISPTools</h1>
+        <h1>🌐 WISP Management</h1>
       </div>
       
       <h2>Email Verification</h2>
       
       <p>Hi there,</p>
       
-      <p>You're creating a new WISPTools account. Please use the verification code below to verify your email address:</p>
+      <p>You're creating a new WISP Management account. Please use the verification code below to verify your email address:</p>
       
       <div class="code-box">
         <div class="code">${code}</div>
@@ -321,7 +321,7 @@ async function sendVerificationEmail(options) {
     </div>
     
     <div class="footer">
-      <p>This email was sent by <a href="https://wisptools.io">WISPTools</a></p>
+      <p>This email was sent by <a href="https://wisptools.io">WISP Management</a></p>
       <p>WISP Management Platform</p>
       <p>https://wisptools.io</p>
     </div>
@@ -331,11 +331,11 @@ async function sendVerificationEmail(options) {
   `;
 
   const textContent = `
-WISPTools Email Verification
+WISP Management Email Verification
 
 Hi there,
 
-You're creating a new WISPTools account. Please use the verification code below to verify your email address:
+You're creating a new WISP Management account. Please use the verification code below to verify your email address:
 
 ${code}
 
@@ -344,7 +344,7 @@ This code will expire in 10 minutes.
 If you didn't request this code, you can safely ignore this email.
 
 ---
-WISPTools - WISP Management Platform
+WISP Management - WISP Management Platform
 https://wisptools.io
   `;
 
@@ -352,7 +352,7 @@ https://wisptools.io
     const result = await transport.sendMail({
       from: `"${FROM_NAME}" <${FROM_EMAIL}>`,
       to: email,
-      subject: 'WISPTools Email Verification Code',
+      subject: 'WISP Management Email Verification Code',
       text: textContent,
       html: htmlContent
     });

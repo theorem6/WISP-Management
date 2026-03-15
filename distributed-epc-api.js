@@ -463,7 +463,7 @@ if [ -n "\${GITHUB_TOKEN}" ]; then
   print_status "Downloading metrics agent from GitHub..."
   curl -sSf -H "Authorization: token \${GITHUB_TOKEN}" \\
     -o /opt/open5gs-metrics-agent.js \\
-    https://raw.githubusercontent.com/theorem6/WISPTools/main/deployment-files/open5gs-metrics-agent.js
+    https://raw.githubusercontent.com/theorem6/WISP-Management/main/deployment-files/open5gs-metrics-agent.js
   DOWNLOAD_OK=$?
 fi
 if [ $DOWNLOAD_OK -eq 0 ] && [ -s /opt/open5gs-metrics-agent.js ]; then

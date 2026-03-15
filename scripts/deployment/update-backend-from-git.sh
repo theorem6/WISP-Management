@@ -23,7 +23,7 @@ if [ -z "$GITHUB_TOKEN" ]; then
   echo "   Example: export GITHUB_TOKEN=ghp_xxxxxxxx"
   exit 1
 fi
-GIT_REPO_URL="https://${GITHUB_TOKEN}@github.com/theorem6/WISPTools.git"
+GIT_REPO_URL="https://${GITHUB_TOKEN}@github.com/theorem6/WISP-Management.git"
 
 # Check if repo exists
 if [ ! -d "$REPO_DIR/.git" ]; then

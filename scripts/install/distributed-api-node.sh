@@ -21,7 +21,7 @@
 set -e
 
 INSTALL_DIR="${1:-/opt/lte-pci-mapper}"
-REPO_URL="${WISPTOOLS_REPO_URL:-https://github.com/theorem6/WISPTools.git}"
+REPO_URL="${WISPTOOLS_REPO_URL:-https://github.com/theorem6/WISP-Management.git}"
 NODE_VERSION="${NODE_VERSION:-20}"
 
 echo "═══════════════════════════════════════════════════════════"

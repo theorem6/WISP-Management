@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: 'WISPTools Documentation',
-  description: 'Complete documentation for WISPTools - LTE WISP Management Platform',
+  title: 'WISP Management Documentation',
+  description: 'Complete documentation for WISP Management (wisptools.io) - LTE WISP Management Platform',
   
   // Base URL (adjust if deploying to subdirectory)
   base: '/',
@@ -94,8 +94,8 @@ export default defineConfig({
     
     // Footer
     footer: {
-      message: 'WISPTools Documentation',
-      copyright: 'Copyright © 2025 WISPTools'
+      message: 'WISP Management Documentation',
+      copyright: 'Copyright © 2025 wisptools.io'
     },
     
     // Search

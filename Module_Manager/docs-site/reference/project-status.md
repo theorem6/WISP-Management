@@ -1,6 +1,6 @@
 ---
 title: "Project Status & Next Steps"
-description: "Current project status and prioritized next items for WISPTools"
+description: "Current project status and prioritized next items for WISP Management"
 ---
 
 # Project Status & Next Steps

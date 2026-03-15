@@ -273,7 +273,7 @@ export const onNotificationCreated = onDocumentCreated('notifications/{notificat
   try {
     const body = {
       personalizations: [{ to: [{ email }] }],
-      from: { email: process.env.SENDGRID_FROM_EMAIL || 'noreply@wisptools.io', name: 'WISPTools' },
+      from: { email: process.env.SENDGRID_FROM_EMAIL || 'noreply@wisptools.io', name: 'WISP Management' },
       subject: title,
       content: [{ type: 'text/plain', value: textBody }]
     };

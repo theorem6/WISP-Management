@@ -32,7 +32,7 @@ try {
     if ($notesFile) { $args += "--notes-file", $notesFile }
     & gh @args
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "Release created: https://github.com/theorem6/WISPTools/releases/tag/$Tag" -ForegroundColor Green
+        Write-Host "Release created: https://github.com/theorem6/WISP-Management/releases/tag/$Tag" -ForegroundColor Green
     }
 } finally {
     Pop-Location

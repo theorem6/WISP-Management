@@ -10,7 +10,7 @@ param(
     [ValidateSet("Upload", "Git")]
     [string]$DeployMethod = "Upload",
     [string]$RepoPath = "",
-    [string]$GitUrl = "git@github.com:theorem6/WISPTools.git",
+    [string]$GitUrl = "git@github.com:theorem6/WISP-Management.git",
     [string]$GitHubToken = "",   # If set, Git deploy uses HTTPS with token (no SSH key on VM). Also from env GITHUB_TOKEN or update-backend-from-git.sh
     [switch]$SetupOnly = $false,
     [switch]$UseIapTunnel = $true,
@@ -45,7 +45,7 @@ if ($DeployMethod -eq "Git" -or $SetupOnly) {
         $GitHubToken = [System.Environment]::GetEnvironmentVariable('GITHUB_TOKEN')
     }
     if ($GitHubToken) {
-        $GitUrl = "https://$GitHubToken@github.com/theorem6/WISPTools.git"
+        $GitUrl = "https://$GitHubToken@github.com/theorem6/WISP-Management.git"
         Write-Host "Using GitHub token for Git (HTTPS)" -ForegroundColor Cyan
     } else {
         Write-Host "No GITHUB_TOKEN. Git deploy will use SSH (VM needs deploy key). Set env GITHUB_TOKEN for HTTPS." -ForegroundColor Yellow
@@ -83,7 +83,7 @@ cat ~/.ssh/id_ed25519.pub 2>/dev/null || cat ~/.ssh/id_rsa.pub
     $setupB64 = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($setupUnix))
     gcloud compute ssh @gcloudSshArgs --command "echo $setupB64 | base64 -d | bash -s"
     if ($LASTEXITCODE -ne 0) { Write-Host "Setup failed." -ForegroundColor Red; exit 1 }
-    Write-Host "Add the key above to theorem6/WISPTools -> Settings -> Deploy keys, then run deploy again without -SetupOnly." -ForegroundColor Green
+    Write-Host "Add the key above to theorem6/WISP-Management -> Settings -> Deploy keys, then run deploy again without -SetupOnly." -ForegroundColor Green
     exit 0
 }
 

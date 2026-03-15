@@ -5,7 +5,7 @@ description: "Complete guides for users, administrators, and developers"
 
 # Documentation Guides
 
-Welcome to the WISPTools documentation guides. These guides are organized by audience to help you find the information you need quickly.
+Welcome to the WISP Management documentation guides. These guides are organized by audience to help you find the information you need quickly.
 
 ## User Guides
 

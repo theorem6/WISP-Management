@@ -464,7 +464,7 @@
         {:else if activeTab === 'debug'}
           <div class="tab-content">
             <h3>🐛 Debug Mode</h3>
-            <p class="description">Advanced debugging for troubleshooting with WISPTools.io engineers</p>
+            <p class="description">Advanced debugging for troubleshooting with wisptools.io engineers</p>
             
             {#if showDebugWarning}
               <div class="debug-warning">
@@ -478,7 +478,7 @@
                   <li>Generate extensive console logging</li>
                   <li>Expose detailed system information</li>
                 </ul>
-                <p><strong>This should only be enabled when working with a WISPTools.io engineer.</strong></p>
+                <p><strong>This should only be enabled when working with a wisptools.io engineer.</strong></p>
                 <button class="btn-acknowledge" on:click={acknowledgeDebugWarning}>
                   I Understand
                 </button>
@@ -492,7 +492,7 @@
                   <p class="setting-description">
                     When enabled, detailed debug information will be logged to the browser console.
                     This includes API calls, data transformations, state changes, and system metrics.
-                    <strong>Only enable this when troubleshooting with a WISPTools.io engineer.</strong>
+                    <strong>Only enable this when troubleshooting with a wisptools.io engineer.</strong>
                   </p>
                 </div>
                 <label class="toggle-switch">

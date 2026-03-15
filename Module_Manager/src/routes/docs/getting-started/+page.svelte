@@ -2,15 +2,15 @@
 </script>
 
 <svelte:head>
-  <title>Getting Started – WISPTools Docs</title>
+  <title>Getting Started – WISP Management Docs</title>
 </svelte:head>
 
 <h1>Getting Started</h1>
-<p class="lead">Welcome to WISPTools. This guide helps you get started with the LTE WISP Management Platform.</p>
+<p class="lead">Welcome to WISP Management. This guide helps you get started with the LTE WISP platform on wisptools.io.</p>
 
 <section class="doc-section">
-  <h2>What is WISPTools?</h2>
-  <p>WISPTools is a management platform for LTE Wireless Internet Service Providers (WISPs). It provides:</p>
+  <h2>What is WISP Management?</h2>
+  <p>WISP Management is the main app on wisptools.io for LTE WISPs. It provides:</p>
   <ul>
     <li><strong>Multi-tenant architecture</strong> – Manage multiple organizations</li>
     <li><strong>HSS management</strong> – Home Subscriber Server for Open5GS</li>

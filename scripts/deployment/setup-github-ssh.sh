@@ -64,7 +64,7 @@ if [ -d "$REPO_DIR/.git" ]; then
   cd "$REPO_DIR"
   CURRENT_REMOTE=$(git remote get-url origin 2>/dev/null || echo "")
   if [[ "$CURRENT_REMOTE" != *"git@github.com"* ]]; then
-    git remote set-url origin git@github.com:theorem6/WISPTools.git
+    git remote set-url origin git@github.com:theorem6/WISP-Management.git
     echo "✅ Git remote updated to SSH"
   else
     echo "✅ Git remote already using SSH"

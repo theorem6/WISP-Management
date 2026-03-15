@@ -52,7 +52,7 @@
 - Firebase App Hosting will build and deploy
 
 **Monitor:** 
-- GitHub Actions: https://github.com/theorem6/WISPTools/actions
+- GitHub Actions: https://github.com/theorem6/WISP-Management/actions
 - Firebase Console: https://console.firebase.google.com/project/wisptools-production/apphosting
 
 ### Backend

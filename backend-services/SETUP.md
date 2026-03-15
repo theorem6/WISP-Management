@@ -1,4 +1,4 @@
-# WISPTools Backend Setup
+# WISP Management Backend Setup
 
 Main API server for wisptools.io: auth, tenants, customers, billing, HSS, monitoring, and more.
 

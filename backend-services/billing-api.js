@@ -182,7 +182,7 @@ router.post('/subscription/create', authenticateUser, async (req, res) => {
         })()
       },
       application_context: {
-        brand_name: 'WispTools.io',
+        brand_name: 'WISP Management',
         locale: 'en-US',
         shipping_preference: 'NO_SHIPPING',
         user_action: 'SUBSCRIBE_NOW',

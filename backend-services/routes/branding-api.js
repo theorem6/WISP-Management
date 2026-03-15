@@ -318,7 +318,7 @@ function registerBrandingRoutes(app) {
         // Use tenant ID (first 12 chars) as portal path
         const portalPath = brandingData.portal.portalSubdomain || tenant._id.toString().slice(0, 12);
         tenant.branding.portal.portalSubdomain = portalPath;
-        tenant.branding.portal.portalUrl = `https://wisptools.io/portal/${portalPath}`;
+        tenant.branding.portal.portalUrl = `https://wisptools.io/wisp-management/portal/${portalPath}`;
       }
     }
     

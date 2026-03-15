@@ -1,17 +1,17 @@
 ---
 title: "Deployment Overview"
-description: "Overview of deployment options and processes for WISPTools"
+description: "Overview of deployment options and processes for WISP Management"
 ---
 
 # Deployment Overview
 
-This section covers deployment of the WISPTools platform, including backend services, frontend application, and infrastructure setup.
+This section covers deployment of the WISP Management platform, including backend services, frontend application, and infrastructure setup.
 
 ## Deployment Options
 
 ### Full Stack Deployment
 
-The WISPTools platform consists of:
+The WISP Management platform consists of:
 
 1. **Frontend** - SvelteKit application (Firebase Hosting)
 2. **Backend** - Node.js/Express API (Google Compute Engine)

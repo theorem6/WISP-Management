@@ -1,7 +1,13 @@
-# WISP Multitool (WispTools)
+# WISP Management (wisptools.io)
 
 > **The Complete Wireless ISP Management Platform**  
-> Professional multi-tenant solution for LTE/5G network operations, field technicians, customer support, and network optimization.
+> Professional multi-tenant solution for LTE/5G network operations, field technicians, customer support, and network optimization. Part of the [wisptools.io](https://wisptools.io) project.
+
+---
+
+## Repository (GitHub)
+
+The product is **WISP Management** at [wisptools.io](https://wisptools.io). The GitHub repo is **[theorem6/WISP-Management](https://github.com/theorem6/WISP-Management)**.
 
 ---
 
@@ -32,7 +38,7 @@ After that, the repo and this documentation are visible to everyone.
 
 ## Overview
 
-**WISP Multitool** is a comprehensive, enterprise-grade platform for wireless ISPs and network operators. Built with modern technologies and a modular architecture, it combines network planning, field operations, customer support, and system monitoring into one powerful platform.
+**WISP Management** is the main app on [wisptools.io](https://wisptools.io)—a comprehensive, enterprise-grade platform for wireless ISPs and network operators. Built with modern technologies and a modular architecture, it combines network planning, field operations, customer support, and system monitoring into one powerful platform.
 
 ### Key capabilities
 
@@ -69,7 +75,7 @@ After that, the repo and this documentation are visible to everyone.
 **Project layout:**
 
 ```
-WISPTools/
+WISP Management (repo: WISPTools)/
 ├── Module_Manager/          # Main SvelteKit app
 │   ├── src/routes/          # login, dashboard, tenant-setup, modules/*
 │   └── src/lib/             # services, config, components
@@ -88,7 +94,7 @@ WISPTools/
 **Prerequisites:** Node.js 20+, Firebase CLI (`npm install -g firebase-tools`), Git, Google Cloud account (for deployment).
 
 ```bash
-git clone https://github.com/theorem6/WISPTools.git
+git clone https://github.com/theorem6/WISP-Management.git
 cd WISPTools/Module_Manager
 npm install
 cp .env.example .env.local   # Edit with your Firebase config
@@ -285,7 +291,7 @@ Third-party: **GenieACS** (AGPLv3), **SvelteKit** (MIT), **Firebase** (Google To
 ## Support
 
 - **Documentation:** This README and [docs/README.md](docs/README.md)
-- **Issues:** [GitHub Issues](https://github.com/theorem6/WISPTools/issues)
+- **Issues:** [GitHub Issues](https://github.com/theorem6/WISP-Management/issues)
 
 ---
 

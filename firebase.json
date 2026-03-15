@@ -23,7 +23,7 @@
       "errorDocument": "404.html",
       "headers": [
         {
-          "source": "/_app/immutable/**",
+          "source": "/wisp-management/_app/immutable/**",
           "headers": [
             {
               "key": "Cache-Control",
@@ -32,7 +32,7 @@
           ]
         },
         {
-          "source": "/_app/version.json",
+          "source": "/wisp-management/_app/version.json",
           "headers": [
             {
               "key": "Cache-Control",
@@ -87,6 +87,14 @@
         }
       ],
       "rewrites": [
+        {
+          "source": "/wisp-management",
+          "destination": "/wisp-management/index.html"
+        },
+        {
+          "source": "/wisp-management/**",
+          "destination": "/wisp-management/index.html"
+        },
         {
           "source": "/api/deploy/**",
           "function": "isoProxy"

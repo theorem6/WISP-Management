@@ -8,6 +8,10 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
+		// App lives at /wisp-management; root (/) serves landing page
+		paths: {
+			base: '/wisp-management'
+		},
 		// Use adapter-static for Firebase Hosting static deployment
 		adapter: adapter({
 			pages: 'build/client',

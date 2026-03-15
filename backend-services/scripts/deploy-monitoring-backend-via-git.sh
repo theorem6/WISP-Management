@@ -8,7 +8,7 @@ echo "🚀 Deploying LTE WISP Monitoring Backend via Git..."
 
 # Configuration
 BACKEND_DIR="/home/david_peterson_consulting_com/lte-wisp-backend"
-REPO_URL="https://github.com/theorem6/WISPTools.git"
+REPO_URL="https://github.com/theorem6/WISP-Management.git"
 REPO_DIR="/tmp/lte-pci-mapper-deploy"
 SERVICE_NAME="lte-wisp-backend"
 PORT=3003

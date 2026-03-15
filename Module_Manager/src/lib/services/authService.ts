@@ -401,8 +401,8 @@ export class AuthService {
       // Get the current origin (handles both localhost and production)
       const actionCodeSettings = {
         url: typeof window !== 'undefined' 
-          ? `${window.location.origin}/reset-password`
-          : 'https://wisptools.io/reset-password',
+          ? `${window.location.origin}/wisp-management/reset-password`
+          : 'https://wisptools.io/wisp-management/reset-password',
         handleCodeInApp: true // This keeps the reset flow within our app
       };
       

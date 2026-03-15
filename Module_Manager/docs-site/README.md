@@ -1,8 +1,8 @@
-# WISPTools Documentation Site (Deprecated)
+# WISP Management Documentation Site (Deprecated)
 
 **Documentation is now integrated into the main app.** Do not deploy this VitePress site.
 
-- **In-app docs:** Use **/docs** (Documentation home, Reference, Project Status) and **/help** (topic-based help) in the main WISPTools app.
+- **In-app docs:** Use **/docs** (Documentation home, Reference, Project Status) and **/help** (topic-based help) in the main WISP Management app.
 - **Dashboard:** Click the 📖 Documentation button (next to Wizards and Settings) to open `/docs`.
 - **Project Status:** `/docs/reference/project-status` summarizes where the project stands and next items.
 

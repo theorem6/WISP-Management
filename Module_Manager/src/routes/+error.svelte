@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-  <title>{status === 404 ? 'Page not found' : 'Error'} – WISPTools</title>
+  <title>{status === 404 ? 'Page not found' : 'Error'} – WISP Management</title>
 </svelte:head>
 
 <div class="error-page">

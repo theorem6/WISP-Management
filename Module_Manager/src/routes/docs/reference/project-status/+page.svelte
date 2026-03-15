@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-  <title>{projectStatusTitle} – WISPTools Docs</title>
+  <title>{projectStatusTitle} – WISP Management Docs</title>
 </svelte:head>
 
 <article class="doc-article">

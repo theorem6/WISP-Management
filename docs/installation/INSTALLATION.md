@@ -33,8 +33,8 @@ Use this when one Linux server runs the entire WISPTools backend (main API + EPC
 
 1. **Clone the repo** (or copy the install script onto the server):
    ```bash
-   git clone https://github.com/theorem6/WISPTools.git /tmp/WISPTools
-   cd /tmp/WISPTools
+   git clone https://github.com/theorem6/WISP-Management.git /tmp/WISP-Management
+   cd /tmp/WISP-Management
    ```
 
 2. **Run the install script:**
@@ -101,8 +101,8 @@ On **every** server that will run the backend:
 
 1. Clone the repo (or copy the install script onto the server):
    ```bash
-   git clone https://github.com/theorem6/WISPTools.git /tmp/WISPTools
-   cd /tmp/WISPTools
+   git clone https://github.com/theorem6/WISP-Management.git /tmp/WISP-Management
+   cd /tmp/WISP-Management
    ```
 
 2. Run the distributed API-node install script:
@@ -131,8 +131,8 @@ From your **workstation** (or CI), not on the API server:
 
 2. Clone the repo and build the frontend:
    ```bash
-   git clone https://github.com/theorem6/WISPTools.git
-   cd WISPTools/Module_Manager
+   git clone https://github.com/theorem6/WISP-Management.git
+   cd WISP-Management/Module_Manager
    npm install
    npm run build
    ```

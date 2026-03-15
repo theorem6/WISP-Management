@@ -404,7 +404,7 @@
   <div class="wizard-container">
     <div class="wizard-header">
       <h1>Create Your Account</h1>
-      <p class="subtitle">Get started with WISPTools in just a few steps</p>
+      <p class="subtitle">Get started with WISP Management in just a few steps</p>
     </div>
 
     <div class="progress-bar">
@@ -712,7 +712,7 @@
           <div class="success-icon-large">✅</div>
           <h2>Account Created Successfully!</h2>
           <p class="success-message">
-            Your WISPTools account has been created. You can now start using the platform.
+            Your WISP Management account has been created. You can now start using the platform.
           </p>
           <div class="success-details">
             <p><strong>Organization:</strong> {displayName}</p>

@@ -33,9 +33,9 @@
     <button type="button" class="help-back-link" title="Back to main app" on:click={() => goto('/dashboard')}>← Back to main app</button>
     <div class="help-header-brand">
       <div class="help-logo-section">
-        <img src="/wisptools-logo.svg" alt="WISPTools.io" class="help-logo" />
+        <img src="/wisptools-logo.svg" alt="WISP Management" class="help-logo" />
         <div class="help-branding">
-          <h1 class="help-app-title">WISPTools.io</h1>
+          <h1 class="help-app-title">WISP Management</h1>
           <p class="help-app-subtitle">Documentation</p>
         </div>
       </div>

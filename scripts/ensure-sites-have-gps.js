@@ -62,7 +62,7 @@ async function geocodeAddress(address) {
 
     const response = await fetch(nominatimUrl, {
       headers: {
-        'User-Agent': 'WISPTools-Site-Geocoder/1.0 (support@wisptools.io)',
+        'User-Agent': 'WISP-Management-Site-Geocoder/1.0 (support@wisptools.io)',
         Accept: 'application/json'
       }
     });

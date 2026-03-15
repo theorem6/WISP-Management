@@ -321,7 +321,7 @@ print_status "Creating metrics collection agent for Cloud Monitoring..."
 # Download metrics agent from GitHub
 print_status "Downloading metrics agent from GitHub..."
 curl -o /opt/open5gs-metrics-agent.js \\
-  https://raw.githubusercontent.com/theorem6/WISPTools/main/deployment-files/open5gs-metrics-agent.js
+  https://raw.githubusercontent.com/theorem6/WISP-Management/main/deployment-files/open5gs-metrics-agent.js
 
 if [ $? -eq 0 ]; then
     print_success "Metrics agent downloaded"
@@ -389,7 +389,7 @@ print_status "Creating systemd service..."
 cat > /etc/systemd/system/open5gs-metrics-agent.service <<EOF
 [Unit]
 Description=Open5GS Metrics Agent - WISPTools.io
-Documentation=https://github.com/theorem6/WISPTools
+Documentation=https://github.com/theorem6/WISP-Management
 After=network-online.target open5gs-mmed.service
 Wants=network-online.target
 

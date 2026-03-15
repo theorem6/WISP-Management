@@ -241,11 +241,11 @@
       <div class="header-content">
         <div class="header-brand">
           <div class="logo-section">
-            <img src="/wisptools-logo.svg" alt="WISPTools.io" class="dashboard-logo" />
+            <img src="/wisptools-logo.svg" alt="WISP Management" class="dashboard-logo" />
             <div class="branding">
-              <h1 class="app-title">WISPTools.io</h1>
-              <p class="app-subtitle">WISP Management Platform</p>
-            <p class="poc-notice">Proof of concept · Source code: <a href="https://github.com/theorem6/WISPTools" target="_blank" rel="noopener noreferrer">github.com/theorem6/WISPTools</a></p>
+              <h1 class="app-title">WISP Management</h1>
+              <p class="app-subtitle">wisptools.io</p>
+            <p class="poc-notice">wisptools.io · Source code: <a href="https://github.com/theorem6/WISP-Management" target="_blank" rel="noopener noreferrer">github.com/theorem6/WISP-Management</a></p>
             </div>
           </div>
           <div class="header-icons">
@@ -355,7 +355,7 @@
 
       <!-- Footer: License + GitHub -->
       <footer class="app-footer">
-        <a href="https://github.com/theorem6/WISPTools" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://github.com/theorem6/WISP-Management" target="_blank" rel="noopener noreferrer">GitHub</a>
         <span class="sep">·</span>
         <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
       </footer>

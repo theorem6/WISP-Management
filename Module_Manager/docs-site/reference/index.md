@@ -1,11 +1,11 @@
 ---
 title: "Reference Documentation"
-description: "Reference documentation for WISPTools"
+description: "Reference documentation for WISP Management"
 ---
 
 # Reference Documentation
 
-Quick reference guides for WISPTools components, configurations, and APIs.
+Quick reference guides for WISP Management components, configurations, and APIs.
 
 ## Available References
 

@@ -1,11 +1,11 @@
 ---
 title: "API Reference"
-description: "Complete API reference for WISPTools"
+description: "Complete API reference for WISP Management"
 ---
 
 # API Reference
 
-Welcome to the WISPTools API reference. This documentation provides detailed information about all API endpoints, request/response formats, and authentication.
+Welcome to the WISP Management API reference. This documentation provides detailed information about all API endpoints, request/response formats, and authentication.
 
 ## Authentication
 

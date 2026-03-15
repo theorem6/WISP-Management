@@ -58,7 +58,7 @@
 </script>
 
 <svelte:head>
-  <title>Onboarding - WISPTools.io</title>
+  <title>Onboarding - WISP Management</title>
   <meta name="description" content="Complete the first-time setup wizard for your WISP." />
 </svelte:head>
 

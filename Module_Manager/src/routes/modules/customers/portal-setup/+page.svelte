@@ -189,7 +189,7 @@
       enableCustomDomain = branding.portal?.enableCustomDomain || false;
       customDomain = branding.portal?.customDomain || '';
       portalSubdomain = branding.portal?.portalSubdomain || tenantId.slice(0, 12);
-      portalUrl = branding.portal?.portalUrl || `https://wisptools.io/portal/${portalSubdomain}`;
+      portalUrl = branding.portal?.portalUrl || `https://wisptools.io/wisp-management/portal/${portalSubdomain}`;
 
       companyName = branding.company?.name || tenantName || companyName;
       logoUrl = branding.logo?.url || '';
@@ -624,7 +624,7 @@
       return `https://${customDomain}`;
     }
     const portalPath = portalSubdomain || tenantId?.slice(0, 12) || 'portal';
-    return `https://wisptools.io/portal/${portalPath}`;
+    return `https://wisptools.io/wisp-management/portal/${portalPath}`;
   }
 
   function getAlertTypeIcon(type: string) {

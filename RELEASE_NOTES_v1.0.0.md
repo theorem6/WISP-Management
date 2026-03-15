@@ -1,6 +1,6 @@
-# WispTools v1.0.0 – First release
+# WISP Management v1.0.0 – First release
 
-First public release of **WISP Multitool (WispTools)** – the complete wireless ISP management platform.
+First public release of **WISP Management** (wisptools.io) – the complete wireless ISP management platform.
 
 ## Highlights
 
@@ -14,10 +14,10 @@ First public release of **WISP Multitool (WispTools)** – the complete wireless
 
 ## Documentation
 
-Full documentation is on the [main README](https://github.com/theorem6/WISPTools#full-documentation-on-this-page). Key entry points:
+Full documentation is on the [main README](https://github.com/theorem6/WISP-Management#full-documentation-on-this-page). Key entry points:
 
-- [Quick start](https://github.com/theorem6/WISPTools#-quick-start)
-- [Deployment](https://github.com/theorem6/WISPTools#-deployment)
+- [Quick start](https://github.com/theorem6/WISP-Management#-quick-start)
+- [Deployment](https://github.com/theorem6/WISP-Management#-deployment)
 - [Complete deployment guide](docs/deployment/COMPLETE_DEPLOYMENT_NOW.md)
 - [HSS production guide](docs/hss/HSS_PRODUCTION_GUIDE.md)
 - [Architectural playbook (PROMPTS.md)](PROMPTS.md)
@@ -28,4 +28,4 @@ Creative Commons Attribution 4.0 International (CC BY 4.0). See [LICENSE](LICENS
 
 ---
 
-**Repository:** https://github.com/theorem6/WISPTools
+**Repository:** https://github.com/theorem6/WISP-Management

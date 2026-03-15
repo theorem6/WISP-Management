@@ -138,7 +138,7 @@ function generateUpdateCommand(updateInfo, options = {}) {
     console.error('[EPC Auto-Update] GITHUB_TOKEN not set - cannot fetch from private repo');
     return;
   }
-  const GIT_REPO_URL = `https://${GITHUB_TOKEN}@github.com/theorem6/WISPTools.git`;
+  const GIT_REPO_URL = `https://${GITHUB_TOKEN}@github.com/theorem6/WISP-Management.git`;
   console.log('[EPC Auto-Update] Using HTTPS with token authentication for private repository');
   
   // Sort scripts by priority (lower number = higher priority)
@@ -236,8 +236,8 @@ else
     git config --global credential.helper '' 2>&1 | while read line; do log "$line"; done
     git config --global http.sslVerify true 2>&1 | while read line; do log "$line"; done
     git config --global --add safe.directory "${GIT_REPO_DIR}" 2>&1 | while read line; do log "$line"; done
-    git config --global url."${GIT_REPO_URL}".insteadOf "git@github.com:theorem6/WISPTools.git" 2>&1 | while read line; do log "$line"; done
-    git config --global url."${GIT_REPO_URL}".insteadOf "https://github.com/theorem6/WISPTools.git" 2>&1 | while read line; do log "$line"; done
+    git config --global url."${GIT_REPO_URL}".insteadOf "git@github.com:theorem6/WISP-Management.git" 2>&1 | while read line; do log "$line"; done
+    git config --global url."${GIT_REPO_URL}".insteadOf "https://github.com/theorem6/WISP-Management.git" 2>&1 | while read line; do log "$line"; done
     
     # Check current remote - if it's SSH or wrong, force recreate
     CURRENT_REMOTE=$(git remote get-url origin 2>/dev/null || echo "none")

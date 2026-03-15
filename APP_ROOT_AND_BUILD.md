@@ -1,6 +1,6 @@
 # App Root and Build
 
-The **Svelte app (WISPTools.io UI) lives in `Module_Manager`**. That folder is the app root for build and dev.
+The **Svelte app (WISP Management / wisptools.io UI) lives in `Module_Manager`**. That folder is the app root for build and dev.
 
 - **Build (for Firebase Hosting):**  
   `cd Module_Manager && npm run build`  

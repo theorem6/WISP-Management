@@ -25,7 +25,7 @@ description: Current state snapshot and prioritized next actions (post-push Jan 
 |------|-------------------|
 | **API** | Node on GCE VM `acs-hss-server` (us-central1-a) |
 | **Path on server** | `/opt/lte-pci-mapper/backend-services` (or `/root/lte-pci-mapper` in some scripts) |
-| **Deploy** | **Upload:** `.\deploy-backend-to-gce.ps1 -DeployMethod Upload` (preserves `.env`). **Git:** `deploy-all-complete.ps1` uses `update-backend-from-git.sh` → pulls from `theorem6/WISPTools.git`. |
+| **Deploy** | **Upload:** `.\deploy-backend-to-gce.ps1 -DeployMethod Upload` (preserves `.env`). **Git:** `deploy-all-complete.ps1` uses `update-backend-from-git.sh` → pulls from `theorem6/WISP-Management.git`. |
 | **Health** | https://hss.wisptools.io/api/health |
 | **Last deploy** | Git deploy ran; server reset to GitHub and pulled latest (63a79631). `main-api` and `epc-api` restarted. |
 
@@ -98,7 +98,7 @@ description: Current state snapshot and prioritized next actions (post-push Jan 
 
 ### 5. Optional: Backend automation and repo alignment
 - **Deploy on push:** Document or add Cloud Build / GCE startup script to pull from GitHub and restart PM2.
-- **Repo URLs:** Most scripts use `theorem6/WISPTools.git`. A few still reference `lte-pci-mapper` (e.g. `remote-backend-restart.sh`, `deploy-all-automated.sh`). Align to WISPTools if the repo is unified.
+- **Repo URLs:** Most scripts use `theorem6/WISP-Management.git`. A few still reference `lte-pci-mapper` (e.g. `remote-backend-restart.sh`, `deploy-all-automated.sh`). Align to WISP-Management if the repo is unified.
 
 ---
 

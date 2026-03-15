@@ -1,7 +1,7 @@
 /**
  * Debug Utility
  * Provides conditional logging based on user's debug preference
- * Debug mode should only be enabled when working with WISPTools.io engineers
+ * Debug mode should only be enabled when working with wisptools.io engineers
  */
 
 const DEBUG_STORAGE_KEY = 'wisptools_debug_enabled';

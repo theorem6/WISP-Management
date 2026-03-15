@@ -1,4 +1,4 @@
-# WispTools Scripts
+# WISP Management (wisptools.io) Scripts
 
 Scripts are organized for **Windows (PowerShell)** and **Linux (Bash)**. Use the appropriate script for your environment.
 

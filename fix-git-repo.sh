@@ -29,7 +29,7 @@ if [ -z "$GITHUB_TOKEN" ]; then
   log "ERROR: GITHUB_TOKEN not set. Set in env or /opt/wisptools/.env"
   exit 1
 fi
-GIT_REPO_URL="https://${GITHUB_TOKEN}@github.com/theorem6/WISPTools.git"
+GIT_REPO_URL="https://${GITHUB_TOKEN}@github.com/theorem6/WISP-Management.git"
 GIT_REPO_BRANCH="main"
 
 # Check if directory exists and if it's a VALID git repository

@@ -1,15 +1,15 @@
 ---
 title: "Getting Started"
-description: "Introduction to WISPTools and getting started guide"
+description: "Introduction to WISP Management and getting started guide"
 ---
 
 # Getting Started
 
-Welcome to WISPTools! This guide will help you get started with the LTE WISP Management Platform.
+Welcome to WISP Management! This guide will help you get started with the LTE WISP Management Platform on wisptools.io.
 
-## What is WISPTools?
+## What is WISP Management?
 
-WISPTools is a comprehensive management platform for LTE Wireless Internet Service Providers (WISPs). It provides:
+WISP Management is the main app on wisptools.io for LTE Wireless Internet Service Providers (WISPs). It provides:
 
 - **Multi-Tenant Architecture** - Manage multiple customer organizations
 - **HSS Management** - Home Subscriber Server for Open5GS

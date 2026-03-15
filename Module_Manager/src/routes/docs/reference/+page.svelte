@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-  <title>Reference – WISPTools Docs</title>
+  <title>Reference – WISP Management Docs</title>
 </svelte:head>
 
 <h1>Reference</h1>

@@ -20,7 +20,7 @@ ${key}
 
 --- Step 1: Set secret for Cloud Function (one-time) ---
 
-From the project root (WISPTools), run:
+From the project root (WISP Management repo), run:
 
   firebase functions:secrets:set INTERNAL_API_KEY
 

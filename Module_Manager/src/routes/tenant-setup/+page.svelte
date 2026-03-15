@@ -463,7 +463,7 @@
 
         <div class="beta-disclaimer">
           <div class="beta-badge">BETA</div>
-          <p><strong>WISPTools.io is currently in beta.</strong> No charges will be made without prior notice. Adding a payment method now ensures uninterrupted service when billing begins.</p>
+          <p><strong>wisptools.io (WISP Management) is currently in beta.</strong> No charges will be made without prior notice. Adding a payment method now ensures uninterrupted service when billing begins.</p>
         </div>
 
         {#if error}

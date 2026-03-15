@@ -599,10 +599,10 @@
   <div class="login-container">
     <!-- Branding Section -->
     <div class="login-brand">
-      <img src="/wisptools-logo.svg" alt="WISPTools.io" class="brand-logo" />
-      <h1>WISPTools.io</h1>
-      <p class="brand-tagline">WISP Management Platform</p>
-      <p class="poc-notice">This is a proof of concept. Source code: <a href="https://github.com/theorem6/WISPTools" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a></p>
+      <img src="/wisptools-logo.svg" alt="WISP Management" class="brand-logo" />
+      <h1>WISP Management</h1>
+      <p class="brand-tagline">wisptools.io</p>
+      <p class="poc-notice">Part of wisptools.io. Source code: <a href="https://github.com/theorem6/WISP-Management" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a></p>
     </div>
 
     <!-- Login Form -->
@@ -783,7 +783,7 @@
     </div>
 
     <footer class="login-footer">
-      <a href="https://github.com/theorem6/WISPTools" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://github.com/theorem6/WISP-Management" target="_blank" rel="noopener noreferrer">GitHub</a>
       <span class="sep">·</span>
       <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
     </footer>

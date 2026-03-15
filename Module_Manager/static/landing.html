@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="wisptools.io – Vibe coding for WISPs. Open tools for planning, deployment, and operations." />
+  <title>wisptools.io – Vibe Coding for WISPs</title>
+  <link rel="icon" href="/wisp-management/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --surface: #141a22;
+      --surface2: #1a222d;
+      --text: #e6edf3;
+      --text-muted: #8b9cb3;
+      --accent: #58a6ff;
+      --accent-dim: #388bfd;
+      --green: #3fb950;
+      --orange: #d29922;
+      --border: #30363d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 1.5rem; }
+    header {
+      padding: 2rem 0 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .logo span { color: var(--accent); }
+    .tagline {
+      margin-top: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    main { padding: 3rem 0 4rem; }
+    h1 {
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0 0 1rem;
+      color: var(--text);
+    }
+    .lead {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin: 0 0 2.5rem;
+      max-width: 52ch;
+    }
+    .vibe {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2rem;
+    }
+    .vibe h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+      color: var(--accent);
+    }
+    .vibe p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .vibe a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .vibe a:hover { text-decoration: underline; }
+    .cards {
+      display: grid;
+      gap: 1.25rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      border-color: var(--accent-dim);
+      box-shadow: 0 0 0 1px var(--accent-dim);
+    }
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+      color: var(--text);
+    }
+    .card p {
+      margin: 0 0 1rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .card-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .card-links a {
+      font-size: 0.875rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .card-links a:hover { text-decoration: underline; }
+    .card-links .sep { color: var(--border); }
+    footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="logo">wisptools<span>.io</span></div>
+      <p class="tagline">Vibe coding for WISPs – open tools for planning, deployment, and operations</p>
+    </div>
+  </header>
+  <main>
+    <div class="wrap">
+      <h1>Open tools for wireless networks</h1>
+      <p class="lead">Part of the vibe coding project: building in the open with modern tooling so WISPs can plan, deploy, and run networks without lock-in.</p>
+
+      <section class="vibe">
+        <h2>What’s “vibe coding”?</h2>
+        <p>Shipping in the open, iterating with users, and keeping the stack simple and maintainable. Learn more in <a href="https://www.linkedin.com/in/vibe-architect/" target="_blank" rel="noopener">the vibe architect writeup on LinkedIn</a>.</p>
+      </section>
+
+      <section class="cards">
+        <article class="card">
+          <h3>WISP Management</h3>
+          <p>Plan sites, manage subscribers and HSS, deploy EPC nodes, monitor gear, and run TR-069/ACS – all in one place.</p>
+          <div class="card-links">
+            <a href="/wisp-management">Open app</a>
+            <span class="sep">·</span>
+            <a href="https://github.com/theorem6/WISP-Management" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Bandwidth Test Manager</h3>
+          <p>Run and manage netperf-based throughput tests from a simple UI. Point-and-click tests and result history.</p>
+          <div class="card-links">
+            <a href="https://hss.wisptools.io/netperf/" target="_blank" rel="noopener">Demo</a>
+            <span class="sep">·</span>
+            <a href="https://github.com/theorem6/Bandwidth-Test-Manager" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap">
+      <a href="https://github.com/theorem6/WISP-Management" target="_blank" rel="noopener">WISP Management</a>
+      ·
+      <a href="https://github.com/theorem6/Bandwidth-Test-Manager" target="_blank" rel="noopener">Bandwidth Test Manager</a>
+    </div>
+  </footer>
+</body>
+</html>

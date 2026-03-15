@@ -3,7 +3,7 @@
 
 set -e
 
-GIT_REPO_URL="https://github.com/theorem6/WISPTools.git"
+GIT_REPO_URL="https://github.com/theorem6/WISP-Management.git"
 GIT_REPO_BRANCH="main"
 GIT_REPO_DIR="/opt/wisptools/repo"
 SCRIPTS_SOURCE_DIR="${GIT_REPO_DIR}/backend-services/scripts"

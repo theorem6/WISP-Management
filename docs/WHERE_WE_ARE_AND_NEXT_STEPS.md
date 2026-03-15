@@ -31,9 +31,9 @@ description: Current state and prioritized next steps for WISPTools.
 - **Backend:** tr069 firmware upload “not yet implemented”; network CBRS import “not yet implemented”; epcMetrics TODO: integrate with monitoring.
 
 ### Repo name inconsistency
-- **WISPTools:** `deploy-backend-to-gce.ps1`, docs use `theorem6/WISPTools.git`.
+- **WISPTools:** `deploy-backend-to-gce.ps1`, docs use `theorem6/WISP-Management.git`.
 - **lte-pci-mapper:** `scripts/deployment/update-backend-from-git.sh`, `setup-github-ssh.sh`, epc-checkin-agent, etc. use `theorem6/lte-pci-mapper.git`.
-- If the repo was renamed to WISPTools, align `update-backend-from-git.sh` (and any other scripts that clone/pull) to `theorem6/WISPTools.git`.
+- If the repo was renamed to WISPTools, align `update-backend-from-git.sh` (and any other scripts that clone/pull) to `theorem6/WISP-Management.git`.
 
 ---
 
@@ -41,7 +41,7 @@ description: Current state and prioritized next steps for WISPTools.
 
 ### P0 – Security & correctness ✅
 1. **GitHub token:** Done. Removed hardcoded tokens from fix-git-repo.sh, debug-git-update.sh, epc-auto-update.js, distributed-epc-api.js. Use env `GITHUB_TOKEN` only.
-2. **Repo URL alignment:** Done. Updated scripts and config to use `theorem6/WISPTools.git` (epc-checkin-agent, deploy-monitoring-backend, config/app.js, distributed-epc, etc.).
+2. **Repo URL alignment:** Done. Updated scripts and config to use `theorem6/WISP-Management.git` (epc-checkin-agent, deploy-monitoring-backend, config/app.js, distributed-epc, etc.).
 
 ### P1 – High value features ✅
 3. **CBRS config encryption:** Done. Firebase callables encrypt/decrypt sensitive fields (AES-256-GCM); frontend uses callables with Firestore fallback.

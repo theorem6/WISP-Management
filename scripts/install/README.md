@@ -1,4 +1,4 @@
-# WISPTools Install Scripts
+# WISP Management Install Scripts
 
 | Script | Use case |
 |--------|----------|

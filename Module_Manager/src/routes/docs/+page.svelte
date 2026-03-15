@@ -3,17 +3,17 @@
 </script>
 
 <svelte:head>
-  <title>Documentation – WISPTools</title>
+  <title>Documentation – WISP Management</title>
 </svelte:head>
 
-<h1>WISPTools Documentation</h1>
+<h1>WISP Management Documentation</h1>
 <p class="lead">Documentation is integrated into the app. Use the sidebar or the links below.</p>
 
 <section class="doc-section">
   <h2>Quick links</h2>
   <ul>
     <li><a href="/help">Getting Started</a> – New users and administrators.</li>
-    <li><a href="/help">Using WISPTools</a> – For end users: dashboard, wizards, help.</li>
+    <li><a href="/help">Using WISP Management</a> – For end users: dashboard, wizards, help.</li>
     <li><a href="/help">Project Status & Next Steps</a> – Current status and what to work on next.</li>
     <li><a href="/help">Help by topic</a> – Module-specific help (Inventory, ACS, Deploy, Plan, etc.).</li>
     <li><a href="/wizards">Wizards</a> – Guided flows (sites, subscribers, customers, RMA, plans, groups, troubleshooting).</li>
@@ -21,8 +21,8 @@
 </section>
 
 <section class="doc-section">
-  <h2>What is WISPTools?</h2>
-  <p>WISPTools is a comprehensive LTE WISP management platform:</p>
+  <h2>What is WISP Management?</h2>
+  <p>WISP Management is the main app on wisptools.io for LTE WISP operations:</p>
   <ul>
     <li><strong>Multi-tenant</strong> – Manage multiple organizations</li>
     <li><strong>HSS</strong> – Home Subscriber Server for Open5GS</li>

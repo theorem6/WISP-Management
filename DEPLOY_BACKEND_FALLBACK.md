@@ -74,7 +74,7 @@ Cloud Shell usually has working IAP/SSH, so this avoids plink/Windows issues. **
 
 ## Git deploy / update-backend-from-git.sh
 
-On the VM, `scripts/deployment/update-backend-from-git.sh` pulls from `theorem6/WISPTools` via HTTPS. **GITHUB_TOKEN is required** (no default in repo). Set it in the environment or in `/opt/lte-pci-mapper/.env`:
+On the VM, `scripts/deployment/update-backend-from-git.sh` pulls from `theorem6/WISP-Management` via HTTPS. **GITHUB_TOKEN is required** (no default in repo). Set it in the environment or in `/opt/lte-pci-mapper/.env`:
 
 ```bash
 export GITHUB_TOKEN=ghp_xxxxxxxx

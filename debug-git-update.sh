@@ -26,10 +26,10 @@ fi
 GIT_REPO_BRANCH="main"
 GIT_REPO_DIR="/opt/wisptools/repo"
 SCRIPTS_SOURCE_DIR="${GIT_REPO_DIR}/backend-services/scripts"
-GIT_REPO_URL="https://${GITHUB_TOKEN}@github.com/theorem6/WISPTools.git"
+GIT_REPO_URL="https://${GITHUB_TOKEN}@github.com/theorem6/WISP-Management.git"
 
 log "Configuration:"
-log "  GIT_REPO_URL: https://***@github.com/theorem6/WISPTools.git"
+log "  GIT_REPO_URL: https://***@github.com/theorem6/WISP-Management.git"
 log "  GIT_REPO_BRANCH: ${GIT_REPO_BRANCH}"
 log "  GIT_REPO_DIR: ${GIT_REPO_DIR}"
 log "  SCRIPTS_SOURCE_DIR: ${SCRIPTS_SOURCE_DIR}"

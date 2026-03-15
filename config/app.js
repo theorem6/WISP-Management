@@ -97,10 +97,10 @@ module.exports = {
     github: {
       // SSH key authentication (preferred for private repositories)
       sshKeyFingerprint: 'SHA256:evjwW3FJ1wGL/y2JM6daCrcQA1OYVlV4BAyXiM5gdZ0',
-      repoUrl: 'git@github.com:theorem6/WISPTools.git',
+      repoUrl: 'git@github.com:theorem6/WISP-Management.git',
       // HTTPS token (fallback, if needed)
       token: process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '',
-      httpsRepoUrl: 'https://github.com/theorem6/WISPTools.git'
+      httpsRepoUrl: 'https://github.com/theorem6/WISP-Management.git'
     }
   },
   

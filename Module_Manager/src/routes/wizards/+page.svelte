@@ -283,7 +283,7 @@
 </script>
 
 <svelte:head>
-  <title>Wizards – WISPTools</title>
+  <title>Wizards – WISP Management</title>
 </svelte:head>
 
 <TenantGuard>

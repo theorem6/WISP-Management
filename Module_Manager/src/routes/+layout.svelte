@@ -16,6 +16,7 @@
   function isPublicRoute(pathname: string): boolean {
     return (
       pathname === '/' ||
+      pathname === '' ||
       pathname === '/login' ||
       pathname === '/signup' ||
       pathname === '/reset-password' ||

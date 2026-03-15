@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: "WISPTools"
+  name: "WISP Management"
   text: "Documentation"
   tagline: Complete documentation for the LTE WISP Management Platform
   actions:
@@ -35,9 +35,9 @@ features:
 
 ---
 
-## What is WISPTools?
+## What is WISP Management?
 
-WISPTools is a comprehensive LTE WISP Management Platform that provides:
+WISP Management (wisptools.io) is a comprehensive LTE WISP Management Platform that provides:
 
 - **Multi-Tenant Architecture** - Manage multiple customer organizations
 - **HSS Management** - Home Subscriber Server for Open5GS

@@ -18,7 +18,7 @@ LOG_FILE="/var/log/wisptools-checkin.log"
 CHECKIN_INTERVAL=300  # Default 5 minutes (300 seconds) - User requested more frequent sweeps
 
 # Git repository configuration
-GIT_REPO_URL="https://github.com/theorem6/WISPTools.git"
+GIT_REPO_URL="https://github.com/theorem6/WISP-Management.git"
 GIT_REPO_BRANCH="main"
 GIT_REPO_DIR="/opt/wisptools/repo"
 SCRIPTS_SOURCE_DIR="${GIT_REPO_DIR}/backend-services/scripts"

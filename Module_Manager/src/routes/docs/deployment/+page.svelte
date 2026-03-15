@@ -2,11 +2,11 @@
 </script>
 
 <svelte:head>
-  <title>Using WISPTools – WISPTools Docs</title>
+  <title>Using WISP Management – WISP Management Docs</title>
 </svelte:head>
 
-<h1>Using WISPTools</h1>
-<p class="lead">Your organization’s WISPTools instance is set up and managed by your administrator. This page is for end users.</p>
+<h1>Using WISP Management</h1>
+<p class="lead">Your organization’s WISP Management instance is set up and managed by your administrator. This page is for end users.</p>
 
 <section class="doc-section">
   <h2>What you can do</h2>
@@ -20,6 +20,6 @@
 
 <section class="doc-section">
   <h2>Need access or changes?</h2>
-  <p>For new accounts, access to modules, or platform changes, contact your WISPTools administrator.</p>
+  <p>For new accounts, access to modules, or platform changes, contact your WISP Management administrator.</p>
   <p><a href="/help">← Help & Documentation</a></p>
 </section>

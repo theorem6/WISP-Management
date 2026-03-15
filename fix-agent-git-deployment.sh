@@ -27,7 +27,7 @@ OUTPUT_FILE="/tmp/agent-fix-report.txt"
     if [ ! -d "$GIT_REPO_DIR/.git" ]; then
         echo "❌ Repository missing, cloning..."
         mkdir -p "$GIT_REPO_DIR"
-        git clone --depth 1 --branch main https://github.com/theorem6/WISPTools.git "$GIT_REPO_DIR"
+        git clone --depth 1 --branch main https://github.com/theorem6/WISP-Management.git "$GIT_REPO_DIR"
         echo "✅ Repository cloned"
     else
         echo "✅ Repository exists, updating..."

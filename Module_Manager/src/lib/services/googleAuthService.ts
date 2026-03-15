@@ -30,12 +30,13 @@ const PRODUCTION_ORIGIN = 'https://wisptools.io';
 
 /**
  * Get redirect URI at runtime (never at module load).
- * Uses current origin so it works on wisptools.io, localhost, or Firebase preview URLs.
- * For Google Cloud Console, authorize: https://wisptools.io/auth/google/callback and your dev URL.
+ * Uses current origin + base path so it works on wisptools.io/wisp-management, localhost, or Firebase preview URLs.
+ * For Google Cloud Console, authorize: https://wisptools.io/wisp-management/auth/google/callback and your dev URL.
  */
 function getRedirectUri(): string {
   if (typeof window === 'undefined') return '';
-  return `${window.location.origin}/auth/google/callback`;
+  const base = '/wisp-management';
+  return `${window.location.origin}${base}/auth/google/callback`;
 }
 
 /**
