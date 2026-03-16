@@ -44,6 +44,21 @@
   
   onMount(async () => {
     if (!browser) return;
+
+    // Ensure login is always the first step for a new browser session.
+    // On the very first load in this tab/session, clear any cached Firebase auth
+    // so that the user must visit the login screen explicitly.
+    try {
+      const sessionKey = 'wm_session_login_initialized';
+      const alreadyInitialized = sessionStorage.getItem(sessionKey) === 'true';
+      if (!alreadyInitialized) {
+        console.log('[Root Layout] Clearing cached auth for new session - forcing explicit login');
+        await authService.signOut();
+        sessionStorage.setItem(sessionKey, 'true');
+      }
+    } catch (e) {
+      console.warn('[Root Layout] Failed to enforce first-login session rule', e);
+    }
     
     console.log('[Root Layout] Initializing theme system...');
     // Theme manager is automatically initialized when imported
