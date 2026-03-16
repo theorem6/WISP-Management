@@ -179,17 +179,11 @@
       userEmail: user?.email || 'none'
     });
     
-        if (isAuthenticated) {
-          const userEmail = authService.getCurrentUser()?.email;
-          const isPlatformAdminUser = isPlatformAdmin(userEmail || null);
-          if (isPlatformAdminUser) {
-            console.log('[Login Page] Already authenticated as platform admin, redirecting to admin pages');
-            await goto('/admin/management', { replaceState: true });
-          } else {
-            console.log('[Login Page] Already authenticated, redirecting to dashboard');
-            await goto('/dashboard', { replaceState: true });
-          }
-        } else {
+    if (isAuthenticated) {
+      console.log('[Login Page] User already authenticated, but enforcing explicit login screen first');
+      // Do NOT auto-redirect away from the login page on cached auth.
+      // The user must explicitly submit the login form in this session.
+    } else {
       console.log('[Login Page] Not authenticated, showing login form');
     }
   });
@@ -249,6 +243,11 @@
         // Store user info in localStorage for compatibility
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('userEmail', email);
+
+        // Mark this session as having completed an explicit login
+        if (typeof sessionStorage !== 'undefined') {
+          sessionStorage.setItem('wm_session_login_completed', 'true');
+        }
         
         // Ensure token is ready before making API calls
         // Force token refresh to ensure it's valid for backend

@@ -32,14 +32,27 @@
   // Check if we're on an admin route
   $: isAdminRoute = $page.url.pathname.startsWith('/admin');
   
-  // Redirect unauthenticated users to login (except on public routes)
-  $: if (browser && !isInitializing && !isAuthenticated && !isPublicRoute($page.url.pathname)) {
-    goto('/login', { replaceState: true });
-  }
-  
-  // When at app root and not authenticated, redirect to login
-  $: if (browser && !isInitializing && !isAuthenticated && ($page.url.pathname === '/' || $page.url.pathname === '')) {
-    goto('/login', { replaceState: true });
+  // Enforce that every new session must pass through the login page at least once,
+  // regardless of any cached Firebase auth state.
+  $: if (browser && !isInitializing) {
+    const path = $page.url.pathname;
+    const loginCompleted = typeof sessionStorage !== 'undefined'
+      ? sessionStorage.getItem('wm_session_login_completed') === 'true'
+      : false;
+
+    // Allow the actual login and auth callback/reset routes to be accessed freely
+    const isLoginOrAuthRoute =
+      path === '/login' ||
+      path === '/signup' ||
+      path === '/reset-password' ||
+      path.startsWith('/auth/') ||
+      path.startsWith('/oauth/');
+
+    // If this session has not yet completed an explicit login,
+    // force the user to the login page for any other route.
+    if (!loginCompleted && !isLoginOrAuthRoute) {
+      goto('/login', { replaceState: true });
+    }
   }
   
   onMount(async () => {
