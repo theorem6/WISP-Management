@@ -135,15 +135,12 @@
               }
               
               if (tenants.length === 0) {
-                // No tenants - only send to tenant setup if user hasn't already completed setup
-                const setupCompleted = browser && localStorage.getItem('tenantSetupCompleted') === 'true';
-                if (!setupCompleted) {
-                  console.log('[TenantGuard] No tenants found and setup not completed - redirecting to tenant setup');
-                  isChecking = false;
-                  await goto('/tenant-setup', { replaceState: true });
-                  return;
-                }
-                console.log('[TenantGuard] No tenants from API but setupCompleted=true - skipping tenant setup redirect');
+                // No tenants - do NOT auto-launch tenant setup anymore.
+                // Always send the user to the tenant selector, where they can choose to create an organization.
+                console.log('[TenantGuard] No tenants found - redirecting to tenant selector');
+                isChecking = false;
+                await goto('/tenant-selector', { replaceState: true });
+                return;
               } else if (tenants.length === 1) {
                 // Auto-select single tenant
                 console.log('[TenantGuard] Auto-selecting single tenant');
