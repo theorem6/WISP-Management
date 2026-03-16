@@ -342,7 +342,7 @@
         <h1>🏢 Set Up Your Organization</h1>
         <p>Create a tenant to manage your devices and networks</p>
       </div>
-      <button type="button" class="exit-button" on:click={() => goto('/dashboard', { replaceState: true })}>
+      <button type="button" class="exit-button" onclick={() => goto('/dashboard', { replaceState: true })}>
         Exit setup
       </button>
     </div>
