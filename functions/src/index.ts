@@ -543,12 +543,15 @@ export const apiProxy = onRequest({
   } else if (req.path && req.path !== '/') {
     incoming = req.path;
   }
-  // Fallback: proxy headers (some gateways set X-Original-URL, X-Forwarded-Request-URI)
+  // Fallback: proxy headers (Firebase Hosting may not pass path; frontend sends X-Requested-Path)
   if (!incoming || incoming === '/') {
+    const xRequestedPath = req.headers['x-requested-path'] as string | undefined;
     const xOriginal = req.headers['x-original-url'] as string | undefined;
     const xForwardedPath = req.headers['x-forwarded-path'] as string | undefined;
     const xForwardedRequestUri = req.headers['x-forwarded-request-uri'] as string | undefined;
-    if (xOriginal?.startsWith('http')) {
+    if (typeof xRequestedPath === 'string' && xRequestedPath.startsWith('/')) {
+      incoming = xRequestedPath.split('?')[0];
+    } else if (xOriginal?.startsWith('http')) {
       try {
         incoming = new URL(xOriginal).pathname || '';
       } catch {
@@ -602,6 +605,16 @@ export const apiProxy = onRequest({
       }
     } catch {
       // ignore
+    }
+  }
+  // Last resort: use X-Requested-Path for proxiedPath when Hosting strips path (e.g. 2nd gen rewrite)
+  if (!proxiedPath || proxiedPath === '/') {
+    const xPath = req.headers['x-requested-path'] as string | undefined;
+    if (typeof xPath === 'string' && xPath.startsWith('/')) {
+      let p = xPath.split('?')[0];
+      if (p.startsWith('/apiProxy')) p = p.substring('/apiProxy'.length);
+      if (p.startsWith('/api/admin')) p = p.substring('/api'.length);
+      if (p) proxiedPath = p.startsWith('/') ? p : `/${p}`;
     }
   }
 

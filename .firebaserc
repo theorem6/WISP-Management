@@ -10,6 +10,16 @@
       "management": [
         "wisptools-management"
       ]
+    },
+    "wisptools-production": {
+      "hosting": {
+        "landing": [
+          "wisptools-production"
+        ],
+        "management": [
+          "wisptools-management"
+        ]
+      }
     }
   },
   "etags": {}

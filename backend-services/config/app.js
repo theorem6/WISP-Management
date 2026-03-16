@@ -24,6 +24,9 @@ module.exports = {
   cors: {
     origins: [
       'https://wisptools.io',
+      'https://management.wisptools.io',
+      'https://wisptools-management.web.app',
+      'https://wisptools-management.firebaseapp.com',
       'https://wisptools-production.web.app',
       'https://wisptools-production.firebaseapp.com',
       'https://wisptools-io.web.app',

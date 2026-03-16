@@ -30,10 +30,10 @@ export class TenantService {
   }
 
   /**
-   * Get authentication headers for API calls
-   * Uses authService.getAuthTokenForApi() for robust token retrieval with retry and force refresh
+   * Get authentication headers for API calls.
+   * Pass path when calling through Firebase Hosting → apiProxy so the proxy can route correctly.
    */
-  private async getAuthHeaders(): Promise<Record<string, string>> {
+  private async getAuthHeaders(requestPath?: string): Promise<Record<string, string>> {
     const token = await authService.getAuthTokenForApi();
     if (!token) {
       throw new Error('User not authenticated - failed to get valid token');
@@ -43,7 +43,9 @@ export class TenantService {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     };
-
+    if (requestPath) {
+      headers['X-Requested-Path'] = requestPath;
+    }
     return headers;
   }
 
@@ -60,18 +62,13 @@ export class TenantService {
     ownerEmail?: string
   ): Promise<{ success: boolean; tenantId?: string; error?: string }> {
     try {
-      const headers = await this.getAuthHeaders();
-      
-      // Get current user to check if they're platform admin
       const user = authService.getCurrentUser();
       const userIsPlatformAdmin = isPlatformAdmin(user?.email ?? null);
-      
-      // For regular users, use /api/tenants (enforces one tenant per user)
-      // For platform admins, use /admin/tenants (unlimited tenants)
-      const endpoint = userIsPlatformAdmin 
+      const endpoint = userIsPlatformAdmin
         ? `${this.adminBaseUrl}/tenants`
         : `${this.apiBaseUrl}/tenants`;
-      
+      const headers = await this.getAuthHeaders(endpoint);
+
       const response = await fetch(endpoint, {
         method: 'POST',
         headers,
@@ -160,10 +157,11 @@ export class TenantService {
    */
   async getAllTenants(): Promise<Tenant[]> {
     try {
-      const headers = await this.getAuthHeaders();
+      const path = `${this.adminBaseUrl}/tenants`;
+      const headers = await this.getAuthHeaders(path);
       
       // Use /api/admin/tenants for platform admin access (goes through Firebase Hosting rewrite)
-      const response = await fetch(`${this.adminBaseUrl}/tenants`, {
+      const response = await fetch(path, {
         method: 'GET',
         headers
       });
@@ -195,9 +193,10 @@ export class TenantService {
     updates: Partial<Tenant>
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const headers = await this.getAuthHeaders();
+      const path = `${this.adminBaseUrl}/tenants/${tenantId}`;
+      const headers = await this.getAuthHeaders(path);
       
-      const response = await fetch(`${this.adminBaseUrl}/tenants/${tenantId}`, {
+      const response = await fetch(path, {
         method: 'PUT',
         headers,
         body: JSON.stringify(updates)
@@ -220,9 +219,10 @@ export class TenantService {
    */
   async deleteTenant(tenantId: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const headers = await this.getAuthHeaders();
+      const path = `${this.adminBaseUrl}/tenants/${tenantId}`;
+      const headers = await this.getAuthHeaders(path);
       
-      const response = await fetch(`${this.adminBaseUrl}/tenants/${tenantId}`, {
+      const response = await fetch(path, {
         method: 'DELETE',
         headers
       });
@@ -244,9 +244,10 @@ export class TenantService {
    */
   async assignOwner(tenantId: string, email: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const headers = await this.getAuthHeaders();
+      const path = `${this.adminBaseUrl}/tenants/${tenantId}/assign-owner`;
+      const headers = await this.getAuthHeaders(path);
       
-      const response = await fetch(`${this.adminBaseUrl}/tenants/${tenantId}/assign-owner`, {
+      const response = await fetch(path, {
         method: 'POST',
         headers,
         body: JSON.stringify({ email })
@@ -269,9 +270,10 @@ export class TenantService {
    */
   async getTenantUsers(tenantId: string): Promise<any[]> {
     try {
-      const headers = await this.getAuthHeaders();
+      const path = `${this.adminBaseUrl}/tenants/${tenantId}/users`;
+      const headers = await this.getAuthHeaders(path);
       
-      const response = await fetch(`${this.adminBaseUrl}/tenants/${tenantId}/users`, {
+      const response = await fetch(path, {
         method: 'GET',
         headers
       });
@@ -294,8 +296,9 @@ export class TenantService {
     invitedBy: string
   ): Promise<{ success: boolean; invitation?: TenantInvitation; error?: string }> {
     try {
-      const headers = await this.getAuthHeaders();
-      const response = await fetch(`${this.adminBaseUrl}/tenants/${tenantId}/invitations`, {
+      const path = `${this.adminBaseUrl}/tenants/${tenantId}/invitations`;
+      const headers = await this.getAuthHeaders(path);
+      const response = await fetch(path, {
         method: 'POST',
         headers,
         body: JSON.stringify({ email, role, invitedBy })
@@ -320,8 +323,9 @@ export class TenantService {
     role: TenantRole
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const headers = await this.getAuthHeaders();
-      const response = await fetch(`${this.adminBaseUrl}/tenants/${tenantId}/users/${userId}/role`, {
+      const path = `${this.adminBaseUrl}/tenants/${tenantId}/users/${userId}/role`;
+      const headers = await this.getAuthHeaders(path);
+      const response = await fetch(path, {
         method: 'PATCH',
         headers,
         body: JSON.stringify({ role })
@@ -517,8 +521,9 @@ export class TenantService {
     tenantId: string
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const headers = await this.getAuthHeaders();
-      const response = await fetch(`${this.adminBaseUrl}/tenants/${tenantId}/users/${userId}`, {
+      const path = `${this.adminBaseUrl}/tenants/${tenantId}/users/${userId}`;
+      const headers = await this.getAuthHeaders(path);
+      const response = await fetch(path, {
         method: 'DELETE',
         headers
       });

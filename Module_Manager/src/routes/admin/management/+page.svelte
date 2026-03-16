@@ -182,16 +182,18 @@
     }
   }
 
-  async function getAuthHeaders() {
+  async function getAuthHeaders(requestPath?: string) {
     const currentUser = auth().currentUser;
     if (!currentUser) {
       throw new Error('User not authenticated');
     }
     const token = await currentUser.getIdToken();
-    return {
+    const headers: Record<string, string> = {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     };
+    if (requestPath) headers['X-Requested-Path'] = requestPath;
+    return headers;
   }
 
   async function loadAllRemoteAgents() {
@@ -202,13 +204,14 @@
       agentsError = '';
       remoteAgents = [];
 
-      const headers = await getAuthHeaders();
+      const path = '/api/remote-agents/status';
+      const headers = await getAuthHeaders(path);
 
       // System-wide query - get ALL agents (assigned and unassigned) in one call
       // No tenant header needed - backend returns everything for admin/system queries
-      const response = await fetch('/api/remote-agents/status', {
+      const response = await fetch(path, {
         method: 'GET',
-        headers: headers // No X-Tenant-ID header for system-wide query
+        headers
       });
 
       if (response.ok) {

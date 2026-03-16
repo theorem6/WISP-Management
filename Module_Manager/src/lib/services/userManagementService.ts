@@ -154,17 +154,18 @@ export async function getAllUsers(): Promise<TenantUser[]> {
     }
 
     const token = await authService.getAuthTokenForApi();
-    
-    const headers = {
+    const apiPath = getApiPath();
+    const path = `${apiPath}/users`;
+
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-      // Note: No X-Tenant-ID header for platform admin requests
+      'Authorization': `Bearer ${token}`,
+      'X-Requested-Path': path
     };
-    
+
     // Use relative URL (goes through Firebase Hosting rewrite to apiProxy)
     // For platform admin users, use /users endpoint (not /users/all)
-    const apiPath = getApiPath();
-    const response = await fetch(`${apiPath}/users`, {
+    const response = await fetch(path, {
       method: 'GET',
       headers
     });
