@@ -25,7 +25,9 @@ export const FUNCTIONS_CONFIG = {
   cors: {
     origins: [
       'https://wisptools.io',
+      'https://management.wisptools.io',
       'https://wisptools-production.web.app',
+      'https://wisptools-management.web.app',
       'https://wisptools-production.firebaseapp.com',
       'https://wisptools-io.web.app',
       'https://wisptools-io.firebaseapp.com',

@@ -263,8 +263,15 @@ export const userTenants = onRequest({
     return;
   }
 
-  // Path: /api/user-tenants/:userId (from Hosting rewrite)
-  let path = (req.url || '').split('?')[0] || (req as any).path || '';
+  // Path: /api/user-tenants/:userId (from Hosting rewrite; Hosting may send full path in req.url or x-original-url)
+  let path = (req.url || (req as any).originalUrl || '').split('?')[0] || (req as any).path || '';
+  if ((!path || path === '/') && (req.headers['x-original-url'] as string)) {
+    try {
+      path = new URL(req.headers['x-original-url'] as string).pathname;
+    } catch {
+      path = '';
+    }
+  }
   if (path.startsWith('http')) {
     try {
       path = new URL(path).pathname;
@@ -275,7 +282,7 @@ export const userTenants = onRequest({
   const match = path.match(/\/api\/user-tenants\/([^/]+)/);
   const userId = match ? match[1] : null;
   if (!userId) {
-    res.status(400).json({ error: 'Bad Request', message: 'userId required in path' });
+    res.status(400).json({ error: 'Bad Request', message: 'userId required in path', path });
     return;
   }
 

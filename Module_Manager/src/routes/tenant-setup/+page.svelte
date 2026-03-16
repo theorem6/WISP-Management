@@ -52,16 +52,16 @@
       const userIsPlatformAdmin = isPlatformAdmin(currentUser.email || null);
       
       // Only allow if:
-      // 1. Platform admin (always allowed)
-      // 2. First-time user with no tenants (allowed to create their first tenant)
-      if (!userIsPlatformAdmin && existingTenants.length > 0) {
-        console.log('[Tenant Setup] ACCESS DENIED - User already has a tenant');
-        error = 'You already have an organization. Each user can only create one tenant.';
+      // - First-time user with no tenants (allowed to create their first tenant)
+      // - Platform admin with no tenants (initial bootstrap)
+      if (existingTenants.length > 0) {
+        console.log('[Tenant Setup] ACCESS DENIED - User already has at least one tenant');
+        error = 'You already have an organization. Tenant setup is only for first-time users.';
         await goto('/tenant-selector', { replaceState: true });
         return;
       }
       
-      console.log('[Tenant Setup] Access granted -', userIsPlatformAdmin ? 'platform admin' : 'first-time user');
+      console.log('[Tenant Setup] Access granted -', userIsPlatformAdmin ? 'platform admin (no tenants yet)' : 'first-time user (no tenants)');
     } catch (err: any) {
       console.error('[Tenant Setup] Error checking existing tenants:', err);
       // 503 / service misconfiguration - don't show create form; user may already have tenants we couldn't load
@@ -338,8 +338,13 @@
 <div class="tenant-setup-page">
   <div class="setup-container">
     <div class="setup-header">
-      <h1>🏢 Set Up Your Organization</h1>
-      <p>Create a tenant to manage your devices and networks</p>
+      <div>
+        <h1>🏢 Set Up Your Organization</h1>
+        <p>Create a tenant to manage your devices and networks</p>
+      </div>
+      <button type="button" class="exit-button" on:click={() => goto('/dashboard', { replaceState: true })}>
+        Exit setup
+      </button>
     </div>
 
     {#if step === 1}
@@ -778,7 +783,10 @@
   }
 
   .setup-header {
-    text-align: center;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
     color: white;
     margin-bottom: 2rem;
   }
@@ -790,6 +798,21 @@
 
   .setup-header p {
     opacity: 0.9;
+  }
+
+  .exit-button {
+    flex-shrink: 0;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .exit-button:hover {
+    background: rgba(255, 255, 255, 0.25);
   }
 
   .setup-card {

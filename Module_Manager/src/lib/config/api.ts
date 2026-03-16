@@ -39,8 +39,11 @@ export const API_CONFIG = {
   CLOUD_FUNCTIONS: {
     API_PROXY: 'https://us-central1-wisptools-production.cloudfunctions.net/apiProxy',
     ISO_PROXY: 'https://us-central1-wisptools-production.cloudfunctions.net/isoProxy',
-    COVERAGE_MAP_PROXY: 'https://us-central1-wisptools-production.cloudfunctions.net/coverageMapProxy'
-    // user-tenants: use same-origin /api/user-tenants so Hosting rewrites to userTenants Cloud Function
+    COVERAGE_MAP_PROXY: 'https://us-central1-wisptools-production.cloudfunctions.net/coverageMapProxy',
+    // Direct URL for userTenants (bypasses Hosting rewrite; fix for 404 on management.wisptools.io)
+    USER_TENANTS: typeof import.meta.env !== 'undefined' && import.meta.env?.VITE_USER_TENANTS_URL
+      ? String(import.meta.env.VITE_USER_TENANTS_URL).replace(/\/$/, '')
+      : 'https://usertenants-nxulhoqnyq-uc.a.run.app'
   },
   
   // Backend services (GCE VM)
