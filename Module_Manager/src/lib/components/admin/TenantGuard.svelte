@@ -32,7 +32,30 @@
   
   onMount(async () => {
     if (!browser) return;
-    
+
+    // Short-circuit guard for tool-only hosts / paths (e.g. netperf bandwidth manager)
+    try {
+      const loc = window.location;
+      const pathname = loc.pathname || '';
+      const host = loc.host || '';
+
+      // 1) Never run tenant guard on hss.wisptools.io (tool host only)
+      if (host === 'hss.wisptools.io') {
+        console.log('[TenantGuard] Skipping tenant checks on tool host:', host);
+        isChecking = false;
+        return;
+      }
+
+      // 2) Skip tenant guard for netperf routes (bandwidth test manager)
+      if (pathname.startsWith('/netperf')) {
+        console.log('[TenantGuard] Skipping tenant checks for netperf route:', pathname);
+        isChecking = false;
+        return;
+      }
+    } catch (e) {
+      console.warn('[TenantGuard] Failed to evaluate tool host/path bypass', e);
+    }
+
     try {
       // Step 1: Check Firebase authentication with retry logic
       let currentUser = authService.getCurrentUser();
