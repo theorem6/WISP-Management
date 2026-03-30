@@ -18,7 +18,7 @@ function getMongoConnectionString(): string {
     process.env.MONGODB_URI ||
     process.env.MONGODB_CONNECTION_URL ||
     // Atlas template (wisptools.io / Cluster0) — set MONGODB_URI in production; replace <db_password> with real password
-    'mongodb+srv://genieacs-user:<db_password>@cluster0.1radgkw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+    'mongodb+srv://genieacs-user:<db_password>@cluster0.1radgkw.mongodb.net/?appName=Cluster0';
 
   return connectionString;
 }

@@ -21,7 +21,7 @@ Health check: http://localhost:3001/health
 | `MONGODB_URI` | MongoDB connection string (Atlas or local) |
 | `INTERNAL_API_KEY` | Shared secret for `/api/internal/*` routes. Must match Firebase Functions `INTERNAL_API_KEY`. Generate: `openssl rand -base64 32` |
 
-**Atlas (wisptools.io):** Use the template in [`.env.example`](.env.example): `genieacs-user` on `cluster0.1radgkw.mongodb.net` with `retryWrites`, `w=majority`, and `appName=Cluster0`. Replace `<db_password>` with the real password (URL-encode special characters). Set the same `MONGODB_URI` on Firebase Functions if GenieACS sync uses MongoDB.
+**Atlas (wisptools.io):** Use the template in [`.env.example`](.env.example): `genieacs-user` on `cluster0.1radgkw.mongodb.net` with `appName=Cluster0`. Replace `<db_password>` with the real password (URL-encode special characters). Set the same `MONGODB_URI` on Firebase Functions if GenieACS sync uses MongoDB.
 
 ## Optional (Production)
 
