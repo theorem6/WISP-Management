@@ -38,7 +38,11 @@ export const API_CONFIG = {
   
   // Cloud Function endpoints (only used when direct access is needed)
   CLOUD_FUNCTIONS: {
-    API_PROXY: 'https://us-central1-wisptools-production.cloudfunctions.net/apiProxy',
+    /** Override at build time if apiProxy URL changes: VITE_API_PROXY_URL */
+    API_PROXY:
+      typeof import.meta.env !== 'undefined' && import.meta.env?.VITE_API_PROXY_URL
+        ? String(import.meta.env.VITE_API_PROXY_URL).replace(/\/$/, '')
+        : 'https://us-central1-wisptools-production.cloudfunctions.net/apiProxy',
     ISO_PROXY: 'https://us-central1-wisptools-production.cloudfunctions.net/isoProxy',
     COVERAGE_MAP_PROXY: 'https://us-central1-wisptools-production.cloudfunctions.net/coverageMapProxy',
     // Direct URL for userTenants (bypasses Hosting rewrite; fix for 404 on management.wisptools.io)
@@ -58,10 +62,29 @@ export const API_CONFIG = {
 } as const;
 
 /**
+ * Build URL for the apiProxy Cloud Function. Firebase Hosting rewrites to apiProxy can drop the path on POST,
+ * causing 404 on same-origin `/api/tenants`. Use the function URL with `?path=` (same pattern as notificationService).
+ */
+export function getApiProxyRequestUrl(path: string): string {
+  const p = path.startsWith('/') ? path : `/${path}`;
+  const proxyBase = API_CONFIG.CLOUD_FUNCTIONS.API_PROXY;
+  if (typeof window === 'undefined' || !proxyBase) {
+    return p;
+  }
+  try {
+    if (new URL(proxyBase).origin === window.location.origin) {
+      return p;
+    }
+  } catch {
+    return p;
+  }
+  return `${proxyBase}?path=${encodeURIComponent(p)}`;
+}
+
+/**
  * Direct backend base URL (no trailing slash).
  * When set (e.g. VITE_BACKEND_URL=https://api.wisptools.io or https://hss.wisptools.io), admin/API requests
  * go directly to the backend instead of via Firebase Hosting → apiProxy.
- * If you moved the backend URL, set VITE_BACKEND_URL at build time (e.g. VITE_BACKEND_URL=https://api.wisptools.io).
  */
 export function getBackendDirectBase(): string {
   const envUrl = typeof import.meta.env !== 'undefined' && import.meta.env?.VITE_BACKEND_URL

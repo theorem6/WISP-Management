@@ -4,7 +4,7 @@
 import { browser } from '$app/environment';
 import { authService } from './authService';
 import { isPlatformAdmin } from './adminService';
-import { API_CONFIG, getBackendDirectBase } from '$lib/config/api';
+import { API_CONFIG, getApiProxyRequestUrl, getBackendDirectBase } from '$lib/config/api';
 import type {
   Tenant,
   UserTenantAssociation,
@@ -72,8 +72,11 @@ export class TenantService {
     try {
       const user = authService.getCurrentUser();
       const userIsPlatformAdmin = isPlatformAdmin(user?.email ?? null);
-      const endpoint = userIsPlatformAdmin ? this.getAdminUrl('tenants') : `${this.apiBaseUrl}/tenants`;
-      const headers = await this.getAuthHeaders(endpoint);
+      const logicalPath = `${this.apiBaseUrl}/tenants`;
+      const endpoint = userIsPlatformAdmin
+        ? this.getAdminUrl('tenants')
+        : getApiProxyRequestUrl(logicalPath);
+      const headers = await this.getAuthHeaders(logicalPath);
 
       const response = await fetch(endpoint, {
         method: 'POST',
