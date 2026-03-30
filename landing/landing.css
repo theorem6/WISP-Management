@@ -127,6 +127,19 @@
   color: var(--color-text-primary);
 }
 
+.landing-seo-kicker {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  margin: 0 0 1rem;
+  max-width: 62ch;
+}
+
+.landing-seo-kicker strong {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
 .landing-lead {
   font-size: 1.1rem;
   color: var(--color-text-secondary);

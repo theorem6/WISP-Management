@@ -3,13 +3,83 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="wisptools.io – Vibe Coding for WISPs. WISP Management and Bandwidth Test Manager are open source under MIT." />
-  <title>wisptools.io – Vibe Coding for WISPs</title>
+  <title>wisptools.io | Open Source WISP &amp; ISP Tools — LTE, CBRS, TR-069, Bandwidth Tests (MIT)</title>
+  <meta name="description" content="wisptools.io ships open-source WISP software: WISP Management (multi-tenant LTE/5G ops, HSS, CBRS, TR-069/GenieACS, ArcGIS) and Bandwidth Test Manager (Ookla/iperf probes, SLA). MIT on GitHub. Built for wireless ISPs and fixed wireless." />
+  <meta name="keywords" content="WISP software, ISP tools, open source, LTE, 5G, fixed wireless, CBRS, TR-069, GenieACS, HSS, bandwidth test, wireless ISP, wisptools, MIT license" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="author" content="theorem6 / wisptools.io" />
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="canonical" href="https://wisptools.io/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="wisptools.io" />
+  <meta property="og:url" content="https://wisptools.io/" />
+  <meta property="og:title" content="wisptools.io — Open Source WISP &amp; ISP Management Platform (MIT)" />
+  <meta property="og:description" content="Production-grade WISP tools on GitHub: subscriber &amp; HSS management, CBRS, TR-069/ACS, maps, and bandwidth testing. Firebase, MongoDB Atlas, ArcGIS. Vibe Coding for real networks." />
+  <meta property="og:image" content="https://wisptools.io/logo.svg" />
+  <meta property="og:image:alt" content="wisptools.io logo — WISP and LTE network tools" />
+  <meta property="og:locale" content="en_US" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="wisptools.io — Open Source WISP &amp; ISP Tools (MIT)" />
+  <meta name="twitter:description" content="WISP Management + Bandwidth Test Manager. LTE/5G, CBRS, TR-069, bandwidth probes. Open source on GitHub." />
+  <meta name="twitter:image" content="https://wisptools.io/logo.svg" />
+
   <link rel="icon" href="/logo.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/landing.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://wisptools.io/#website",
+        "url": "https://wisptools.io/",
+        "name": "wisptools.io",
+        "description": "Open-source WISP and ISP tools including WISP Management and Bandwidth Test Manager.",
+        "publisher": { "@id": "https://wisptools.io/#org" },
+        "inLanguage": "en-US"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://wisptools.io/#org",
+        "name": "wisptools.io",
+        "url": "https://wisptools.io/",
+        "logo": "https://wisptools.io/logo.svg",
+        "sameAs": [
+          "https://github.com/theorem6/WISP-Management",
+          "https://github.com/theorem6/Bandwidth-Test-Manager"
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "WISP Management",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "license": "https://github.com/theorem6/WISP-Management/blob/main/LICENSE",
+        "isAccessibleForFree": true,
+        "url": "https://management.wisptools.io/login",
+        "codeRepository": "https://github.com/theorem6/WISP-Management",
+        "description": "Multi-tenant wireless ISP platform: LTE/5G planning, HSS subscribers, CBRS, TR-069/ACS, ArcGIS maps, Firebase and MongoDB Atlas."
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Bandwidth Test Manager",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Linux",
+        "license": "https://github.com/theorem6/Bandwidth-Test-Manager/blob/master/LICENSE",
+        "isAccessibleForFree": true,
+        "url": "https://github.com/theorem6/Bandwidth-Test-Manager",
+        "codeRepository": "https://github.com/theorem6/Bandwidth-Test-Manager",
+        "description": "Ookla Speedtest CLI and iperf3 scheduling, web UI, SLA webhooks, and remote probes for ISP bandwidth monitoring."
+      }
+    ]
+  }
+  </script>
 </head>
 <body class="landing-page" data-theme="dark">
   <header class="landing-hero">
@@ -19,6 +89,7 @@
   <main class="landing-main">
     <div class="landing-wrap">
       <h1>Stop typing. Start architecting.</h1>
+      <p class="landing-seo-kicker">Open-source <strong>WISP software</strong> and <strong>ISP network tools</strong> on GitHub (MIT): LTE and <strong>5G</strong> operations, <strong>fixed wireless</strong>, <strong>CBRS</strong>, <strong>TR-069</strong> / ACS, subscriber &amp; HSS, and <strong>bandwidth testing</strong> with Ookla &amp; iperf3.</p>
       <p class="landing-lead">I've spent decades as an engineer—from the hardware-heavy world of LTE to complex WISP systems. wisptools.io is the proof that we can build data-heavy, production-grade platforms at the speed of thought.</p>
 
       <section class="landing-manifesto">
