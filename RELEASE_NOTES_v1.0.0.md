@@ -24,7 +24,7 @@ Full documentation is on the [main README](https://github.com/theorem6/WISP-Mana
 
 ## License
 
-Creative Commons Attribution 4.0 International (CC BY 4.0). See [LICENSE](LICENSE).
+MIT License. See [LICENSE](LICENSE).
 
 ---
 

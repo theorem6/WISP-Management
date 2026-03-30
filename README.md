@@ -292,7 +292,7 @@ Contributions are welcome. Use **Issues** for bugs and feature requests and **Pu
 
 ## License
 
-This project is open source under **Creative Commons Attribution 4.0 International (CC BY 4.0)**. You may share and adapt the work with attribution. See [LICENSE](LICENSE) and [creativecommons.org/licenses/by/4.0](https://creativecommons.org/licenses/by/4.0/).
+This project is released under the [MIT License](LICENSE).
 
 Third-party: **GenieACS** (AGPLv3), **SvelteKit** (MIT), **Firebase** (Google ToS), **ArcGIS** (Esri License).
 

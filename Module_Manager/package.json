@@ -2,6 +2,7 @@
   "name": "wisptools-io",
   "version": "0.2.0",
   "description": "WISP Management – comprehensive WISP platform for planning, deployment, monitoring, and maintenance (wisptools.io)",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
