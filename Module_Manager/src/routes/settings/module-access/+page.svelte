@@ -33,6 +33,7 @@
     { key: 'helpDesk' as keyof ModuleAccess, name: 'Help Desk', icon: '🎧' },
     { key: 'distributedEpc' as keyof ModuleAccess, name: 'Distributed EPC', icon: '🌐' },
     { key: 'monitoring' as keyof ModuleAccess, name: 'Monitoring', icon: '🔍' },
+    { key: 'voiceTelephony' as keyof ModuleAccess, name: 'Voice / SIP & UC', icon: '📞' },
     { key: 'userManagement' as keyof ModuleAccess, name: 'User Management', icon: '👥' },
     { key: 'tenantSettings' as keyof ModuleAccess, name: 'Tenant Settings', icon: '⚙️' },
     { key: 'backendManagement' as keyof ModuleAccess, name: 'Backend Management', icon: '🔧' },

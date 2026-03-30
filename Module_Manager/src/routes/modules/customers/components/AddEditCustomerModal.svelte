@@ -1,6 +1,8 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from 'svelte';
+  import { goto } from '$app/navigation';
   import { customerService, type Customer } from '$lib/services/customerService';
+  import { voiceService, type VoiceTelephoneNumber } from '$lib/services/voiceService';
   import { API_CONFIG } from '$lib/config/api';
   import { debug } from '$lib/utils/debug';
   
@@ -68,6 +70,11 @@
   };
   
   let tagInput = '';
+
+  /** Voice / SIP lines linked via customerId (Voice module) */
+  let voiceLines: VoiceTelephoneNumber[] = [];
+  let voiceLoading = false;
+  let voiceError = '';
   
   // Customer Groups
   let customerGroups: any[] = [];
@@ -82,6 +89,23 @@
   
   $: if (customer && show) {
     loadCustomerData();
+  }
+
+  async function loadVoiceLinesForCustomer(cid: string) {
+    voiceLoading = true;
+    voiceError = '';
+    try {
+      voiceLines = await voiceService.listTelephoneNumbers({ customerId: cid });
+    } catch (e) {
+      voiceError = e instanceof Error ? e.message : 'Could not load voice lines';
+      voiceLines = [];
+    } finally {
+      voiceLoading = false;
+    }
+  }
+
+  $: if (show && customer?.customerId) {
+    void loadVoiceLinesForCustomer(customer.customerId);
   }
   
   // Track the last groupId we processed to avoid infinite loops
@@ -971,6 +995,43 @@
           {/if}
         </div>
       </div>
+
+      <!-- Voice / SIP (linked by customer id) -->
+      {#if customer?.customerId}
+        <div class="section">
+          <h3>📞 Voice / SIP</h3>
+          <p class="section-description">
+            Voice inventory and E911 are managed in the Voice module. Telephone numbers can be linked to this customer using
+            customer id <code>{customer.customerId}</code>.
+          </p>
+          {#if voiceLoading}
+            <p class="muted">Loading voice lines…</p>
+          {:else if voiceError}
+            <p class="voice-err">{voiceError}</p>
+          {:else if voiceLines.length === 0}
+            <p class="muted">No voice lines linked yet. Open Voice &amp; SIP to assign numbers to this customer.</p>
+          {:else}
+            <ul class="voice-line-list">
+              {#each voiceLines as vl}
+                <li>
+                  <code>{vl.e164}</code>
+                  <span class="muted">· {vl.status}</span>
+                  <span title="E911 from emergency address">· 911: {vl.e911Display ?? '—'}</span>
+                </li>
+              {/each}
+            </ul>
+          {/if}
+          <div class="voice-actions">
+            <button
+              type="button"
+              class="btn-secondary"
+              on:click={() => goto(`/modules/voice-telephony?customerId=${encodeURIComponent(customer.customerId)}`)}
+            >
+              Open Voice module
+            </button>
+          </div>
+        </div>
+      {/if}
       
       <!-- Notes -->
       <div class="section">
@@ -1352,6 +1413,23 @@
     margin: var(--spacing-md) var(--spacing-lg);
     border-radius: var(--border-radius);
     border: 1px solid var(--success);
+  }
+
+  .voice-line-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0;
+  }
+  .voice-line-list li {
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .voice-err {
+    color: #b91c1c;
+    font-size: 0.9rem;
+  }
+  .voice-actions {
+    margin-top: 0.75rem;
   }
 </style>
 

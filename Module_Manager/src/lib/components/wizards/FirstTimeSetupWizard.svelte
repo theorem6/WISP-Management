@@ -321,6 +321,13 @@
                   <p>Manage installations and service requests</p>
                 </div>
               </a>
+              <a href="/modules/voice-telephony" class="next-step-item">
+                <span class="icon">📞</span>
+                <div>
+                  <strong>Voice / SIP &amp; UC</strong>
+                  <p>Link numbers, E911, and porting to customers</p>
+                </div>
+              </a>
             </div>
           </div>
         {/if}

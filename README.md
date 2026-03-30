@@ -60,6 +60,7 @@ After that, the repo and this documentation are visible to everyone.
 | **CBRS** | Google SAS, Federated Wireless, device registration, grants/heartbeats, spectrum visualization |
 | **ACS/TR-069** | Provisioning, firmware, configuration, performance monitoring, fault management |
 | **PCI planning** | Auto PCI assignment, conflict detection, neighbor analysis, optimization algorithms |
+| **Voice / SIP & UC** | Tenant numbers, carrier accounts, E911 locations, port orders, webhooks; linked to Customers via `customerId` |
 | **Security** | Firebase Auth, RBAC, API key management, encryption, audit logging |
 
 ---
@@ -129,6 +130,7 @@ In-app: Dashboard → Help, or routes **/docs** and **/docs/reference/project-st
 |------|----------|
 | **Billing automation** (invoices + dunning) | [BILLING_CRON_AND_DUNNING_SCHEDULE.md](docs/BILLING_CRON_AND_DUNNING_SCHEDULE.md) |
 | **Field App APK** (build + download URL) | [FIELD_APP_DOWNLOAD.md](docs/FIELD_APP_DOWNLOAD.md) |
+| **Voice / SIP & UC** (API, webhooks, deploy) | [VOICE_SIP_UC_MODULE.md](docs/guides/VOICE_SIP_UC_MODULE.md) |
 | **Backend deploy fallback** (when SSH fails) | [DEPLOY_BACKEND_FALLBACK.md](DEPLOY_BACKEND_FALLBACK.md) |
 | **Backend deployment** (full) | [BACKEND_DEPLOYMENT_INSTRUCTIONS.md](docs/deployment/BACKEND_DEPLOYMENT_INSTRUCTIONS.md) |
 | **Scripts (Windows/Linux)** | [scripts/README.md](scripts/README.md) |
@@ -176,6 +178,7 @@ docs/
 | **Deployment status** | [FINAL_DEPLOYMENT_STATUS.md](docs/deployment/FINAL_DEPLOYMENT_STATUS.md) |
 | **Google Cloud setup** | [GOOGLE_CLOUD_DEPLOYMENT.md](docs/deployment/GOOGLE_CLOUD_DEPLOYMENT.md) |
 | **CBRS/SAS** | [CBRS_HYBRID_MODEL_GUIDE.md](docs/guides/CBRS_HYBRID_MODEL_GUIDE.md) |
+| **Voice / SIP & UC** | [VOICE_SIP_UC_MODULE.md](docs/guides/VOICE_SIP_UC_MODULE.md) |
 | **Tenants** | [MULTI_TENANT_SETUP_GUIDE.md](docs/guides/MULTI_TENANT_SETUP_GUIDE.md) |
 | **Database** | [DATABASE_STRUCTURE.md](docs/guides/DATABASE_STRUCTURE.md) |
 
@@ -213,6 +216,7 @@ docs/
 - **HSS module:** [modules/hss-management/README.md](Module_Manager/src/routes/modules/hss-management/README.md)
 - **CBRS module:** [modules/cbrs-management/README.md](Module_Manager/src/routes/modules/cbrs-management/README.md)
 - **ACS/CPE module:** [modules/acs-cpe-management/README.md](Module_Manager/src/routes/modules/acs-cpe-management/README.md)
+- **Voice / SIP & UC:** [docs/guides/VOICE_SIP_UC_MODULE.md](docs/guides/VOICE_SIP_UC_MODULE.md)
 
 ### Recommended reading order
 
@@ -266,9 +270,11 @@ firebase deploy
 
 Build the app before deploy: `cd Module_Manager && npm run build`. The `landing/` folder is static and needs no build.
 
-**Backend to GCE:** Use [deploy-backend-to-gce.ps1](deploy-backend-to-gce.ps1) (Windows) or [scripts/deployment/update-backend-from-git.sh](scripts/deployment/update-backend-from-git.sh) (on server). See [scripts/README.md](scripts/README.md) and [BACKEND_DEPLOYMENT_INSTRUCTIONS.md](docs/deployment/BACKEND_DEPLOYMENT_INSTRUCTIONS.md).
+**Backend to GCE:** Use [deploy-backend-to-gce.ps1](deploy-backend-to-gce.ps1) (Windows) or [scripts/deployment/update-backend-from-git.sh](scripts/deployment/update-backend-from-git.sh) (on server). See [scripts/README.md](scripts/README.md) and [BACKEND_DEPLOYMENT_INSTRUCTIONS.md](docs/deployment/BACKEND_DEPLOYMENT_INSTRUCTIONS.md). Pushing to **`main`** / **`master`** also runs [.github/workflows/deploy-backend-gce.yml](.github/workflows/deploy-backend-gce.yml) (requires `GCP_SA_KEY` secret).
 
-**Secrets:** Use Firebase App Hosting / Secret Manager or env vars (see `.env.example` and [FIREBASE_ADMIN_SDK_SETUP.md](docs/FIREBASE_ADMIN_SDK_SETUP.md)). Never commit secrets.
+**CI:** [.github/workflows/auto-deploy.yml](.github/workflows/auto-deploy.yml) deploys Firebase **hosting** (management app) when `Module_Manager/**` changes and **Cloud Functions** when `functions/**` changes.
+
+**Secrets:** Use Firebase App Hosting / Secret Manager or env vars (see `.env.example` and [FIREBASE_ADMIN_SDK_SETUP.md](docs/FIREBASE_ADMIN_SDK_SETUP.md)). Never commit secrets. Voice webhooks: set **`VOICE_WEBHOOK_SECRET`** on the backend (see [VOICE_SIP_UC_MODULE.md](docs/guides/VOICE_SIP_UC_MODULE.md)).
 
 ---
 

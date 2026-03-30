@@ -31,6 +31,7 @@ Complete documentation for the LTE WISP Management Platform with HSS, GenieACS, 
 | **Field App APK** (build + download URL) | [FIELD_APP_DOWNLOAD.md](./FIELD_APP_DOWNLOAD.md) – build APK, host it, set `MOBILE_APP_DOWNLOAD_URL`; dashboard 📱 link uses it |
 | **Backend deploy** (when script SSH fails) | [DEPLOY_BACKEND_FALLBACK.md](../DEPLOY_BACKEND_FALLBACK.md) – manual `gcloud compute ssh` steps |
 | **Backend deployment** (full) | [deployment/BACKEND_DEPLOYMENT_INSTRUCTIONS.md](./deployment/BACKEND_DEPLOYMENT_INSTRUCTIONS.md) – env vars (API_BASE_URL, INTERNAL_API_KEY), options |
+| **Voice / SIP & UC** | [guides/VOICE_SIP_UC_MODULE.md](./guides/VOICE_SIP_UC_MODULE.md) – API, webhooks, RBAC, deploy |
 
 ---
 
@@ -201,6 +202,9 @@ HTTPS proxy solutions:
 
 #### **Device Management:**
 - [TR069_FIRMWARE_UPGRADE_GUIDE.md](./guides/TR069_FIRMWARE_UPGRADE_GUIDE.md) - CPE firmware
+
+#### **Voice / SIP & UC:**
+- [VOICE_SIP_UC_MODULE.md](./guides/VOICE_SIP_UC_MODULE.md) - API, webhooks, RBAC, deploy
 
 #### **Data & UI:**
 - [DATABASE_STRUCTURE.md](./guides/DATABASE_STRUCTURE.md) - Database schema

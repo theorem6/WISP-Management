@@ -47,6 +47,13 @@ app.use(cors({
   credentials: appConfig.cors.credentials
 }));
 
+// Voice carrier webhooks — raw body for HMAC (must run before express.json)
+app.use(
+  '/api/voice/webhooks',
+  express.raw({ type: '*/*', limit: '512kb' }),
+  require('./routes/voice-webhooks')
+);
+
 // Body parser
 app.use(express.json({ limit: appConfig.limits.jsonBodySize, strict: false }));
 app.use(express.urlencoded({ extended: true, limit: appConfig.limits.urlEncodedBodySize }));
@@ -182,6 +189,8 @@ try {
 app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/tenant-settings', require('./routes/tenant-settings'));
 app.use('/api/customers', require('./routes/customers'));
+app.use('/api/voice', require('./routes/voice-sip'));
+console.log('✅ Voice / SIP API enabled');
 // Tenant billing removed for proof-of-concept
 // app.use('/api/customer-billing', require('./routes/customer-billing'));
 app.use('/api/inventory', require('./routes/inventory'));

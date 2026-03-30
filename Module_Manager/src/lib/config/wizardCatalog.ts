@@ -51,6 +51,8 @@ export const ALL_WIZARDS: WizardCatalogEntry[] = [
   // Maintain – add wizards here when needed
   // Customers
   { id: 'customer-onboarding', label: 'Customer Onboarding', icon: '👋', path: '/modules/customers' },
+  // Voice / SIP (standalone module; also linked from Customers)
+  { id: 'voice-sip-overview', label: 'Voice / SIP overview', icon: '📞', path: '/modules/voice-telephony' },
   // Hardware (includes Inventory as tab)
   { id: 'inventory-checkin', label: 'Check-in Wizard', icon: '📦', path: '/modules/hardware' },
   { id: 'rma-tracking', label: 'Track RMA', icon: '📋', path: '/modules/hardware' },

@@ -1369,6 +1369,27 @@ export const moduleTips: ModuleTipsConfig = {
       `
     }
   ],
+  'voice-telephony': [
+    {
+      id: 'voice-1',
+      title: 'Voice / SIP & UC',
+      icon: '📞',
+      content: `
+        <h4>Numbers, E911, and porting</h4>
+        <p>This module stores <strong>provider accounts</strong>, <strong>telephone numbers</strong> (E.164), <strong>service locations</strong> for geocode/E911, and <strong>port orders</strong>. Link TNs to customers using the same <code>customerId</code> as the Customers module.</p>
+        <p><strong>Webhook:</strong> <code>POST /api/voice/webhooks/:provider</code> — set <code>VOICE_WEBHOOK_SECRET</code> on the backend for HMAC verification.</p>
+      `
+    },
+    {
+      id: 'voice-2',
+      title: 'Coverage Map',
+      icon: '🗺️',
+      content: `
+        <h4>Service locations on the map</h4>
+        <p>From <strong>Service locations</strong>, use <strong>Coverage map</strong> when lat/lon exist to open the map centered on that point (<code>focusLat</code> / <code>focusLng</code>).</p>
+      `
+    }
+  ],
   'acs-cpe-management': [
     {
       id: 'acs-1',

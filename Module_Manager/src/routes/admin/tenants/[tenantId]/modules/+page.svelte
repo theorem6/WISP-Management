@@ -22,7 +22,8 @@
     inventory: true,
     distributedEpc: false,
     monitoring: true,
-    backendManagement: false
+    backendManagement: false,
+    voiceTelephony: true
   };
   
   let moduleLimits = {
@@ -120,22 +121,22 @@
     // Apply tier-specific defaults
     const tierDefaults: Record<string, any> = {
       free: {
-        modules: { pciResolution: true, acsManagement: true, coverageMap: true, inventory: true },
+        modules: { pciResolution: true, acsManagement: true, coverageMap: true, inventory: true, voiceTelephony: true },
         limits: { maxSites: 3, maxSubscribers: 100, maxCPEs: 50, maxUsers: 1, maxInventoryItems: 100 },
         features: {}
       },
       basic: {
-        modules: { pciResolution: true, cbrsManagement: true, acsManagement: true, hssManagement: true, coverageMap: true, inventory: true, monitoring: true },
+        modules: { pciResolution: true, cbrsManagement: true, acsManagement: true, hssManagement: true, coverageMap: true, inventory: true, monitoring: true, voiceTelephony: true },
         limits: { maxSites: 10, maxSubscribers: 1000, maxCPEs: 500, maxUsers: 5, maxInventoryItems: 1000 },
         features: {}
       },
       professional: {
-        modules: { pciResolution: true, cbrsManagement: true, acsManagement: true, hssManagement: true, coverageMap: true, inventory: true, distributedEpc: true, monitoring: true },
+        modules: { pciResolution: true, cbrsManagement: true, acsManagement: true, hssManagement: true, coverageMap: true, inventory: true, distributedEpc: true, monitoring: true, voiceTelephony: true },
         limits: { maxSites: 50, maxSubscribers: 10000, maxCPEs: 5000, maxUsers: 20, maxInventoryItems: 10000 },
         features: { advancedReporting: true, apiAccess: true, prioritySupport: true }
       },
       enterprise: {
-        modules: { pciResolution: true, cbrsManagement: true, acsManagement: true, hssManagement: true, coverageMap: true, inventory: true, distributedEpc: true, monitoring: true },
+        modules: { pciResolution: true, cbrsManagement: true, acsManagement: true, hssManagement: true, coverageMap: true, inventory: true, distributedEpc: true, monitoring: true, voiceTelephony: true },
         limits: { maxSites: 999999, maxSubscribers: 999999, maxCPEs: 999999, maxUsers: 999999, maxInventoryItems: 999999 },
         features: { advancedReporting: true, apiAccess: true, whiteLabel: true, customIntegrations: true, prioritySupport: true }
       }
@@ -270,6 +271,14 @@
             <span class="toggle-label">
               <span class="toggle-icon">🔍</span>
               <span>Monitoring & Alerts</span>
+            </span>
+          </label>
+
+          <label class="toggle-item">
+            <input type="checkbox" bind:checked={enabledModules.voiceTelephony} />
+            <span class="toggle-label">
+              <span class="toggle-icon">📞</span>
+              <span>Voice / SIP & UC</span>
             </span>
           </label>
         </div>

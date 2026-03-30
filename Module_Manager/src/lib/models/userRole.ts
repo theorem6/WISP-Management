@@ -80,6 +80,9 @@ export interface ModuleAccess {
   
   // Platform Admin Only
   tenantManagement: boolean;
+
+  /** Voice / SIP / UC — numbers, E911, porting */
+  voiceTelephony: boolean;
 }
 
 /**
@@ -113,7 +116,8 @@ export const DEFAULT_MODULE_ACCESS: Record<UserRole, ModuleAccess> = {
     tenantSettings: true,
     backendManagement: true,
     billing: true,
-    tenantManagement: true
+    tenantManagement: true,
+    voiceTelephony: true
   },
   
   owner: {
@@ -132,7 +136,8 @@ export const DEFAULT_MODULE_ACCESS: Record<UserRole, ModuleAccess> = {
     tenantSettings: true,
     backendManagement: false,
     billing: true,
-    tenantManagement: false
+    tenantManagement: false,
+    voiceTelephony: true
   },
   
   admin: {
@@ -151,7 +156,8 @@ export const DEFAULT_MODULE_ACCESS: Record<UserRole, ModuleAccess> = {
     tenantSettings: true,
     backendManagement: false,
     billing: false,
-    tenantManagement: false
+    tenantManagement: false,
+    voiceTelephony: true
   },
   
   engineer: {
@@ -170,7 +176,8 @@ export const DEFAULT_MODULE_ACCESS: Record<UserRole, ModuleAccess> = {
     tenantSettings: false,
     backendManagement: false,
     billing: false,
-    tenantManagement: false
+    tenantManagement: false,
+    voiceTelephony: true
   },
   
   installer: {
@@ -189,7 +196,8 @@ export const DEFAULT_MODULE_ACCESS: Record<UserRole, ModuleAccess> = {
     tenantSettings: false,
     backendManagement: false,
     billing: false,
-    tenantManagement: false
+    tenantManagement: false,
+    voiceTelephony: false
   },
   
   helpdesk: {
@@ -208,7 +216,8 @@ export const DEFAULT_MODULE_ACCESS: Record<UserRole, ModuleAccess> = {
     tenantSettings: false,
     backendManagement: false,
     billing: false,
-    tenantManagement: false
+    tenantManagement: false,
+    voiceTelephony: true
   },
   
   support: {
@@ -227,7 +236,8 @@ export const DEFAULT_MODULE_ACCESS: Record<UserRole, ModuleAccess> = {
     tenantSettings: false,
     backendManagement: false,
     billing: false,
-    tenantManagement: false
+    tenantManagement: false,
+    voiceTelephony: false
   },
   
   viewer: {
@@ -246,7 +256,8 @@ export const DEFAULT_MODULE_ACCESS: Record<UserRole, ModuleAccess> = {
     tenantSettings: false,
     backendManagement: false,
     billing: false,
-    tenantManagement: false
+    tenantManagement: false,
+    voiceTelephony: true
   }
 };
 
@@ -457,6 +468,7 @@ export interface TenantConfigWithRoles {
     monitoring: boolean;
     backendManagement: boolean;
     billing: boolean;
+    voiceTelephony: boolean;
   };
   
   // Role-specific module access (tenant admin can customize)

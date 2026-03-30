@@ -422,6 +422,14 @@
                 <button class="btn-secondary btn-sm" on:click={() => goto(`/modules/customers/${customer._id || customer.customerId}`)}>
                   👁️ View
                 </button>
+                <button
+                  type="button"
+                  class="btn-secondary btn-sm"
+                  title="Voice & SIP for this customer"
+                  on:click={() => goto(`/modules/voice-telephony?customerId=${encodeURIComponent(customer.customerId)}`)}
+                >
+                  📞 Voice
+                </button>
                 <a 
                   href="/modules/customers/portal/login" 
                   target="_blank" 

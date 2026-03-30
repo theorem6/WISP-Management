@@ -18,6 +18,7 @@ export interface ModulePermissions {
   monitoring: boolean;
   backendManagement: boolean;
   tenantManagement: boolean;
+  voiceTelephony: boolean;
 }
 
 // Default permissions (if no config exists)
@@ -34,7 +35,8 @@ const DEFAULT_PERMISSIONS: ModulePermissions = {
   distributedEpc: true,
   monitoring: true,
   backendManagement: false,
-  tenantManagement: false
+  tenantManagement: false,
+  voiceTelephony: true
 };
 
 // Derive module permissions from current tenant
@@ -67,7 +69,8 @@ export const modulePermissions = derived(
       distributedEpc: enabledModules.distributedEpc ?? false,
       monitoring: enabledModules.monitoring ?? true,
       backendManagement: enabledModules.backendManagement ?? false,
-      tenantManagement: enabledModules.tenantManagement ?? false
+      tenantManagement: enabledModules.tenantManagement ?? false,
+      voiceTelephony: enabledModules.voiceTelephony ?? true
     };
   }
 );
@@ -184,6 +187,15 @@ export const MODULE_DEFINITIONS = [
     color: '#f59e0b',
     path: '/modules/distributed-epc',
     requiresUpgrade: true
+  },
+  {
+    id: 'voice-telephony',
+    permissionKey: 'voiceTelephony' as keyof ModulePermissions,
+    name: 'Voice / SIP & UC',
+    description: 'Telephone numbers, carrier accounts, E911, porting (LNP), and domain reference',
+    icon: '📞',
+    color: '#0ea5e9',
+    path: '/modules/voice-telephony'
   }
 ];
 

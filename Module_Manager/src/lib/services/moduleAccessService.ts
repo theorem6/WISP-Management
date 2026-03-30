@@ -29,6 +29,7 @@ export interface TenantModuleConfig {
     distributedEpc: boolean;
     monitoring: boolean;
     backendManagement: boolean;
+    voiceTelephony: boolean;
   };
   
   updatedAt: string;

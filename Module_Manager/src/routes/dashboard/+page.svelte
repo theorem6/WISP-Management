@@ -86,6 +86,16 @@
               status: 'active',
               path: '/modules/hardware',
               features: ['Equipment Inventory', 'Asset Tracking', 'Hardware Management', 'Status Monitoring', 'Location Tracking', 'Maintenance Records']
+            },
+            {
+              id: 'voice-telephony',
+              name: '📞 Voice / SIP',
+              description: 'Telephone numbers, carrier linkage, E911, and number porting (LNP)',
+              icon: '📞',
+              color: '#0ea5e9',
+              status: 'active',
+              path: '/modules/voice-telephony',
+              features: ['Provider accounts', 'TN inventory', 'E911 status', 'Port orders', 'Domain reference']
             }
   ];
 

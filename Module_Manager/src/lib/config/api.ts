@@ -32,6 +32,7 @@ export const API_CONFIG = {
     MONITORING_GRAPHS: '/api/monitoring/graphs',
     DEVICE_ASSIGNMENT: '/api/device-assignment',
     NOTIFICATIONS: '/api/notifications',
+    VOICE: '/api/voice',
     API: '/api'
   },
   

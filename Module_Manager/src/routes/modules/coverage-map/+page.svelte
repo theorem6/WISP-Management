@@ -1,6 +1,6 @@
 <script lang="ts">
   // No default coordinates - map will center on US or last deployed plan
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy, tick } from 'svelte';
   import { goto } from '$app/navigation';
   import { browser } from '$app/environment';
   import { page } from '$app/stores';
@@ -298,6 +298,26 @@ import type { MapModuleMode, MapCapabilities } from '$lib/map/MapCapabilities';
   
   // References
   let mapComponent: any;
+
+  /** Voice / SIP / E911: center map when opening from service location link */
+  let lastVoiceFocusKey = '';
+  $: if (browser && mapComponent && !isLoading) {
+    const lat = parseFloat($page.url.searchParams.get('focusLat') || '');
+    const lng = parseFloat($page.url.searchParams.get('focusLng') || '');
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+      lastVoiceFocusKey = '';
+    } else {
+      const key = `${lat.toFixed(6)},${lng.toFixed(6)}`;
+      if (key !== lastVoiceFocusKey) {
+        lastVoiceFocusKey = key;
+        tick().then(() => {
+          if (typeof mapComponent?.centerMapOnLocation === 'function') {
+            mapComponent.centerMapOnLocation(lat, lng, 16).catch(() => {});
+          }
+        });
+      }
+    }
+  }
   
   // Tenant info
   // In iframe context, also check localStorage for tenantId (set by parent)
