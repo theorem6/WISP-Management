@@ -330,16 +330,35 @@
       console.log('[Login Page] Tenant store initialized');
       
       // Load user's tenants
-      const tenants = await tenantStore.loadUserTenants(user.uid, email);
+      let tenants = await tenantStore.loadUserTenants(user.uid, email);
       console.log('[Login Page] Loaded tenants:', tenants.length);
-      
+
+      // Check if user is platform admin before auto-provisioning
+      const userIsPlatformAdmin = isPlatformAdmin(email);
+      if (userIsPlatformAdmin) {
+        console.log('[Login Page] Platform admin detected, allowing login without tenant');
+        return 'platform_admin';
+      }
+
+      // No MongoDB memberships yet — create first organization (same as /tenant-setup) so users aren't stuck on tenant selector
+      if (tenants.length === 0) {
+        try {
+          console.log('[Login Page] No tenant memberships — creating default organization from email domain');
+          await createAutomaticTenant(user, email);
+          tenants = await tenantStore.loadUserTenants(user.uid, email);
+          console.log('[Login Page] After auto-create, tenants:', tenants.length);
+        } catch (autoErr: any) {
+          console.warn('[Login Page] Automatic tenant creation failed (user can use Tenant setup):', autoErr?.message || autoErr);
+        }
+      }
+
       // Check if we have a saved tenant in localStorage
       const savedTenantId = localStorage.getItem('selectedTenantId');
       let currentTenant = null;
-      
+
       if (savedTenantId) {
         // Try to find the saved tenant in the loaded list
-        currentTenant = tenants.find(t => t.id === savedTenantId);
+        currentTenant = tenants.find((t) => t.id === savedTenantId);
         if (currentTenant) {
           console.log('[Login Page] Found saved tenant:', currentTenant.displayName);
           tenantStore.setCurrentTenant(currentTenant);
@@ -349,17 +368,7 @@
           localStorage.removeItem('selectedTenantName');
         }
       }
-      
-      // Check if user is platform admin
-      const userIsPlatformAdmin = isPlatformAdmin(email);
-      
-      // Platform admins don't need tenants - allow them to proceed
-      if (userIsPlatformAdmin) {
-        console.log('[Login Page] Platform admin detected, allowing login without tenant');
-        // Platform admins can proceed without a tenant
-        return 'platform_admin';
-      }
-      
+
       // If no current tenant set yet, try auto-selection
       if (!currentTenant && tenants.length > 0) {
         // Auto-select single tenant for non-admin users
@@ -374,9 +383,7 @@
           tenantStore.setCurrentTenant(currentTenant);
         }
       }
-      
-      // Note: New users should use the signup wizard which handles tenant creation
-      
+
       // Ensure tenantId is in localStorage for services
       const finalTenant = get(tenantStore).currentTenant;
       let userRole: string | null = null;
