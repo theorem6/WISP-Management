@@ -33,6 +33,7 @@ Complete documentation for the LTE WISP Management Platform with HSS, GenieACS, 
 | **Backend deployment** (full) | [deployment/BACKEND_DEPLOYMENT_INSTRUCTIONS.md](./deployment/BACKEND_DEPLOYMENT_INSTRUCTIONS.md) – env vars (API_BASE_URL, INTERNAL_API_KEY), options |
 | **Voice / SIP & UC** | [guides/VOICE_SIP_UC_MODULE.md](./guides/VOICE_SIP_UC_MODULE.md) – API, webhooks, RBAC, deploy |
 | **Share & promote** (HN, dev.to, WISP press, templates) | [SHARE_AND_PROMOTE.md](./SHARE_AND_PROMOTE.md) |
+| **Contributing** (issues, PRs, repo layout) | [../CONTRIBUTING.md](../CONTRIBUTING.md) |
 
 ---
 

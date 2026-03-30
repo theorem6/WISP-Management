@@ -36,7 +36,7 @@ After that, the repo and this documentation are visible to everyone.
 - [Full documentation (main page)](#-full-documentation-on-this-page)
 - [Deployment](#-deployment)
 - [Promote & share](#-promote--share)
-- [Contributing](#-contributing)
+- [Contributing](#-contributing) · [CONTRIBUTING.md](CONTRIBUTING.md)
 - [License](#-license)
 
 ---
@@ -310,7 +310,7 @@ Help others find **wisptools.io** and the repos—see **[docs/SHARE_AND_PROMOTE.
 
 ## Contributing
 
-Contributions are welcome. Use **Issues** for bugs and feature requests and **Pull Requests** with clear descriptions. Prefer feature branches and keep docs updated. See [genieacs-fork/CONTRIBUTING.md](genieacs-fork/CONTRIBUTING.md) for the GenieACS fork.
+See **[CONTRIBUTING.md](CONTRIBUTING.md)** for issue/PR expectations, repo layout, and links to **promotion** and **open source** docs. Use **Issues** for bugs and feature requests and **Pull Requests** with clear descriptions. Prefer feature branches and keep docs updated. The GenieACS fork has its own guide: [genieacs-fork/CONTRIBUTING.md](genieacs-fork/CONTRIBUTING.md).
 
 ---
 
