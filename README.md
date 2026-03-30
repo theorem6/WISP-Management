@@ -294,7 +294,7 @@ Contributions are welcome. Use **Issues** for bugs and feature requests and **Pu
 
 This project is released under the [MIT License](LICENSE).
 
-Third-party: **GenieACS** (AGPLv3), **SvelteKit** (MIT), **Firebase** (Google ToS), **ArcGIS** (Esri License).
+**Third-party & open source:** See **[docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md)** for dependency licenses, hosted-service terms, and **GenieACS** (AGPLv3) and other copyleft notes. Summary: **SvelteKit** / **Svelte** (MIT), **Firebase** SDK (Apache-2.0), **ArcGIS** (Esri terms), **MongoDB** driver (Apache-2.0), and more.
 
 ---
 
