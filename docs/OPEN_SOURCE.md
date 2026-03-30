@@ -12,6 +12,14 @@ This document records how **WISP Management** (wisptools.io) relates to open sou
 
 Original application code in this repo is released under the **MIT License** unless a file header states otherwise. See [LICENSE](../LICENSE).
 
+### 1a. Verification: Open5GS, GenieACS, and Ookla (Speedtest)
+
+| Upstream | Vendored in this repo? | What this repo contains instead |
+|----------|------------------------|----------------------------------|
+| **Open5GS** | **No.** There is no checked-in Open5GS core/C source tree. | Docs and **deployment UI** may emit **bash** that `git clone https://github.com/open5gs/open5gs` on a **target server** at install time. Compliance with **Open5GS** (GPL-2.0 / AGPL per component) is the **operator’s** responsibility when building and running that stack. |
+| **GenieACS** | **No.** No copy of the GenieACS **server** codebase is included as a subtree. | **Original** TypeScript/JavaScript under e.g. `Module_Manager/src/lib/genieacs/` (NBI client, models, services) and Cloud Functions that **proxy** or read **MongoDB** collections in the shape GenieACS uses. Install helpers (e.g. `deploy/genieacs-install.js`) may **clone** [github.com/genieacs/genieacs](https://github.com/genieacs/genieacs) on a server. **AGPL-3.0** applies to **GenieACS** itself when you run or modify it as a network service. |
+| **Ookla Speedtest** (speedtest.net CLI) | **No.** No Ookla **source** or embedded SDK. | **Bandwidth Test Manager** (sibling repo) installs the **official Speedtest CLI** via Ookla’s apt repo / [install.speedtest.net](https://install.speedtest.net/app/cli/); shell scripts call the `speedtest` **binary** (`-f json`). Use is subject to **Ookla’s EULA** (`speedtest --accept-license`). |
+
 ---
 
 ## 2. Copyleft / separate products (not MIT)
