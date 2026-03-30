@@ -14,10 +14,10 @@ let mongoDb: Db | null = null;
  */
 function getMongoConnectionString(): string {
   // Check multiple environment variable names for compatibility
-  const connectionString = 
+  const connectionString =
     process.env.MONGODB_URI ||
     process.env.MONGODB_CONNECTION_URL ||
-    // Default connection string (replace <db_password> with actual password)
+    // Atlas template (wisptools.io / Cluster0) — set MONGODB_URI in production; replace <db_password> with real password
     'mongodb+srv://genieacs-user:<db_password>@cluster0.1radgkw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
   return connectionString;

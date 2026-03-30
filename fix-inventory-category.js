@@ -2,7 +2,11 @@
 const mongoose = require('mongoose');
 const { InventoryItem } = require('./models/inventory');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://david:david1234@cluster0.1radgkw.mongodb.net/hss_management';
+const MONGODB_URI = process.env.MONGODB_URI;
+if (!MONGODB_URI) {
+  console.error('Set MONGODB_URI (see backend-services/.env.example).');
+  process.exit(1);
+}
 
 async function fixInventoryCategories() {
   try {

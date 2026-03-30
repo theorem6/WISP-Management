@@ -6,7 +6,11 @@
 const mongoose = require('mongoose');
 require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://david_peterson_consulting_com:3cG5pF2mK8vQ9xR7@lte-pci-mapper.wjvcc.mongodb.net/lte-pci-mapper?retryWrites=true&w=majority';
+const MONGODB_URI = process.env.MONGODB_URI;
+if (!MONGODB_URI) {
+  console.error('Set MONGODB_URI in backend-services/.env (see .env.example).');
+  process.exit(1);
+}
 
 const { EPCCommand } = require('../models/distributed-epc-schema');
 

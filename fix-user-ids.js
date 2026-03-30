@@ -25,8 +25,12 @@ if (!admin.apps.length) {
   }
 }
 
-// MongoDB connection - use same as server.js
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://admin:WJANdi3M9qLGhxdT@cluster0.vwchurv.mongodb.net/hss_management?retryWrites=true&w=majority&appName=hss-api';
+// MongoDB connection - use same as server.js (set MONGODB_URI)
+const MONGODB_URI = process.env.MONGODB_URI;
+if (!MONGODB_URI) {
+  console.error('Set MONGODB_URI to your Atlas connection string.');
+  process.exit(1);
+}
 
 // UserTenant model is imported from user-schema.js
 
