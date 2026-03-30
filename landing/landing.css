@@ -340,6 +340,72 @@
   color: var(--color-border);
 }
 
+.landing-share {
+  padding: 2rem 0;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-background-secondary);
+}
+
+.landing-share-inner {
+  text-align: center;
+}
+
+.landing-share-title {
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-semibold);
+  margin: 0 0 0.35rem;
+  color: var(--color-text-primary);
+}
+
+.landing-share-lead {
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.landing-share-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.share-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.share-btn-star {
+  background: rgba(96, 165, 250, 0.12);
+  border-color: rgba(96, 165, 250, 0.35);
+}
+
+.share-btn-star:hover {
+  background: rgba(96, 165, 250, 0.2);
+}
+
+.share-btn-secondary {
+  font-weight: var(--font-weight-normal);
+  opacity: 0.95;
+}
+
 .landing-footer {
   padding: 2rem 0;
   border-top: 1px solid var(--color-border);

@@ -1,5 +1,9 @@
 # WISP Management (wisptools.io)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Website](https://img.shields.io/badge/website-wisptools.io-0ea5e9)](https://wisptools.io)
+[![GitHub stars](https://img.shields.io/github/stars/theorem6/WISP-Management?style=social)](https://github.com/theorem6/WISP-Management)
+
 > **The Complete Wireless ISP Management Platform**  
 > Professional multi-tenant solution for LTE/5G network operations, field technicians, customer support, and network optimization. Part of the [wisptools.io](https://wisptools.io) project.
 
@@ -31,6 +35,7 @@ After that, the repo and this documentation are visible to everyone.
 - [Quick Start](#-quick-start)
 - [Full documentation (main page)](#-full-documentation-on-this-page)
 - [Deployment](#-deployment)
+- [Promote & share](#-promote--share)
 - [Contributing](#-contributing)
 - [License](#-license)
 
@@ -131,6 +136,7 @@ In-app: Dashboard → Help, or routes **/docs** and **/docs/reference/project-st
 | **Billing automation** (invoices + dunning) | [BILLING_CRON_AND_DUNNING_SCHEDULE.md](docs/BILLING_CRON_AND_DUNNING_SCHEDULE.md) |
 | **Field App APK** (build + download URL) | [FIELD_APP_DOWNLOAD.md](docs/FIELD_APP_DOWNLOAD.md) |
 | **Voice / SIP & UC** (API, webhooks, deploy) | [VOICE_SIP_UC_MODULE.md](docs/guides/VOICE_SIP_UC_MODULE.md) |
+| **Share & promote** (HN, press, templates) | [SHARE_AND_PROMOTE.md](docs/SHARE_AND_PROMOTE.md) |
 | **Backend deploy fallback** (when SSH fails) | [DEPLOY_BACKEND_FALLBACK.md](DEPLOY_BACKEND_FALLBACK.md) |
 | **Backend deployment** (full) | [BACKEND_DEPLOYMENT_INSTRUCTIONS.md](docs/deployment/BACKEND_DEPLOYMENT_INSTRUCTIONS.md) |
 | **Scripts (Windows/Linux)** | [scripts/README.md](scripts/README.md) |
@@ -287,6 +293,18 @@ Build the app before deploy: `cd Module_Manager && npm run build`. The `landing/
 | **Tenant Admin** | Users and settings |
 | **Member** | Access modules and features |
 | **Viewer** | Read-only |
+
+---
+
+## Promote & share
+
+Help others find **wisptools.io** and the repos—see **[docs/SHARE_AND_PROMOTE.md](docs/SHARE_AND_PROMOTE.md)** for:
+
+- One-page **channel list** (Hacker News, dev.to, WISP Magazine, Product Hunt, communities)
+- **Copy-paste** post templates (LinkedIn, X, Show HN title ideas)
+- **Landing page** share buttons at [wisptools.io](https://wisptools.io) (Spread the word)
+
+**Quick actions:** Star [WISP-Management](https://github.com/theorem6/WISP-Management) and [Bandwidth-Test-Manager](https://github.com/theorem6/Bandwidth-Test-Manager) on GitHub; share the site with operators you know.
 
 ---
 

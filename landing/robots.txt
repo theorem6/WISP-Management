@@ -1,0 +1,5 @@
+# https://wisptools.io — landing site
+User-agent: *
+Allow: /
+
+Sitemap: https://wisptools.io/sitemap.xml
