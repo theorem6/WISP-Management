@@ -198,6 +198,44 @@
   margin: 3rem 0 1rem;
 }
 
+.landing-news {
+  margin: 2.5rem 0 0;
+}
+
+.landing-news .landing-section-title {
+  margin-top: 0;
+}
+
+.landing-news-item {
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1.75rem;
+  margin-top: 1rem;
+}
+
+.landing-news-item h3 {
+  font-size: 1.05rem;
+  font-weight: var(--font-weight-semibold);
+  margin: 0.35rem 0 0.75rem;
+  color: var(--color-text-primary);
+}
+
+.landing-news-item p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+
+.landing-news-date {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-tertiary);
+  margin: 0 0 0.25rem;
+}
+
 .landing-cards {
   display: grid;
   gap: 1.5rem;
