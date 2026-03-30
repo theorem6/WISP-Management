@@ -20,26 +20,56 @@ module.exports = {
     }
   },
   
-  // CORS Configuration - Allowed Origins
+  // CORS Configuration - Allowed Origins (exact list + CORS_ORIGINS env + pattern match)
   cors: {
-    origins: [
-      'https://wisptools.io',
-      'https://management.wisptools.io',
-      'https://wisptools-management.web.app',
-      'https://wisptools-management.firebaseapp.com',
-      'https://wisptools-production.web.app',
-      'https://wisptools-production.firebaseapp.com',
-      'https://wisptools-io.web.app',
-      'https://wisptools-io.firebaseapp.com',
-      'https://lte-pci-mapper-65450042-bbf71.web.app',
-      'https://lte-pci-mapper-65450042-bbf71.firebaseapp.com',
-      'https://lte-pci-mapper--lte-pci-mapper-65450042-bbf71.us-east4.hosted.app',
-      'https://pci-mapper--lte-pci-mapper-65450042-bbf71.us-central1.hosted.app',
-      'http://localhost:5173', // Development
-      'http://localhost:3000', // Development
-      'http://localhost:3001'  // Development
-    ],
-    credentials: true
+    origins: (() => {
+      const list = [
+        'https://wisptools.io',
+        'https://management.wisptools.io',
+        'https://api.wisptools.io',
+        'https://wisptools-management.web.app',
+        'https://wisptools-management.firebaseapp.com',
+        'https://wisptools-production.web.app',
+        'https://wisptools-production.firebaseapp.com',
+        'https://wisptools-io.web.app',
+        'https://wisptools-io.firebaseapp.com',
+        'https://lte-pci-mapper-65450042-bbf71.web.app',
+        'https://lte-pci-mapper-65450042-bbf71.firebaseapp.com',
+        'https://lte-pci-mapper--lte-pci-mapper-65450042-bbf71.us-east4.hosted.app',
+        'https://pci-mapper--lte-pci-mapper-65450042-bbf71.us-central1.hosted.app',
+        'http://localhost:5173',
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'http://127.0.0.1:5173',
+        'http://127.0.0.1:3000',
+        'http://127.0.0.1:3001'
+      ];
+      const fromEnv = (process.env.CORS_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
+      return [...new Set([...list, ...fromEnv])];
+    })(),
+    credentials: true,
+    /**
+     * Allow origin for CORS (exact match or pattern). Use when backend URL was moved so any frontend origin is allowed.
+     * Patterns: *.wisptools.io, *.web.app, *.firebaseapp.com, *.hosted.app, localhost, 127.0.0.1
+     */
+    isOriginAllowed(origin) {
+      if (!origin || typeof origin !== 'string') return false;
+      const o = origin.trim().toLowerCase();
+      if (this.origins.includes(o)) return true;
+      try {
+        const u = new URL(o);
+        const host = u.hostname;
+        if (u.protocol !== 'http:' && u.protocol !== 'https:') return false;
+        if (host === 'localhost' || host === '127.0.0.1') return true;
+        if (host.endsWith('.wisptools.io') || host === 'wisptools.io') return true;
+        if (host.endsWith('.web.app')) return true;
+        if (host.endsWith('.firebaseapp.com')) return true;
+        if (host.endsWith('.hosted.app')) return true;
+        return false;
+      } catch {
+        return false;
+      }
+    }
   },
   
   // External Service URLs

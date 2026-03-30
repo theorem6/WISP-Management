@@ -8,6 +8,7 @@
   import { getAllUsers } from '$lib/services/userManagementService';
   import { tenantService } from '$lib/services/tenantService';
   import { auth } from '$lib/firebase';
+  import { getBackendDirectBase } from '$lib/config/api';
 
   interface AdminFeature {
     id: string;
@@ -204,8 +205,9 @@
       agentsError = '';
       remoteAgents = [];
 
-      const path = '/api/remote-agents/status';
-      const headers = await getAuthHeaders(path);
+      const direct = getBackendDirectBase();
+      const path = direct ? `${direct}/api/remote-agents/status` : '/api/remote-agents/status';
+      const headers = await getAuthHeaders(direct ? undefined : path);
 
       // System-wide query - get ALL agents (assigned and unassigned) in one call
       // No tenant header needed - backend returns everything for admin/system queries
@@ -227,7 +229,7 @@
             tenant_name: agent.tenant_id 
               ? (tenantMap.get(agent.tenant_id) || agent.tenant_id || 'Unknown')
               : 'Unassigned'
-          })).sort((a, b) => {
+          })).sort((a: { last_checkin?: string; discovered_at?: string }, b: { last_checkin?: string; discovered_at?: string }) => {
             // Sort by last check-in (most recent first)
             const aTime = a.last_checkin || a.discovered_at || 0;
             const bTime = b.last_checkin || b.discovered_at || 0;

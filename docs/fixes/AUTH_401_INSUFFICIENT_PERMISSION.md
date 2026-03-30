@@ -7,7 +7,9 @@ description: Cloud Function + INTERNAL_API_KEY for /api/user-tenants.
 
 **If you see 401 "Invalid or missing internal key":** run `.\scripts\set-internal-api-key-on-gce.ps1` (after `gcloud auth login`) so the backend and Cloud Function share the same INTERNAL_API_KEY.
 
-**If you see 401 on `/api/admin/tenants`:** The backend must verify Firebase tokens for admin routes. Set Firebase Admin credentials on the GCE backend: `.\scripts\set-firebase-admin-on-gce.ps1 -KeyPath "C:\path\to\wisptools-production-xxxxx.json"`. Also ensure your email is in `PLATFORM_ADMIN_EMAILS` (default: admin@wisptools.io) or set `PLATFORM_ADMIN_UIDS` in backend `.env`.
+**If you see 401 on `/api/admin/tenants` or `/admin/tenants`:** The backend must verify Firebase tokens for admin routes. Set Firebase Admin credentials on the GCE backend: `.\scripts\set-firebase-admin-on-gce.ps1 -KeyPath "C:\path\to\wisptools-production-xxxxx.json"`. Also ensure your email is in `PLATFORM_ADMIN_EMAILS` (default: admin@wisptools.io) or set `PLATFORM_ADMIN_UIDS` in backend `.env`.
+
+**If you see "blocked by CORS policy" when the management app (management.wisptools.io) calls hss.wisptools.io:** The backend sends CORS headers (see [CORS and direct backend](#cors-and-direct-backend) below). Deploy the latest backend (explicit CORS middleware in `server.js`) and ensure nginx has `location /api/` and `location /admin/` proxying to Node. Apply `backend-services/scripts/nginx-ssl-config.conf` and reload nginx.
 
 **If user-tenants works (200) but you still get 401 on `/api/tenant-settings`, `/api/plans`, or `/api/notifications`:** the backend must verify Firebase tokens for those routes. Set Firebase Admin on the backend once: get a Firebase service account JSON (Firebase Console → Project Settings → Service accounts → Generate new private key), then run `.\scripts\set-firebase-admin-on-gce.ps1 -KeyPath "C:\path\to\wisptools-production-xxxxx.json"`. See [401 on /api/tenant-settings](#401-on-apitenant-settings-apiplans-apinotifications-backend-token-verification) below.
 
@@ -197,3 +199,15 @@ After applying the fix:
 - Route: `backend-services/routes/users/tenant-details.js` (GET `/api/user-tenants/:userId`)
 - apiProxy backend URL: `functions/src/index.ts` uses `process.env.BACKEND_HOST || 'https://hss.wisptools.io'`
 - [Firebase Admin setup](https://firebase.google.com/docs/admin/setup)
+
+---
+
+## CORS and direct backend (management → hss)
+
+The management app (https://management.wisptools.io) can call the backend at **https://hss.wisptools.io** directly (no Firebase Hosting proxy). That is cross-origin, so the backend must send CORS headers and respond to OPTIONS (preflight).
+
+**Backend:** `backend-services/server.js` has an explicit CORS middleware (first in the stack) that (1) sets `Access-Control-Allow-Origin` to the request `Origin` when it is in the allowed list (e.g. `https://management.wisptools.io`), (2) sets `Access-Control-Allow-Credentials`, `Allow-Methods`, `Allow-Headers`, and (3) responds to **OPTIONS** with **204** and no body. Deploy this backend to GCE so CORS works.
+
+**Nginx on GCE:** Proxy both `/api/` and `/admin/` to the Node app so OPTIONS and GET/POST reach Node. Use `backend-services/scripts/nginx-ssl-config.conf` (it includes `location /api/` and `location /admin/`). Reload nginx after updating config.
+
+**Firebase Admin for /api/users and /admin/tenants:** These routes use `verifyAuth` and require a valid Firebase ID token. Set `FIREBASE_SERVICE_ACCOUNT_JSON` or `FIREBASE_SERVICE_ACCOUNT_BASE64` (or key file) on the backend so token verification succeeds; otherwise you get 401 even when CORS is fixed.

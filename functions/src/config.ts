@@ -21,14 +21,16 @@ export const FUNCTIONS_CONFIG = {
     hssProxy: 'https://us-central1-lte-pci-mapper-65450042-bbf71.cloudfunctions.net/hssProxy'
   },
   
-  // Allowed Origins for CORS
+  // Allowed Origins for CORS (include any frontend / backend URL after move)
   cors: {
     origins: [
       'https://wisptools.io',
       'https://management.wisptools.io',
+      'https://api.wisptools.io',
       'https://wisptools-production.web.app',
       'https://wisptools-management.web.app',
       'https://wisptools-production.firebaseapp.com',
+      'https://wisptools-management.firebaseapp.com',
       'https://wisptools-io.web.app',
       'https://wisptools-io.firebaseapp.com',
       'https://lte-pci-mapper-65450042-bbf71.web.app',

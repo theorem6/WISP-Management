@@ -325,13 +325,17 @@ export const userTenants = onRequest({
       responseType: 'json',
       validateStatus: () => true
     });
+    // Backend 404 (e.g. route not found, or wrong BACKEND_HOST) → treat as no tenants so app still works
+    if (ax.status === 404) {
+      console.warn('[userTenants] Backend returned 404, returning empty tenant list for userId:', userId);
+      res.status(200).set('Content-Type', 'application/json').json([]);
+      return;
+    }
     res.status(ax.status).set('Content-Type', 'application/json').send(ax.data);
   } catch (e: any) {
     console.error('[userTenants] Backend call failed:', e?.message);
-    res.status(502).json({
-      error: 'Bad Gateway',
-      message: e?.message || 'Backend request failed'
-    });
+    // Network/backend down → return empty list so user can still reach tenant selector / create tenant
+    res.status(200).set('Content-Type', 'application/json').json([]);
   }
 });
 

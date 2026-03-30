@@ -4,7 +4,7 @@
 import { browser } from '$app/environment';
 import { authService } from './authService';
 import { isPlatformAdmin } from './adminService';
-import { API_CONFIG } from '$lib/config/api';
+import { API_CONFIG, getBackendDirectBase } from '$lib/config/api';
 import type {
   Tenant,
   UserTenantAssociation,
@@ -29,6 +29,13 @@ export class TenantService {
     this.adminBaseUrl = `${this.apiBaseUrl}${API_CONFIG.PATHS.ADMIN}`; // /api/admin
   }
 
+  /** Full URL for an admin API path (e.g. 'tenants' or 'tenants/123'). Uses VITE_BACKEND_URL when set to avoid proxy 404s. */
+  private getAdminUrl(suffix: string): string {
+    const direct = getBackendDirectBase();
+    if (direct) return `${direct}/admin/${suffix.replace(/^\//, '')}`;
+    return `${this.adminBaseUrl}/${suffix.replace(/^\//, '')}`;
+  }
+
   /**
    * Get authentication headers for API calls.
    * Pass path when calling through Firebase Hosting → apiProxy so the proxy can route correctly.
@@ -43,7 +50,8 @@ export class TenantService {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     };
-    if (requestPath) {
+    // Only send X-Requested-Path for proxy (relative path); direct backend doesn't need it
+    if (requestPath && !requestPath.startsWith('http')) {
       headers['X-Requested-Path'] = requestPath;
     }
     return headers;
@@ -64,9 +72,7 @@ export class TenantService {
     try {
       const user = authService.getCurrentUser();
       const userIsPlatformAdmin = isPlatformAdmin(user?.email ?? null);
-      const endpoint = userIsPlatformAdmin
-        ? `${this.adminBaseUrl}/tenants`
-        : `${this.apiBaseUrl}/tenants`;
+      const endpoint = userIsPlatformAdmin ? this.getAdminUrl('tenants') : `${this.apiBaseUrl}/tenants`;
       const headers = await this.getAuthHeaders(endpoint);
 
       const response = await fetch(endpoint, {
@@ -132,9 +138,10 @@ export class TenantService {
    */
   async getTenantAdmin(tenantId: string): Promise<Tenant | null> {
     try {
-      const headers = await this.getAuthHeaders();
+      const path = this.getAdminUrl(`tenants/${tenantId}`);
+      const headers = await this.getAuthHeaders(path);
       
-      const response = await fetch(`${this.adminBaseUrl}/tenants/${tenantId}`, {
+      const response = await fetch(path, {
         method: 'GET',
         headers
       });
@@ -157,10 +164,9 @@ export class TenantService {
    */
   async getAllTenants(): Promise<Tenant[]> {
     try {
-      const path = `${this.adminBaseUrl}/tenants`;
+      const path = this.getAdminUrl('tenants');
       const headers = await this.getAuthHeaders(path);
       
-      // Use /api/admin/tenants for platform admin access (goes through Firebase Hosting rewrite)
       const response = await fetch(path, {
         method: 'GET',
         headers
@@ -193,7 +199,7 @@ export class TenantService {
     updates: Partial<Tenant>
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const path = `${this.adminBaseUrl}/tenants/${tenantId}`;
+      const path = this.getAdminUrl(`tenants/${tenantId}`);
       const headers = await this.getAuthHeaders(path);
       
       const response = await fetch(path, {
@@ -219,7 +225,7 @@ export class TenantService {
    */
   async deleteTenant(tenantId: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const path = `${this.adminBaseUrl}/tenants/${tenantId}`;
+      const path = this.getAdminUrl(`tenants/${tenantId}`);
       const headers = await this.getAuthHeaders(path);
       
       const response = await fetch(path, {
@@ -244,7 +250,7 @@ export class TenantService {
    */
   async assignOwner(tenantId: string, email: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const path = `${this.adminBaseUrl}/tenants/${tenantId}/assign-owner`;
+      const path = this.getAdminUrl(`tenants/${tenantId}/assign-owner`);
       const headers = await this.getAuthHeaders(path);
       
       const response = await fetch(path, {
@@ -270,7 +276,7 @@ export class TenantService {
    */
   async getTenantUsers(tenantId: string): Promise<any[]> {
     try {
-      const path = `${this.adminBaseUrl}/tenants/${tenantId}/users`;
+      const path = this.getAdminUrl(`tenants/${tenantId}/users`);
       const headers = await this.getAuthHeaders(path);
       
       const response = await fetch(path, {
@@ -296,7 +302,7 @@ export class TenantService {
     invitedBy: string
   ): Promise<{ success: boolean; invitation?: TenantInvitation; error?: string }> {
     try {
-      const path = `${this.adminBaseUrl}/tenants/${tenantId}/invitations`;
+      const path = this.getAdminUrl(`tenants/${tenantId}/invitations`);
       const headers = await this.getAuthHeaders(path);
       const response = await fetch(path, {
         method: 'POST',
@@ -323,7 +329,7 @@ export class TenantService {
     role: TenantRole
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const path = `${this.adminBaseUrl}/tenants/${tenantId}/users/${userId}/role`;
+      const path = this.getAdminUrl(`tenants/${tenantId}/users/${userId}/role`);
       const headers = await this.getAuthHeaders(path);
       const response = await fetch(path, {
         method: 'PATCH',
@@ -521,7 +527,7 @@ export class TenantService {
     tenantId: string
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const path = `${this.adminBaseUrl}/tenants/${tenantId}/users/${userId}`;
+      const path = this.getAdminUrl(`tenants/${tenantId}/users/${userId}`);
       const headers = await this.getAuthHeaders(path);
       const response = await fetch(path, {
         method: 'DELETE',

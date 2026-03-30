@@ -7,9 +7,43 @@ const appConfig = require('./config/app');
 const app = express();
 const PORT = appConfig.server.port;
 
-// CORS configuration - All authorized Firebase Hosting domains
+// CORS: allow any frontend origin that matches config (exact list + *.wisptools.io, *.web.app, localhost, or CORS_ORIGINS env)
+// Handles "moved URL" – backend may be at api.wisptools.io or hss.wisptools.io; frontend at management.wisptools.io
+const isOriginAllowed = (origin) => (typeof appConfig.cors.isOriginAllowed === 'function'
+  ? appConfig.cors.isOriginAllowed(origin)
+  : new Set(appConfig.cors.origins).has(origin));
+
+const CORS_ALLOW_HEADERS = [
+  'Authorization',
+  'Content-Type',
+  'X-Tenant-ID',
+  'X-Requested-Path',
+  'X-Requested-Uri',
+  'X-Original-URL',
+  'Accept',
+  'Accept-Language',
+  'Origin'
+].join(', ');
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && isOriginAllowed(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', CORS_ALLOW_HEADERS);
+  res.setHeader('Access-Control-Max-Age', '86400');
+  res.setHeader('Vary', 'Origin');
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
+  next();
+});
+
+// Backup CORS for same-origin
 app.use(cors({
-  origin: appConfig.cors.origins,
+  origin: (o, cb) => cb(null, isOriginAllowed(o) ? o : false),
   credentials: appConfig.cors.credentials
 }));
 

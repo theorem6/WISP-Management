@@ -57,6 +57,24 @@ export const API_CONFIG = {
 } as const;
 
 /**
+ * Direct backend base URL (no trailing slash).
+ * When set (e.g. VITE_BACKEND_URL=https://api.wisptools.io or https://hss.wisptools.io), admin/API requests
+ * go directly to the backend instead of via Firebase Hosting → apiProxy.
+ * If you moved the backend URL, set VITE_BACKEND_URL at build time (e.g. VITE_BACKEND_URL=https://api.wisptools.io).
+ */
+export function getBackendDirectBase(): string {
+  const envUrl = typeof import.meta.env !== 'undefined' && import.meta.env?.VITE_BACKEND_URL
+    ? String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, '')
+    : '';
+  if (envUrl) return envUrl;
+  // When on management site, default backend (override with VITE_BACKEND_URL if backend was moved)
+  if (typeof window !== 'undefined' && (window.location.hostname === 'management.wisptools.io' || window.location.hostname === 'wisptools-management.web.app')) {
+    return 'https://hss.wisptools.io';
+  }
+  return '';
+}
+
+/**
  * Get API URL for a specific service
  */
 export function getApiUrl(service?: keyof typeof API_CONFIG.PATHS): string {
