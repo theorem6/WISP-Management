@@ -1,34 +1,26 @@
 /**
- * PM2 Ecosystem Configuration
- * Manages all API services as separate processes on isolated ports
- * This prevents one service from affecting others during updates
+ * PM2 ecosystem (GCE-style paths).
+ * Do not put secrets here. Use `backend-services/.env` and the canonical config:
+ *   cd /opt/lte-pci-mapper/backend-services && pm2 start ecosystem.config.js
+ * That file loads only non-secret defaults; set MONGODB_URI, INTERNAL_API_KEY,
+ * FIREBASE_SERVICE_ACCOUNT_*, ARCGIS_*, SMTP_* on the server (env or Secret Manager).
  */
+
+const backendDir = '/opt/lte-pci-mapper/backend-services';
 
 module.exports = {
   apps: [
     {
       name: 'main-api',
-      script: './server.js',
-      cwd: '/opt/lte-pci-mapper/backend-services',
+      script: 'server.js',
+      cwd: backendDir,
       instances: 1,
       exec_mode: 'fork',
       env: {
         NODE_ENV: 'production',
         PORT: 3001,
         HOST: '0.0.0.0',
-        FIREBASE_PROJECT_ID: 'wisptools-production',
-        FIREBASE_SERVICE_ACCOUNT_KEY: '/opt/lte-pci-mapper/backend-services/wisptools-production-firebase-adminsdk.json',
-        ARCGIS_API_KEY: 'AAPT85fOqywZsicJupSmVSCGrjWNNjURUpnE--wnh6GZUrdoxPtDwnuleQ7w-D3IjAfeg3sWvEIvfQitmq894hp5hUN7nAsjLja-hlpzZZekEgdf3besreVsmrBJqy9c2XCRMc5EnBZyP60U1Lhf6E4ZrPWlOoxUWLIe8cCoNPI1Zh9VL1o_1wRQglmdGLTqx9vbHon7Pa_hZyTKQxvVC2stN7sZKy4quJ6kiAtW1QpqwOo.AT2_12sjSDHZ',
-        ARCGIS_OAUTH_CLIENT_ID: 'lkx9ZLDmdfe5OLYA',
-        ARCGIS_OAUTH_CLIENT_SECRET: 'f544f0139944426bb3901601f2aebd4b',
-        // Email configuration - Google Workspace SMTP Relay
-        SMTP_HOST: 'smtp.gmail.com',
-        SMTP_PORT: '587',
-        SMTP_SECURE: 'false',
-        SMTP_USER: process.env.SMTP_USER || 'noreply@wisptools.io',
-        SMTP_PASS: 'gaej lyex xydt efyp',
-        FROM_EMAIL: 'noreply@wisptools.io',
-        FROM_NAME: 'WISPTools'
+        FIREBASE_PROJECT_ID: 'wisptools-production'
       },
       error_file: '/home/david/.pm2/logs/main-api-error.log',
       out_file: '/home/david/.pm2/logs/main-api-out.log',
@@ -43,19 +35,15 @@ module.exports = {
     },
     {
       name: 'epc-api',
-      script: './min-epc-server.js',
-      cwd: '/opt/lte-pci-mapper/backend-services',
+      script: 'min-epc-server.js',
+      cwd: backendDir,
       instances: 1,
       exec_mode: 'fork',
       env: {
         NODE_ENV: 'production',
         PORT: 3002,
         HOST: '0.0.0.0',
-        FIREBASE_PROJECT_ID: 'wisptools-production',
-        FIREBASE_SERVICE_ACCOUNT_KEY: '/opt/lte-pci-mapper/backend-services/wisptools-production-firebase-adminsdk.json',
-        ARCGIS_API_KEY: 'AAPT85fOqywZsicJupSmVSCGrjWNNjURUpnE--wnh6GZUrdoxPtDwnuleQ7w-D3IjAfeg3sWvEIvfQitmq894hp5hUN7nAsjLja-hlpzZZekEgdf3besreVsmrBJqy9c2XCRMc5EnBZyP60U1Lhf6E4ZrPWlOoxUWLIe8cCoNPI1Zh9VL1o_1wRQglmdGLTqx9vbHon7Pa_hZyTKQxvVC2stN7sZKy4quJ6kiAtW1QpqwOo.AT2_12sjSDHZ',
-        ARCGIS_OAUTH_CLIENT_ID: 'lkx9ZLDmdfe5OLYA',
-        ARCGIS_OAUTH_CLIENT_SECRET: 'f544f0139944426bb3901601f2aebd4b'
+        FIREBASE_PROJECT_ID: 'wisptools-production'
       },
       error_file: '/home/david/.pm2/logs/epc-api-error.log',
       out_file: '/home/david/.pm2/logs/epc-api-out.log',
@@ -69,4 +57,3 @@ module.exports = {
     }
   ]
 };
-

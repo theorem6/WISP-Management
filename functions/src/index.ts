@@ -494,7 +494,10 @@ export const apiProxy = onRequest({
   
   res.set('Access-Control-Allow-Origin', allowedOrigin);
   res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-tenant-id, X-Tenant-ID, x-user-email, X-User-Email');
+  res.set(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Authorization, x-tenant-id, X-Tenant-ID, x-user-email, X-User-Email, x-requested-path, X-Requested-Path, x-internal-key, X-Internal-Key, x-firebase-uid, X-Firebase-Uid'
+  );
   res.set('Access-Control-Max-Age', '3600');
   res.set('Access-Control-Allow-Credentials', 'true');
   res.set('Vary', 'Origin');
@@ -578,12 +581,6 @@ export const apiProxy = onRequest({
     incoming = incoming.substring('apiProxy/'.length);
   }
   
-  // Strip /api prefix for admin routes (backend admin routes are at /admin, not /api/admin)
-  // Keep /api prefix for other routes (backend routes like /api/users, /api/tenants, etc.)
-  if (incoming.startsWith('/api/admin')) {
-    incoming = incoming.substring('/api'.length); // Remove /api, keep /admin
-  }
-  
   // For Firebase Hosting rewrites, the path might include query string
   // Extract just the pathname if query string is present
   if (incoming.includes('?')) {
@@ -617,9 +614,14 @@ export const apiProxy = onRequest({
     if (typeof xPath === 'string' && xPath.startsWith('/')) {
       let p = xPath.split('?')[0];
       if (p.startsWith('/apiProxy')) p = p.substring('/apiProxy'.length);
-      if (p.startsWith('/api/admin')) p = p.substring('/api'.length);
       if (p) proxiedPath = p.startsWith('/') ? p : `/${p}`;
     }
+  }
+
+  // Normalize admin routes at the very end so this also applies to ?path=/api/admin/... fallbacks.
+  // Backend mounts admin routes at /admin/* (not /api/admin/*).
+  if (proxiedPath.startsWith('/api/admin')) {
+    proxiedPath = proxiedPath.substring('/api'.length); // /api/admin/... -> /admin/...
   }
 
   // Backend Service Architecture:
@@ -716,6 +718,58 @@ export const apiProxy = onRequest({
     } catch (e: any) {
       console.error('[apiProxy] tenant-details token verify or backend call failed:', e?.message);
       res.set('Access-Control-Allow-Origin', origin).status(e?.response?.status === 404 ? 404 : 401).json({
+        error: e?.response?.data?.error || 'Unauthorized',
+        message: e?.response?.data?.message || e?.message || 'Token verification or backend request failed'
+      });
+      return;
+    }
+  }
+
+  // POST /api/tenants — verify token here and call internal route so backend does not need
+  // Firebase Admin for verifyIdToken (avoids 401 when GCE has no credentials).
+  const isPostFirstTenant =
+    req.method === 'POST' &&
+    (proxiedPath === '/api/tenants' || proxiedPath === '/api/tenants/');
+  if (isPostFirstTenant) {
+    const internalKey = process.env.INTERNAL_API_KEY;
+    const bh = process.env.BACKEND_HOST || 'https://hss.wisptools.io';
+    const authHeader = req.headers['authorization'] || req.headers['Authorization'];
+    if (!internalKey) {
+      console.error('[apiProxy] INTERNAL_API_KEY not set for first-tenant');
+      res.set('Access-Control-Allow-Origin', origin).status(503).json({ error: 'Service misconfiguration' });
+      return;
+    }
+    if (!authHeader || typeof authHeader !== 'string' || !authHeader.startsWith('Bearer ')) {
+      res.set('Access-Control-Allow-Origin', origin).status(401).json({ error: 'Unauthorized', message: 'Missing or invalid Authorization header' });
+      return;
+    }
+    const token = authHeader.split('Bearer ')[1];
+    if (!token) {
+      res.set('Access-Control-Allow-Origin', origin).status(401).json({ error: 'Unauthorized', message: 'No token' });
+      return;
+    }
+    try {
+      const decoded = await auth.verifyIdToken(token, true);
+      const uid = decoded.uid;
+      const email = decoded.email || '';
+      const internalUrl = `${bh}/api/internal/first-tenant`;
+      const ax = await axios.post(internalUrl, req.body, {
+        timeout: 30000,
+        headers: {
+          'x-internal-key': internalKey,
+          'x-firebase-uid': uid,
+          'x-firebase-email': email,
+          'Content-Type': 'application/json'
+        },
+        responseType: 'json',
+        validateStatus: () => true
+      });
+      res.status(ax.status).set('Content-Type', 'application/json').send(ax.data);
+      return;
+    } catch (e: any) {
+      console.error('[apiProxy] first-tenant token verify or backend call failed:', e?.message);
+      const status = e?.response?.status;
+      res.set('Access-Control-Allow-Origin', origin).status(status && status >= 400 ? status : 401).json({
         error: e?.response?.data?.error || 'Unauthorized',
         message: e?.response?.data?.message || e?.message || 'Token verification or backend request failed'
       });

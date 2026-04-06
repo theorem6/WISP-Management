@@ -82,20 +82,28 @@ export function getApiProxyRequestUrl(path: string): string {
 }
 
 /**
- * Direct backend base URL (no trailing slash).
- * When set (e.g. VITE_BACKEND_URL=https://api.wisptools.io or https://hss.wisptools.io), admin/API requests
- * go directly to the backend instead of via Firebase Hosting → apiProxy.
+ * Direct backend base URL (no trailing slash), only when VITE_BACKEND_URL is set.
+ * Do not default to hss.wisptools.io in the browser: cross-origin calls fail CORS (nginx often
+ * does not mirror Express CORS on OPTIONS). Production uses same-origin /api + apiProxy instead.
  */
 export function getBackendDirectBase(): string {
   const envUrl = typeof import.meta.env !== 'undefined' && import.meta.env?.VITE_BACKEND_URL
     ? String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, '')
     : '';
-  if (envUrl) return envUrl;
-  // When on management site, default backend (override with VITE_BACKEND_URL if backend was moved)
-  if (typeof window !== 'undefined' && (window.location.hostname === 'management.wisptools.io' || window.location.hostname === 'wisptools-management.web.app')) {
-    return 'https://hss.wisptools.io';
+  return envUrl;
+}
+
+/**
+ * Platform admin routes under /api/admin/... — use apiProxy (?path=) unless VITE_BACKEND_URL is set.
+ */
+export function getAdminApiRequest(suffix: string): { url: string; logicalPath: string } {
+  const trimmed = suffix.replace(/^\//, '');
+  const logicalPath = `/api/admin/${trimmed}`;
+  const direct = getBackendDirectBase();
+  if (direct) {
+    return { url: `${direct}/admin/${trimmed}`, logicalPath };
   }
-  return '';
+  return { url: getApiProxyRequestUrl(logicalPath), logicalPath };
 }
 
 /**

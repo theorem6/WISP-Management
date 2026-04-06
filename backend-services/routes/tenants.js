@@ -7,11 +7,10 @@
 
 const express = require('express');
 const router = express.Router();
-const { admin } = require('../config/firebase');
 const { verifyAuth } = require('./users/role-auth-middleware');
 const { Tenant } = require('../models/tenant');
 const { UserTenant } = require('./users/user-schema');
-const { PLATFORM_ADMIN_EMAILS } = require('../utils/platformAdmin');
+const { createFirstTenantForUser } = require('../services/first-tenant-create');
 
 /**
  * POST /api/tenants
@@ -19,159 +18,15 @@ const { PLATFORM_ADMIN_EMAILS } = require('../utils/platformAdmin');
  */
 router.post('/', verifyAuth, async (req, res) => {
   try {
-    const userId = req.user.uid;
-    const userEmail = req.user.email;
-    
-    // Check if user already has a tenant
-    const existingTenants = await UserTenant.find({ 
-      userId,
-      status: 'active'
+    const result = await createFirstTenantForUser({
+      userId: req.user.uid,
+      userEmail: req.user.email,
+      body: req.body
     });
-    
-    if (existingTenants.length > 0) {
-      return res.status(403).json({
-        error: 'Forbidden',
-        message: 'You already have a tenant. Each user can only create one tenant.'
-      });
+    if (!result.success) {
+      return res.status(result.status).json(result.body);
     }
-    
-    const { 
-      name, 
-      displayName, 
-      contactEmail, 
-      subdomain,
-      primaryLocation 
-    } = req.body;
-    
-    if (!name || !displayName || !contactEmail) {
-      return res.status(400).json({
-        error: 'Bad Request',
-        message: 'name, displayName, and contactEmail are required'
-      });
-    }
-    
-    // Use user's email if contactEmail not provided
-    const finalContactEmail = contactEmail || userEmail;
-    
-    // Generate subdomain if not provided
-    let finalSubdomain = subdomain;
-    if (!finalSubdomain) {
-      finalSubdomain = name
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .trim();
-    }
-    
-    // Check if subdomain is already taken
-    const existingTenant = await Tenant.findOne({ subdomain: finalSubdomain });
-    if (existingTenant) {
-      return res.status(400).json({
-        error: 'Bad Request',
-        message: 'Subdomain already taken'
-      });
-    }
-    
-    // Generate tenant-specific CWMP URL
-    // Format: https://wisptools.io/cwmp/{subdomain}
-    const cwmpBaseUrl = process.env.CWMP_BASE_URL || process.env.PUBLIC_CWMP_BASE_URL || 'https://wisptools.io';
-    const cwmpUrl = `${cwmpBaseUrl}/cwmp/${finalSubdomain}`;
-    
-    // Create tenant
-    const tenantData = {
-      name,
-      displayName,
-      subdomain: finalSubdomain,
-      contactEmail: finalContactEmail,
-      cwmpUrl,
-      createdBy: userId,
-      settings: {
-        allowSelfRegistration: false,
-        requireEmailVerification: true,
-        maxUsers: 50,
-        maxDevices: 20,
-        features: {
-          acs: true,
-          hss: true,
-          pci: true,
-          helpDesk: true,
-          userManagement: true,
-          customerManagement: true
-        }
-      },
-      limits: {
-        maxUsers: 50,
-        maxDevices: 20,
-        maxNetworks: 10,
-        maxTowerSites: 100
-      }
-    };
-    
-    // Add primary location if provided
-    if (primaryLocation?.siteId) {
-      tenantData.primaryLocation = {
-        siteId: primaryLocation.siteId,
-        siteName: primaryLocation.siteName || null
-      };
-    }
-    
-    const tenant = new Tenant(tenantData);
-    await tenant.save();
-    
-    // Create owner association for the user
-    const userTenant = new UserTenant({
-      userId,
-      tenantId: tenant._id.toString(),
-      role: 'owner',
-      status: 'active',
-      invitedBy: userId,
-      invitedAt: new Date(),
-      acceptedAt: new Date(),
-      addedAt: new Date()
-    });
-    
-    await userTenant.save();
-    
-    for (const platformAdminEmail of PLATFORM_ADMIN_EMAILS) {
-      try {
-        const platformAdminUser = await admin.auth().getUserByEmail(platformAdminEmail);
-        const platformAdminUserId = platformAdminUser.uid;
-        
-        const existingPlatformAdmin = await UserTenant.findOne({
-          userId: platformAdminUserId,
-          tenantId: tenant._id.toString()
-        });
-        
-        if (!existingPlatformAdmin) {
-          const platformAdminTenant = new UserTenant({
-            userId: platformAdminUserId,
-            tenantId: tenant._id.toString(),
-            role: 'admin',
-            status: 'active',
-            invitedBy: userId,
-            invitedAt: new Date(),
-            acceptedAt: new Date(),
-            addedAt: new Date()
-          });
-          
-          await platformAdminTenant.save();
-          console.log(`✅ Added platform admin ${platformAdminEmail} (${platformAdminUserId}) as admin to tenant "${displayName}"`);
-        }
-      } catch (error) {
-        console.error(`⚠️ Failed to add platform admin ${platformAdminEmail} to tenant:`, error.message);
-      }
-    }
-    
-    console.log(`✅ User ${userEmail} created their tenant "${displayName}" (${tenant._id})`);
-    
-    res.status(201).json({
-      success: true,
-      tenant: {
-        ...tenant.toObject(),
-        id: tenant._id.toString()
-      }
-    });
+    res.status(result.status).json(result.body);
   } catch (error) {
     console.error('Error creating tenant:', error);
     console.error('Error stack:', error.stack);

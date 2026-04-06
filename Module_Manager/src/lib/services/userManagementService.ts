@@ -10,7 +10,7 @@
 
 import { auth } from '$lib/firebase';
 import { authService } from '$lib/services/authService';
-import { getBackendDirectBase } from '$lib/config/api';
+import { getBackendDirectBase, getApiProxyRequestUrl } from '$lib/config/api';
 import type { UserRole, ModuleAccess } from '$lib/models/userRole';
 
 // Use relative URL to leverage Firebase Hosting rewrites
@@ -156,15 +156,16 @@ export async function getAllUsers(): Promise<TenantUser[]> {
 
     const token = await authService.getAuthTokenForApi();
     const direct = getBackendDirectBase();
-    const path = direct ? `${direct}/api/users` : `${getApiPath()}/users`;
+    const logicalPath = `${getApiPath()}/users`;
+    const url = direct ? `${direct}/api/users` : getApiProxyRequestUrl(logicalPath);
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
-      ...(direct ? {} : { 'X-Requested-Path': path })
+      ...(!direct ? { 'X-Requested-Path': logicalPath } : {})
     };
 
-    const response = await fetch(path, {
+    const response = await fetch(url, {
       method: 'GET',
       headers
     });

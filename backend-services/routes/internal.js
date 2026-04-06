@@ -5,6 +5,7 @@
 
 const express = require('express');
 const tenantService = require('../services/tenant-service');
+const { createFirstTenantForUser } = require('../services/first-tenant-create');
 const { Tenant } = require('../models/tenant');
 const { PlanProject } = require('../models/plan');
 const { CustomerBilling } = require('../models/customer-billing');
@@ -78,6 +79,51 @@ router.get('/user-tenants/:userId', async (req, res) => {
       res.status(500).json({
         error: 'Internal Server Error',
         message: error.message || 'Failed to get user tenants'
+      });
+    }
+  }
+});
+
+/**
+ * POST /api/internal/first-tenant
+ * Create the caller's first tenant. Caller (apiProxy) must verify Firebase token and pass
+ * X-Firebase-Uid (+ optional X-Firebase-Email). Avoids verifyIdToken on GCE when Firebase Admin is misconfigured.
+ */
+router.post('/first-tenant', async (req, res) => {
+  try {
+    const userId = req.headers['x-firebase-uid'] || req.headers['X-Firebase-Uid'];
+    const userEmail = (req.headers['x-firebase-email'] || req.headers['X-Firebase-Email'] || '').trim() || null;
+    if (!userId) {
+      return res.status(400).json({ error: 'Bad Request', message: 'X-Firebase-Uid header required' });
+    }
+    const result = await createFirstTenantForUser({
+      userId,
+      userEmail,
+      body: req.body
+    });
+    if (!result.success) {
+      return res.status(result.status).json(result.body);
+    }
+    res.status(result.status).json(result.body);
+  } catch (error) {
+    console.error('[internal] first-tenant POST error:', error);
+    if (error.name === 'ValidationError') {
+      const validationErrors = Object.values(error.errors || {}).map((err) => err.message);
+      return res.status(400).json({
+        error: 'Validation Error',
+        message: validationErrors.join(', ')
+      });
+    }
+    if (error.code === 11000 || error.code === 11001) {
+      return res.status(400).json({
+        error: 'Duplicate Entry',
+        message: 'A tenant with this subdomain already exists'
+      });
+    }
+    if (!res.headersSent) {
+      res.status(500).json({
+        error: 'Internal Server Error',
+        message: error.message
       });
     }
   }

@@ -5,7 +5,8 @@
   import { goto } from '$app/navigation';
   import AdminBreadcrumb from '$lib/components/admin/AdminBreadcrumb.svelte';
   import { isCurrentUserPlatformAdmin, isPlatformAdminByUid } from '$lib/services/adminService';
-  
+  import { getAdminApiRequest, getBackendDirectBase } from '$lib/config/api';
+
   let loading = true;
   let error = '';
   let tenants: any[] = [];
@@ -31,8 +32,6 @@
   };
   
   let newOwnerEmail = '';
-  
-  const API_BASE = '/api'; // Same-origin, goes through Firebase Hosting rewrite to apiProxy
   
   onMount(async () => {
     // Check if user is platform admin (by UID)
@@ -62,14 +61,24 @@
       'Content-Type': 'application/json'
     };
   }
+
+  /** Adds X-Requested-Path when using apiProxy (?path=). */
+  async function getAuthHeadersAdmin(logicalPath?: string) {
+    const base = await getAuthHeaders();
+    if (logicalPath && !getBackendDirectBase()) {
+      return { ...base, 'X-Requested-Path': logicalPath };
+    }
+    return base;
+  }
   
   async function loadTenants() {
     loading = true;
     error = '';
     
     try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE}/admin/tenants`, { headers });
+      const { url, logicalPath } = getAdminApiRequest('tenants');
+      const headers = await getAuthHeadersAdmin(logicalPath);
+      const response = await fetch(url, { headers });
       
       if (!response.ok) {
         const err = new Error(response.status === 401 
@@ -112,8 +121,9 @@
     processing = true;
     
     try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE}/admin/tenants`, {
+      const { url, logicalPath } = getAdminApiRequest('tenants');
+      const headers = await getAuthHeadersAdmin(logicalPath);
+      const response = await fetch(url, {
         method: 'POST',
         headers,
         body: JSON.stringify(formData)
@@ -153,8 +163,9 @@
     processing = true;
     
     try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE}/admin/tenants/${selectedTenant.id}`, {
+      const { url, logicalPath } = getAdminApiRequest(`tenants/${selectedTenant.id}`);
+      const headers = await getAuthHeadersAdmin(logicalPath);
+      const response = await fetch(url, {
         method: 'PUT',
         headers,
         body: JSON.stringify(formData)
@@ -188,8 +199,9 @@
     processing = true;
     
     try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE}/admin/tenants/${selectedTenant.id}`, {
+      const { url, logicalPath } = getAdminApiRequest(`tenants/${selectedTenant.id}`);
+      const headers = await getAuthHeadersAdmin(logicalPath);
+      const response = await fetch(url, {
         method: 'DELETE',
         headers
       });
@@ -226,8 +238,9 @@
     processing = true;
     
     try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE}/admin/assign-owner`, {
+      const { url, logicalPath } = getAdminApiRequest('assign-owner');
+      const headers = await getAuthHeadersAdmin(logicalPath);
+      const response = await fetch(url, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -260,8 +273,9 @@
     processing = true;
     
     try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE}/admin/tenants/${tenant.id}`, {
+      const { url, logicalPath } = getAdminApiRequest(`tenants/${tenant.id}`);
+      const headers = await getAuthHeadersAdmin(logicalPath);
+      const response = await fetch(url, {
         method: 'PUT',
         headers,
         body: JSON.stringify({
@@ -295,8 +309,9 @@
     tenantUsers = [];
     
     try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE}/admin/tenants/${tenant.id}/users`, { headers });
+      const { url, logicalPath } = getAdminApiRequest(`tenants/${tenant.id}/users`);
+      const headers = await getAuthHeadersAdmin(logicalPath);
+      const response = await fetch(url, { headers });
       
       if (!response.ok) {
         throw new Error('Failed to load users');

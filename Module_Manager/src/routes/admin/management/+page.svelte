@@ -8,7 +8,7 @@
   import { getAllUsers } from '$lib/services/userManagementService';
   import { tenantService } from '$lib/services/tenantService';
   import { auth } from '$lib/firebase';
-  import { getBackendDirectBase } from '$lib/config/api';
+  import { getBackendDirectBase, getApiProxyRequestUrl } from '$lib/config/api';
 
   interface AdminFeature {
     id: string;
@@ -206,8 +206,9 @@
       remoteAgents = [];
 
       const direct = getBackendDirectBase();
-      const path = direct ? `${direct}/api/remote-agents/status` : '/api/remote-agents/status';
-      const headers = await getAuthHeaders(direct ? undefined : path);
+      const logicalPath = '/api/remote-agents/status';
+      const path = direct ? `${direct}/api/remote-agents/status` : getApiProxyRequestUrl(logicalPath);
+      const headers = await getAuthHeaders(direct ? undefined : logicalPath);
 
       // System-wide query - get ALL agents (assigned and unassigned) in one call
       // No tenant header needed - backend returns everything for admin/system queries

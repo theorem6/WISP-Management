@@ -4,7 +4,7 @@
 import { browser } from '$app/environment';
 import { authService } from './authService';
 import { isPlatformAdmin } from './adminService';
-import { API_CONFIG, getApiProxyRequestUrl, getBackendDirectBase } from '$lib/config/api';
+import { API_CONFIG, getApiProxyRequestUrl, getBackendDirectBase, getAdminApiRequest } from '$lib/config/api';
 import type {
   Tenant,
   UserTenantAssociation,
@@ -17,7 +17,6 @@ import type {
 export class TenantService {
   private baseUrl: string;
   private apiBaseUrl: string;
-  private adminBaseUrl: string;
 
   constructor() {
     // Get base URL from environment or construct it
@@ -26,14 +25,6 @@ export class TenantService {
     
     // Use centralized API configuration
     this.apiBaseUrl = API_CONFIG.PATHS.TENANTS.split('/tenants')[0] || '/api';
-    this.adminBaseUrl = `${this.apiBaseUrl}${API_CONFIG.PATHS.ADMIN}`; // /api/admin
-  }
-
-  /** Full URL for an admin API path (e.g. 'tenants' or 'tenants/123'). Uses VITE_BACKEND_URL when set to avoid proxy 404s. */
-  private getAdminUrl(suffix: string): string {
-    const direct = getBackendDirectBase();
-    if (direct) return `${direct}/admin/${suffix.replace(/^\//, '')}`;
-    return `${this.adminBaseUrl}/${suffix.replace(/^\//, '')}`;
   }
 
   /**
@@ -73,10 +64,17 @@ export class TenantService {
       const user = authService.getCurrentUser();
       const userIsPlatformAdmin = isPlatformAdmin(user?.email ?? null);
       const logicalPath = `${this.apiBaseUrl}/tenants`;
-      const endpoint = userIsPlatformAdmin
-        ? this.getAdminUrl('tenants')
-        : getApiProxyRequestUrl(logicalPath);
-      const headers = await this.getAuthHeaders(logicalPath);
+      let endpoint: string;
+      let headerPath: string | undefined;
+      if (userIsPlatformAdmin) {
+        const { url, logicalPath: adminLp } = getAdminApiRequest('tenants');
+        endpoint = url;
+        headerPath = getBackendDirectBase() ? undefined : adminLp;
+      } else {
+        endpoint = getApiProxyRequestUrl(logicalPath);
+        headerPath = logicalPath;
+      }
+      const headers = await this.getAuthHeaders(headerPath);
 
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -141,10 +139,10 @@ export class TenantService {
    */
   async getTenantAdmin(tenantId: string): Promise<Tenant | null> {
     try {
-      const path = this.getAdminUrl(`tenants/${tenantId}`);
-      const headers = await this.getAuthHeaders(path);
-      
-      const response = await fetch(path, {
+      const { url, logicalPath } = getAdminApiRequest(`tenants/${tenantId}`);
+      const headers = await this.getAuthHeaders(getBackendDirectBase() ? undefined : logicalPath);
+
+      const response = await fetch(url, {
         method: 'GET',
         headers
       });
@@ -167,10 +165,10 @@ export class TenantService {
    */
   async getAllTenants(): Promise<Tenant[]> {
     try {
-      const path = this.getAdminUrl('tenants');
-      const headers = await this.getAuthHeaders(path);
-      
-      const response = await fetch(path, {
+      const { url, logicalPath } = getAdminApiRequest('tenants');
+      const headers = await this.getAuthHeaders(getBackendDirectBase() ? undefined : logicalPath);
+
+      const response = await fetch(url, {
         method: 'GET',
         headers
       });
@@ -202,10 +200,10 @@ export class TenantService {
     updates: Partial<Tenant>
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const path = this.getAdminUrl(`tenants/${tenantId}`);
-      const headers = await this.getAuthHeaders(path);
-      
-      const response = await fetch(path, {
+      const { url, logicalPath } = getAdminApiRequest(`tenants/${tenantId}`);
+      const headers = await this.getAuthHeaders(getBackendDirectBase() ? undefined : logicalPath);
+
+      const response = await fetch(url, {
         method: 'PUT',
         headers,
         body: JSON.stringify(updates)
@@ -228,10 +226,10 @@ export class TenantService {
    */
   async deleteTenant(tenantId: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const path = this.getAdminUrl(`tenants/${tenantId}`);
-      const headers = await this.getAuthHeaders(path);
-      
-      const response = await fetch(path, {
+      const { url, logicalPath } = getAdminApiRequest(`tenants/${tenantId}`);
+      const headers = await this.getAuthHeaders(getBackendDirectBase() ? undefined : logicalPath);
+
+      const response = await fetch(url, {
         method: 'DELETE',
         headers
       });
@@ -253,10 +251,10 @@ export class TenantService {
    */
   async assignOwner(tenantId: string, email: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const path = this.getAdminUrl(`tenants/${tenantId}/assign-owner`);
-      const headers = await this.getAuthHeaders(path);
-      
-      const response = await fetch(path, {
+      const { url, logicalPath } = getAdminApiRequest(`tenants/${tenantId}/assign-owner`);
+      const headers = await this.getAuthHeaders(getBackendDirectBase() ? undefined : logicalPath);
+
+      const response = await fetch(url, {
         method: 'POST',
         headers,
         body: JSON.stringify({ email })
@@ -279,10 +277,10 @@ export class TenantService {
    */
   async getTenantUsers(tenantId: string): Promise<any[]> {
     try {
-      const path = this.getAdminUrl(`tenants/${tenantId}/users`);
-      const headers = await this.getAuthHeaders(path);
-      
-      const response = await fetch(path, {
+      const { url, logicalPath } = getAdminApiRequest(`tenants/${tenantId}/users`);
+      const headers = await this.getAuthHeaders(getBackendDirectBase() ? undefined : logicalPath);
+
+      const response = await fetch(url, {
         method: 'GET',
         headers
       });
@@ -305,9 +303,9 @@ export class TenantService {
     invitedBy: string
   ): Promise<{ success: boolean; invitation?: TenantInvitation; error?: string }> {
     try {
-      const path = this.getAdminUrl(`tenants/${tenantId}/invitations`);
-      const headers = await this.getAuthHeaders(path);
-      const response = await fetch(path, {
+      const { url, logicalPath } = getAdminApiRequest(`tenants/${tenantId}/invitations`);
+      const headers = await this.getAuthHeaders(getBackendDirectBase() ? undefined : logicalPath);
+      const response = await fetch(url, {
         method: 'POST',
         headers,
         body: JSON.stringify({ email, role, invitedBy })
@@ -332,9 +330,9 @@ export class TenantService {
     role: TenantRole
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const path = this.getAdminUrl(`tenants/${tenantId}/users/${userId}/role`);
-      const headers = await this.getAuthHeaders(path);
-      const response = await fetch(path, {
+      const { url, logicalPath } = getAdminApiRequest(`tenants/${tenantId}/users/${userId}/role`);
+      const headers = await this.getAuthHeaders(getBackendDirectBase() ? undefined : logicalPath);
+      const response = await fetch(url, {
         method: 'PATCH',
         headers,
         body: JSON.stringify({ role })
@@ -530,9 +528,9 @@ export class TenantService {
     tenantId: string
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const path = this.getAdminUrl(`tenants/${tenantId}/users/${userId}`);
-      const headers = await this.getAuthHeaders(path);
-      const response = await fetch(path, {
+      const { url, logicalPath } = getAdminApiRequest(`tenants/${tenantId}/users/${userId}`);
+      const headers = await this.getAuthHeaders(getBackendDirectBase() ? undefined : logicalPath);
+      const response = await fetch(url, {
         method: 'DELETE',
         headers
       });
