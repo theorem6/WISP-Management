@@ -13,9 +13,15 @@ param(
     [string]$GitUrl = "git@github.com:theorem6/WISP-Management.git",
     [string]$GitHubToken = "",   # If set, Git deploy uses HTTPS with token (no SSH key on VM). Also from env GITHUB_TOKEN or update-backend-from-git.sh
     [switch]$SetupOnly = $false,
-    [switch]$UseIapTunnel = $true,
+    # Default off: direct SSH to external IP works for most setups; use -UseIapTunnel for IAP-only VMs.
+    [switch]$UseIapTunnel = $false,
     [switch]$SkipRemote = $false   # Upload only; run remote install from Cloud Shell or another machine
 )
+
+# Windows: prefer OpenSSH over PuTTY (plink) so non-interactive gcloud ssh/scp does not fail on host keys.
+if (-not $env:CLOUDSDK_COMPUTE_SSH_USE_OPENSSH) {
+    $env:CLOUDSDK_COMPUTE_SSH_USE_OPENSSH = "true"
+}
 
 Write-Host "Deploying backend services to GCE ($DeployMethod)..." -ForegroundColor Green
 

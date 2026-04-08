@@ -6,6 +6,9 @@
  */
 
 const path = require('path');
+const os = require('os');
+
+const pm2LogDir = path.join(os.homedir(), '.pm2', 'logs');
 
 module.exports = {
   apps: [
@@ -21,8 +24,8 @@ module.exports = {
         HOST: '0.0.0.0',
         FIREBASE_PROJECT_ID: 'wisptools-production'
       },
-      error_file: '/home/david/.pm2/logs/main-api-error.log',
-      out_file: '/home/david/.pm2/logs/main-api-out.log',
+      error_file: path.join(pm2LogDir, 'main-api-error.log'),
+      out_file: path.join(pm2LogDir, 'main-api-out.log'),
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
       merge_logs: true,
       autorestart: true,
@@ -44,8 +47,8 @@ module.exports = {
         HOST: '0.0.0.0',
         FIREBASE_PROJECT_ID: 'wisptools-production'
       },
-      error_file: '/home/david/.pm2/logs/epc-api-error.log',
-      out_file: '/home/david/.pm2/logs/epc-api-out.log',
+      error_file: path.join(pm2LogDir, 'epc-api-error.log'),
+      out_file: path.join(pm2LogDir, 'epc-api-out.log'),
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
       merge_logs: true,
       autorestart: true,
