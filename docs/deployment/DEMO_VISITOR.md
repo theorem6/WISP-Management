@@ -4,7 +4,11 @@ Visitors can sign in **without a password** using **Continue as demo visitor** o
 
 ## When to enable
 
-Use only on **isolated demo** stacks (dedicated MongoDB + demo tenant). Never enable on production.
+Use only on **isolated demo** stacks (dedicated MongoDB + demo tenant).
+
+**Production default:** With `DEMO_VISITOR_MODE` unset, the server does **not** mount `/api/demo` or load `demo-visitor-stamp` — real deployments are unchanged. See [DEMO_FORK_VS_PRODUCTION.md](./DEMO_FORK_VS_PRODUCTION.md).
+
+**`NODE_ENV=production`:** Startup **fails** if `DEMO_VISITOR_MODE=true` unless you also set `ALLOW_DEMO_IN_PRODUCTION=true` (for intentional public demo APIs only).
 
 ## Requirements
 
@@ -53,5 +57,6 @@ Seeded rows (`CUST-DEMO-*`, etc.) have **no** `demoVisitorKey` and are **not** r
 
 ## Related docs
 
+- [DEMO_FORK_VS_PRODUCTION.md](./DEMO_FORK_VS_PRODUCTION.md) — demo vs real API defaults  
 - [DEMO_SITE.md](./DEMO_SITE.md) — deploy and seed  
 - [DEMO_RUNBOOK.md](./DEMO_RUNBOOK.md) — operator checklist  

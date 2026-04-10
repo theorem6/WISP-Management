@@ -2,6 +2,10 @@
 
 Use this for **training**, **sales**, and **internal testing** without creating new orgs, without surprise data loss, and with clear expectations per feature.
 
+## 0. Same codebase, demo is configuration
+
+Demo visitor APIs load only when **`DEMO_VISITOR_MODE=true`**. Private production APIs should leave it unset so `/api/demo` is never mounted. See [DEMO_FORK_VS_PRODUCTION.md](./DEMO_FORK_VS_PRODUCTION.md).
+
 ## 1. Isolation (do this first)
 
 | Rule | Why |

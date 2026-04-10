@@ -1,7 +1,9 @@
 /**
  * For Firebase users uid demo_v_*: verify Bearer token, stamp demoVisitorKey on JSON bodies,
  * and enforce per-resource create limits for demo visitors.
+ * Registered only when DEMO_VISITOR_MODE=true (see server.js).
  * @see docs/deployment/DEMO_VISITOR.md
+ * @see docs/deployment/DEMO_FORK_VS_PRODUCTION.md
  */
 
 const { auth } = require('../config/firebase');

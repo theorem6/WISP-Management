@@ -1,6 +1,8 @@
 /**
  * Ephemeral demo visitors: Firebase uid derived from client IP + salt.
+ * Mounted only when DEMO_VISITOR_MODE=true (see server.js) — omitted from real/production API by default.
  * @see docs/deployment/DEMO_VISITOR.md
+ * @see docs/deployment/DEMO_FORK_VS_PRODUCTION.md
  */
 
 const express = require('express');

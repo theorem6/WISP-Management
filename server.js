@@ -7,9 +7,21 @@ const appConfig = require('./config/app');
 const app = express();
 const PORT = appConfig.server.port;
 
-if (process.env.DEMO_VISITOR_MODE === 'true') {
+/** Demo fork: visitor IP login + stamping. Off by default — real/production APIs omit DEMO_VISITOR_MODE. */
+const demoVisitorEnabled = process.env.DEMO_VISITOR_MODE === 'true';
+
+if (demoVisitorEnabled) {
+  if (process.env.NODE_ENV === 'production' && process.env.ALLOW_DEMO_IN_PRODUCTION !== 'true') {
+    console.error(
+      '[Server] DEMO_VISITOR_MODE is set but NODE_ENV=production. Refusing to start (demo visitor routes are not for private production API).'
+    );
+    console.error(
+      '[Server] Use a demo/staging host, or set ALLOW_DEMO_IN_PRODUCTION=true only for intentional public demo APIs.'
+    );
+    process.exit(1);
+  }
   app.set('trust proxy', 1);
-  console.log('📌 DEMO_VISITOR_MODE: trust proxy enabled (client IP for demo visitors)');
+  console.log('📌 DEMO_VISITOR_MODE: trust proxy + /api/demo + demo-visitor-stamp middleware enabled');
 }
 
 // CORS configuration - All authorized Firebase Hosting domains
@@ -32,8 +44,10 @@ app.use(express.urlencoded({ extended: true, limit: appConfig.limits.urlEncodedB
 // Single-tenant: optional default X-Tenant-ID (see middleware/single-tenant.js)
 app.use(require('./middleware/single-tenant'));
 
-// Demo visitors: stamp demoVisitorKey + enforce create limits (see middleware/demo-visitor-stamp.js)
-app.use(require('./middleware/demo-visitor-stamp'));
+// Demo fork only: no middleware load when DEMO_VISITOR_MODE is unset (production default)
+if (demoVisitorEnabled) {
+  app.use(require('./middleware/demo-visitor-stamp'));
+}
 
 // Middleware
 app.use(require('./middleware/error-handler'));
@@ -104,7 +118,9 @@ app.get('/api/debug/token', async (req, res) => {
 
 
 // Use existing route files - ALL MODULES
-app.use('/api/demo', require('./routes/demo-visitor'));
+if (demoVisitorEnabled) {
+  app.use('/api/demo', require('./routes/demo-visitor'));
+}
 app.use('/api/auth', require('./routes/auth')); // Authentication routes
 app.use('/api/users', require('./routes/users')); // Includes auto-assign routes
 app.use('/api/tenants', require('./routes/tenants')); // User tenant creation (first tenant only)
