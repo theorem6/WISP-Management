@@ -59,8 +59,8 @@
       <h1>Demo walkthrough</h1>
       <p class="lead">
         Seeded records use prefixes <code>CUST-DEMO-*</code>, <code>TKT-DEMO-*</code>,
-        <code>INC-DEMO-*</code>, <code>DEMO-SN-*</code>. Explore and edit — data is stored in your demo
-        MongoDB.
+        <code>INC-DEMO-*</code>, <code>DEMO-SN-*</code>. Prefer editing and resolving over deleting.
+        Use one pre-provisioned demo login — see the operator runbook in the repo.
       </p>
       {#if $currentTenant}
         <p class="tenant">
@@ -83,8 +83,12 @@
     </div>
 
     <section class="doc">
-      <h2>Documentation</h2>
+      <h2>Documentation (repository)</h2>
       <ul>
+        <li>
+          Operator runbook (logins, isolation, feature matrix, reset policy):
+          <code>docs/deployment/DEMO_RUNBOOK.md</code>
+        </li>
         <li>
           Seed &amp; env:
           <code>scripts/demo/README.md</code>

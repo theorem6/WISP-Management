@@ -24,7 +24,8 @@ This repository supports **one fixed organization** per deployment while keeping
 
 ## Test / demo stack
 
-For a full test site with seeded data and Hosting deploy steps, see [docs/deployment/DEMO_SITE.md](../deployment/DEMO_SITE.md).
+For a full test site with seeded data and Hosting deploy steps, see [docs/deployment/DEMO_SITE.md](../deployment/DEMO_SITE.md).  
+For fixed logins, isolation, feature expectations, and reset policy, see [docs/deployment/DEMO_RUNBOOK.md](../deployment/DEMO_RUNBOOK.md).
 
 ## Multitenant again
 

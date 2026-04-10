@@ -16,4 +16,4 @@ Write-Host "==> Deploying Firebase hosting:management..."
 firebase deploy --only hosting:management
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "Done. See docs/deployment/DEMO_SITE.md for backend and seed steps."
+Write-Host "Done. See docs/deployment/DEMO_SITE.md and docs/deployment/DEMO_RUNBOOK.md."

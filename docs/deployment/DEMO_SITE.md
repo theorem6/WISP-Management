@@ -2,6 +2,8 @@
 
 This document describes how to run the **demo tenant** (fake but real API-backed data), configure the **frontend** and **backend**, and **deploy** to your Firebase / API hosts.
 
+**Operators:** use [DEMO_RUNBOOK.md](./DEMO_RUNBOOK.md) for isolation rules, fixed logins, feature expectations, and when it is safe to reset data.
+
 ## Overview
 
 | Piece | Role |
@@ -36,7 +38,7 @@ npm run demo:seed
 
 Copy the printed **Tenant ID** into the env vars below.
 
-To wipe and recreate demo documents:
+To wipe and recreate demo documents ( **`ALLOW_DEMO_RESET=true`** required — isolated demo DB only; see runbook):
 
 ```bash
 npm run demo:reset
@@ -121,6 +123,7 @@ This runs `npm run build` inside `Module_Manager` and deploys `hosting:managemen
 
 ## 7. Related docs
 
+- [Demo operator runbook](./DEMO_RUNBOOK.md) — isolation, logins, feature matrix, reset policy  
 - [Single-tenant mode](../guides/SINGLE_TENANT_MODE.md)
 - [Multitenant fork notes](../multitenant-fork/README.md)
 - [scripts/demo/README.md](../../scripts/demo/README.md)

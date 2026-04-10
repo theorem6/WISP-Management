@@ -13,11 +13,13 @@ Populates a dedicated demo tenant with customers, work orders, incidents, and in
 npm run demo:seed
 ```
 
-Reset demo tenant and re-seed:
+Reset demo tenant and re-seed (**requires `ALLOW_DEMO_RESET=true` in `.env`** — isolated demo MongoDB only):
 
 ```bash
 npm run demo:reset
 ```
+
+See [docs/deployment/DEMO_RUNBOOK.md](../../docs/deployment/DEMO_RUNBOOK.md) before using reset.
 
 Or directly:
 
@@ -44,4 +46,5 @@ set DEMO_FIREBASE_USER_UID=<firebase-uid-from-console>
 node scripts/demo/seed-demo-data.js
 ```
 
-Full deployment steps: [docs/deployment/DEMO_SITE.md](../../docs/deployment/DEMO_SITE.md).
+Full deployment steps: [docs/deployment/DEMO_SITE.md](../../docs/deployment/DEMO_SITE.md).  
+Operator checklist (logins, features, data rules): [docs/deployment/DEMO_RUNBOOK.md](../../docs/deployment/DEMO_RUNBOOK.md).

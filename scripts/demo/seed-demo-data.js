@@ -3,12 +3,13 @@
  *
  * Usage (from repo root, with MONGODB_URI in .env):
  *   node scripts/demo/seed-demo-data.js
- *   node scripts/demo/seed-demo-data.js --reset
+ *   node scripts/demo/seed-demo-data.js --reset   (requires ALLOW_DEMO_RESET=true)
  *
  * Env:
- *   MONGODB_URI           — required
- *   DEMO_TENANT_SUBDOMAIN — default wisptools-demo
- *   DEMO_FIREBASE_USER_UID — optional; if set, creates UserTenant (owner) for this Firebase uid
+ *   MONGODB_URI              — required
+ *   DEMO_TENANT_SUBDOMAIN    — default wisptools-demo
+ *   DEMO_FIREBASE_USER_UID   — optional; if set, creates UserTenant (owner) for this Firebase uid
+ *   ALLOW_DEMO_RESET         — must be "true" for --reset (isolated demo databases only)
  */
 
 'use strict';
@@ -333,6 +334,14 @@ async function seedInventory(tenantId) {
 
 async function main() {
   const reset = process.argv.includes('--reset');
+  if (reset && process.env.ALLOW_DEMO_RESET !== 'true') {
+    console.error(
+      '[demo-seed] Refusing --reset: set ALLOW_DEMO_RESET=true in .env only when MONGODB_URI points at an isolated demo database.'
+    );
+    console.error('[demo-seed] See docs/deployment/DEMO_RUNBOOK.md');
+    process.exit(1);
+  }
+
   await connect();
 
   try {
