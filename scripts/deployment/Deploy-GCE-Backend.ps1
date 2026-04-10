@@ -10,12 +10,10 @@ Write-Host ""
 # Configuration
 $GCE_INSTANCE = "acs-hss-server"
 $GCE_ZONE = "us-central1-a"
-$GCE_IP = "136.112.111.167"
 
 Write-Host "📋 Configuration:" -ForegroundColor Yellow
 Write-Host "  Instance: $GCE_INSTANCE"
 Write-Host "  Zone: $GCE_ZONE"
-Write-Host "  IP: $GCE_IP"
 Write-Host ""
 
 # Check if gcloud is installed
@@ -26,6 +24,20 @@ if (!(Get-Command gcloud -ErrorAction SilentlyContinue)) {
 }
 
 Write-Host "✅ gcloud CLI found" -ForegroundColor Green
+$GCE_PROJECT = (gcloud config get-value project 2>$null).Trim()
+$describeArgs = @(
+    "compute", "instances", "describe", $GCE_INSTANCE,
+    "--zone=$GCE_ZONE",
+    '--format=value(networkInterfaces[0].accessConfigs[0].natIP)'
+)
+if ($GCE_PROJECT) { $describeArgs += "--project=$GCE_PROJECT" }
+$GCE_IP = (& gcloud @describeArgs 2>$null)
+if ($GCE_IP) { $GCE_IP = $GCE_IP.Trim() }
+if (-not $GCE_IP) {
+    $GCE_IP = 'no external IP (use Console, IAP SSH, or internal address)'
+}
+Write-Host "  Project: $(if ($GCE_PROJECT) { $GCE_PROJECT } else { '(gcloud default)' })"
+Write-Host "  External IP: $GCE_IP"
 Write-Host ""
 
 # Inline-transfer update script via base64 (avoids scp issues)

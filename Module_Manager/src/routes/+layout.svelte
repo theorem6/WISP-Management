@@ -8,7 +8,7 @@
   import { themeManager } from '$lib/stores/themeStore';
   import '../app.css';
   import DemoSiteBanner from '$lib/components/DemoSiteBanner.svelte';
-  import { env } from '$env/dynamic/public';
+  import { isPublicFlagTrue } from '$lib/config/publicEnv';
   
   let isInitializing = true;
   let isAuthenticated = false;
@@ -39,7 +39,7 @@
     browser &&
     !isInitializing &&
     isAuthenticated &&
-    (env.PUBLIC_DEMO_SITE === 'true' || env.PUBLIC_DEMO_SITE === '1');
+    isPublicFlagTrue('PUBLIC_DEMO_SITE');
   
   // Enforce that every new session must pass through the login page at least once,
   // regardless of any cached Firebase auth state.

@@ -18,6 +18,7 @@ dist/
 .env
 .env.*
 !.env.example
+!Module_Manager/.env.demo.example
 scripts/.internal-api-key-gce-temp
 scripts/bfg.jar
 .git-rewrite/
