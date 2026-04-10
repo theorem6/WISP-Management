@@ -12,6 +12,10 @@ Use this for **training**, **sales**, and **internal testing** without creating 
 
 **Never** point `MONGODB_URI` at production while running `npm run demo:seed` or testing destructive scripts.
 
+## 1b. Demo visitor (no password)
+
+When **`DEMO_VISITOR_MODE`** and **`PUBLIC_DEMO_VISITOR_LOGIN`** are enabled, the login page offers **Continue as demo visitor**. Identity is **derived from client IP + server salt**; **creates are capped** and **data that visitor added is deleted on sign out** (seeded demo rows stay). See [DEMO_VISITOR.md](./DEMO_VISITOR.md).
+
 ## 2. Fixed logins (no new accounts during the demo)
 
 | Item | Guidance |

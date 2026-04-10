@@ -47,4 +47,5 @@ node scripts/demo/seed-demo-data.js
 ```
 
 Full deployment steps: [docs/deployment/DEMO_SITE.md](../../docs/deployment/DEMO_SITE.md).  
-Operator checklist (logins, features, data rules): [docs/deployment/DEMO_RUNBOOK.md](../../docs/deployment/DEMO_RUNBOOK.md).
+Operator checklist (logins, features, data rules): [docs/deployment/DEMO_RUNBOOK.md](../../docs/deployment/DEMO_RUNBOOK.md).  
+Passwordless IP-based demo visitors (purge on logout): [docs/deployment/DEMO_VISITOR.md](../../docs/deployment/DEMO_VISITOR.md).

@@ -7,6 +7,11 @@ const appConfig = require('./config/app');
 const app = express();
 const PORT = appConfig.server.port;
 
+if (process.env.DEMO_VISITOR_MODE === 'true') {
+  app.set('trust proxy', 1);
+  console.log('📌 DEMO_VISITOR_MODE: trust proxy enabled (client IP for demo visitors)');
+}
+
 // CORS configuration - All authorized Firebase Hosting domains
 app.use(cors({
   origin: appConfig.cors.origins,
@@ -26,6 +31,9 @@ app.use(express.urlencoded({ extended: true, limit: appConfig.limits.urlEncodedB
 
 // Single-tenant: optional default X-Tenant-ID (see middleware/single-tenant.js)
 app.use(require('./middleware/single-tenant'));
+
+// Demo visitors: stamp demoVisitorKey + enforce create limits (see middleware/demo-visitor-stamp.js)
+app.use(require('./middleware/demo-visitor-stamp'));
 
 // Middleware
 app.use(require('./middleware/error-handler'));
@@ -96,6 +104,7 @@ app.get('/api/debug/token', async (req, res) => {
 
 
 // Use existing route files - ALL MODULES
+app.use('/api/demo', require('./routes/demo-visitor'));
 app.use('/api/auth', require('./routes/auth')); // Authentication routes
 app.use('/api/users', require('./routes/users')); // Includes auto-assign routes
 app.use('/api/tenants', require('./routes/tenants')); // User tenant creation (first tenant only)

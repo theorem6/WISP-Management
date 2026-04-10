@@ -4,6 +4,8 @@ This document describes how to run the **demo tenant** (fake but real API-backed
 
 **Operators:** use [DEMO_RUNBOOK.md](./DEMO_RUNBOOK.md) for isolation rules, fixed logins, feature expectations, and when it is safe to reset data.
 
+**Passwordless demo visitors (IP-based, data purged on logout):** [DEMO_VISITOR.md](./DEMO_VISITOR.md).
+
 ## Overview
 
 | Piece | Role |

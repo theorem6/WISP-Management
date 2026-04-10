@@ -12,6 +12,8 @@ const mongoose = require('mongoose');
 const CustomerSchema = new mongoose.Schema({
   // Tenant
   tenantId: { type: String, required: true, index: true },
+  /** Ephemeral demo visitors (IP-derived); purged on demo logout — see docs/deployment/DEMO_VISITOR.md */
+  demoVisitorKey: { type: String, index: true, sparse: true },
   
   // Identification
   customerId: { type: String, required: true, unique: true }, // CUST-2025-001

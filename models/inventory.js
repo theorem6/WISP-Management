@@ -142,6 +142,7 @@ const LocationHistorySchema = new mongoose.Schema({
 const InventoryItemSchema = new mongoose.Schema({
   // Tenant
   tenantId: { type: String, required: true, index: true },
+  demoVisitorKey: { type: String, index: true, sparse: true },
   
   // Basic Identity
   assetTag: { type: String, unique: true, sparse: true }, // Organization's internal asset tag

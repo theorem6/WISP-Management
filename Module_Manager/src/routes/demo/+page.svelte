@@ -86,6 +86,10 @@
       <h2>Documentation (repository)</h2>
       <ul>
         <li>
+          Demo visitor (IP login, limits, purge on logout):
+          <code>docs/deployment/DEMO_VISITOR.md</code>
+        </li>
+        <li>
           Operator runbook (logins, isolation, feature matrix, reset policy):
           <code>docs/deployment/DEMO_RUNBOOK.md</code>
         </li>

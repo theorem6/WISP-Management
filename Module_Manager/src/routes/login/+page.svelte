@@ -9,6 +9,10 @@
   import type { User } from 'firebase/auth';
   import { isPlatformAdmin } from '$lib/services/adminService';
   import { getConfiguredSingleTenantId, isSingleTenantMode } from '$lib/config/tenantMode';
+  import { isDemoVisitorLoginEnabled, isLoginDemoChromeEnabled } from '$lib/config/demoVisitor';
+
+  const showDemoChrome = isLoginDemoChromeEnabled();
+  const demoVisitorEnabled = isDemoVisitorLoginEnabled();
 
   let email = '';
   let password = '';
@@ -496,6 +500,59 @@
     }
   }
 
+  async function handleDemoVisitorLogin() {
+    isLoading = true;
+    error = '';
+    success = '';
+    try {
+      const result = await authService.signInAsDemoVisitor();
+      if (!result.success) {
+        error = result.error || 'Demo sign-in failed';
+        isLoading = false;
+        return;
+      }
+      await new Promise((r) => setTimeout(r, 400));
+      let user = authService.getCurrentUser();
+      let retries = 0;
+      while (!user && retries < 15) {
+        await new Promise((r) => setTimeout(r, 100));
+        user = authService.getCurrentUser();
+        retries++;
+      }
+      if (!user) {
+        error = 'Demo auth not ready. Try again.';
+        isLoading = false;
+        return;
+      }
+      try {
+        await user.getIdToken(true);
+      } catch {
+        /* non-fatal */
+      }
+      await new Promise((r) => setTimeout(r, 300));
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userEmail', user.email || 'demo@visitor');
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.setItem('wm_session_login_completed', 'true');
+      }
+      const userIsPlatformAdmin = isPlatformAdmin(user.email || '');
+      if (userIsPlatformAdmin) {
+        await goto('/admin/management', { replaceState: true });
+      } else {
+        const userRole = await ensureTenantConnection(user, user.email || '', false);
+        if (userRole === 'support') {
+          await goto('/support-dashboard', { replaceState: true });
+        } else {
+          await goto('/dashboard', { replaceState: true });
+        }
+      }
+    } catch (err: any) {
+      error = err.message || 'Demo sign-in error';
+    } finally {
+      isLoading = false;
+    }
+  }
+
   async function handleGoogleSignIn() {
     isLoading = true;
     error = '';
@@ -610,6 +667,9 @@
     <!-- Branding Section -->
     <div class="login-brand">
       <img src="/wisptools-logo.svg" alt="WISP Management" class="brand-logo" />
+      {#if showDemoChrome}
+        <div class="demo-site-ribbon" role="note">Demo site — not production data</div>
+      {/if}
       <h1>WISP Management</h1>
       <p class="brand-tagline">wisptools.io</p>
       <p class="poc-notice">Part of wisptools.io. Source code: <a href="https://github.com/theorem6/WISP-Management" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a></p>
@@ -619,8 +679,35 @@
     <div class="login-card">
       <h2>Welcome Back</h2>
       <p class="subtitle">
-        Sign in to access your network management tools
+        {#if showDemoChrome}
+          <strong class="demo-login-lead">Demo environment</strong> — explore with a temporary visitor identity or use your account below.
+        {:else}
+          Sign in to access your network management tools
+        {/if}
       </p>
+
+      {#if demoVisitorEnabled}
+        <div class="demo-visitor-panel">
+          <h3 class="demo-visitor-title">Try without an account</h3>
+          <p class="demo-visitor-copy">
+            Continue as a <strong>demo visitor</strong>. Your user id is tied to your network address (hashed on the server).
+            Data you create is <strong>limited</strong> and is <strong>removed when you sign out</strong>. Seeded demo rows are not deleted.
+          </p>
+          <button
+            type="button"
+            class="btn-demo-visitor"
+            disabled={isLoading}
+            onclick={handleDemoVisitorLogin}
+          >
+            {#if isLoading}
+              <span class="spinner"></span>
+              Starting demo…
+            {:else}
+              Continue as demo visitor
+            {/if}
+          </button>
+        </div>
+      {/if}
 
       {#if error}
         <div class="error-message">
@@ -913,6 +1000,69 @@
     color: #a0d9e8;
     margin-bottom: 2rem;
     font-size: 0.95rem;
+  }
+
+  .demo-login-lead {
+    color: #fdba74;
+    font-weight: 700;
+  }
+
+  .demo-site-ribbon {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(234, 88, 12, 0.35);
+    border: 1px solid rgba(251, 146, 60, 0.6);
+    color: #ffedd5;
+  }
+
+  .demo-visitor-panel {
+    margin: -0.5rem 0 1.75rem;
+    padding: 1.1rem 1.15rem;
+    border-radius: 0.65rem;
+    background: rgba(234, 88, 12, 0.12);
+    border: 1px solid rgba(251, 146, 60, 0.35);
+  }
+
+  .demo-visitor-title {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    color: #fdba74;
+  }
+
+  .demo-visitor-copy {
+    margin: 0 0 1rem;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: #fed7aa;
+  }
+
+  .btn-demo-visitor {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(251, 146, 60, 0.6);
+    background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%);
+    color: #fff7ed;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn-demo-visitor:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
+
+  .btn-demo-visitor:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 
   .error-message {

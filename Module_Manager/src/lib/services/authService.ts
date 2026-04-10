@@ -13,6 +13,7 @@ import {
   GoogleAuthProvider,
   signInWithRedirect,
   getRedirectResult,
+  signInWithCustomToken,
   type User,
   type UserCredential,
   type Auth
@@ -379,11 +380,95 @@ export class AuthService {
   }
 
   /**
+   * Demo visitor: custom token from API (uid derived from IP + server salt).
+   * @see docs/deployment/DEMO_VISITOR.md
+   */
+  async signInAsDemoVisitor(): Promise<
+    AuthResult<{ visitorLabel: string; ipHint: string; email: string; tenantId: string }>
+  > {
+    if (!browser) {
+      return { success: false, error: 'Demo login requires a browser' };
+    }
+    try {
+      const res = await fetch('/api/demo/visitor-start', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { Accept: 'application/json' }
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        return {
+          success: false,
+          error: data.message || data.error || `Demo start failed (${res.status})`
+        };
+      }
+      const { customToken, visitorLabel, ipHint, email, tenantId } = data;
+      if (!customToken) {
+        return { success: false, error: 'Invalid demo response (no token)' };
+      }
+      const auth = getAuth();
+      const cred = await signInWithCustomToken(auth, customToken);
+      await cred.user.getIdToken(true);
+      sessionStorage.setItem('wm_demo_visitor', '1');
+      if (tenantId && typeof localStorage !== 'undefined') {
+        localStorage.setItem('selectedTenantId', tenantId);
+      }
+      return {
+        success: true,
+        data: {
+          visitorLabel: visitorLabel || '',
+          ipHint: ipHint || '',
+          email: email || cred.user.email || '',
+          tenantId: tenantId || ''
+        }
+      };
+    } catch (error: any) {
+      console.error('[AuthService] Demo visitor sign-in failed:', error);
+      return {
+        success: false,
+        error: this.getAuthErrorMessage(error)
+      };
+    }
+  }
+
+  isDemoVisitorSession(): boolean {
+    if (!browser) return false;
+    try {
+      const u = getAuth().currentUser;
+      return !!(u?.uid?.startsWith('demo_v_') || sessionStorage.getItem('wm_demo_visitor') === '1');
+    } catch {
+      return false;
+    }
+  }
+
+  /**
    * Sign out
    */
   async signOut(): Promise<AuthResult<void>> {
     try {
-      await signOut(getAuth());
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (user?.uid?.startsWith('demo_v_')) {
+        try {
+          const token = await user.getIdToken();
+          const tid =
+            typeof localStorage !== 'undefined' ? localStorage.getItem('selectedTenantId') : null;
+          await fetch('/api/demo/visitor-purge', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+              ...(tid ? { 'X-Tenant-ID': tid } : {})
+            },
+            body: JSON.stringify({})
+          });
+        } catch (purgeErr) {
+          console.warn('[AuthService] Demo visitor purge failed (continuing sign-out):', purgeErr);
+        }
+        sessionStorage.removeItem('wm_demo_visitor');
+      }
+      await signOut(auth);
       return { success: true };
     } catch (error: any) {
       return {

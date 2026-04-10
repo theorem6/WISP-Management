@@ -7,7 +7,7 @@
 <div class="demo-banner" role="status">
   <span class="demo-banner__badge">Demo</span>
   <span class="demo-banner__text">
-    Test data only. Changes persist to the demo database — use the
+    Test data only. If you used <strong>Continue as demo visitor</strong>, <strong>sign out</strong> deletes records you created (seeded demo rows stay). Use the
     <a href="/demo">demo hub</a> for quick links.
   </span>
 </div>

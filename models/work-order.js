@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 const WorkOrderSchema = new mongoose.Schema({
   // Tenant
   tenantId: { type: String, required: true, index: true },
+  demoVisitorKey: { type: String, index: true, sparse: true },
   
   // Identification
   ticketNumber: { type: String, required: true, unique: true }, // TKT-2025-001

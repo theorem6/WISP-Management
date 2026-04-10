@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const IncidentSchema = new mongoose.Schema({
   // Tenant
   tenantId: { type: String, required: true, index: true },
+  demoVisitorKey: { type: String, index: true, sparse: true },
   
   // Identification
   incidentNumber: { type: String, required: true, unique: true }, // INC-2025-001
