@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "node .cursor/hooks/multitenant-session-reminder.mjs"
+      }
+    ]
+  }
+}

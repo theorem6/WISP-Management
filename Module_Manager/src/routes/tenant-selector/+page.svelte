@@ -6,6 +6,7 @@
   import { tenantStore } from '$lib/stores/tenantStore';
   import TenantGuard from '$lib/components/admin/TenantGuard.svelte';
   import type { Tenant } from '$lib/models/tenant';
+  import { isSingleTenantMode } from '$lib/config/tenantMode';
 
   let isLoading = true;
   let tenants: Tenant[] = [];
@@ -22,6 +23,14 @@
     if (!currentUser) {
       console.log('[Tenant Selector] Not authenticated, redirecting to login');
       await goto('/login');
+      return;
+    }
+
+    if (isSingleTenantMode()) {
+      console.log('[Tenant Selector] Single-tenant mode: organization is fixed in config');
+      await tenantStore.initialize();
+      await tenantStore.loadUserTenants(currentUser.uid, currentUser.email || undefined);
+      await goto('/dashboard', { replaceState: true });
       return;
     }
 
@@ -55,7 +64,7 @@
     console.log('[Tenant Selector] Tenant selected:', tenant.displayName);
     
     // Use tenant store to set current tenant
-    tenantStore.setCurrentTenant(tenant);
+    tenantStore.setCurrentTenant(tenant, { source: 'manual' });
     
     // Redirect to dashboard
     goto('/dashboard');

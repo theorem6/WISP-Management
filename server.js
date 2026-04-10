@@ -24,6 +24,9 @@ app.use(
 app.use(express.json({ limit: appConfig.limits.jsonBodySize, strict: false }));
 app.use(express.urlencoded({ extended: true, limit: appConfig.limits.urlEncodedBodySize }));
 
+// Single-tenant: optional default X-Tenant-ID (see middleware/single-tenant.js)
+app.use(require('./middleware/single-tenant'));
+
 // Middleware
 app.use(require('./middleware/error-handler'));
 app.use(require('./middleware/request-logger'));

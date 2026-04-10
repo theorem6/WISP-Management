@@ -21,6 +21,7 @@ import { get } from 'svelte/store';
 import { authService } from './authService';
 import { isPlatformAdmin } from './adminService';
 import type { Tenant } from '../models/tenant';
+import { getConfiguredSingleTenantId, isSingleTenantMode } from '../config/tenantMode';
 
 export interface TenantGuardResult {
   success: boolean;
@@ -257,6 +258,19 @@ class TenantGuardService {
       }
 
       if (tenants.length > 1) {
+        const singleId = isSingleTenantMode() ? getConfiguredSingleTenantId() : null;
+        if (singleId) {
+          const fixed = tenants.find((t) => t.id === singleId);
+          if (fixed) {
+            console.log('[TenantGuardService] Single-tenant mode: pinning configured org');
+            tenantStore.setCurrentTenant(fixed, { source: 'single-tenant-env' });
+            return {
+              success: true,
+              tenant: fixed,
+              isAdmin: false
+            };
+          }
+        }
         // Multiple tenants - redirect to selector
         console.log('[TenantGuardService] Multiple tenants, redirecting to selector');
         await goto('/tenant-selector', { replaceState: true });

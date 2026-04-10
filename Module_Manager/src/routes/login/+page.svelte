@@ -8,6 +8,7 @@
   import { tenantStore } from '$lib/stores/tenantStore';
   import type { User } from 'firebase/auth';
   import { isPlatformAdmin } from '$lib/services/adminService';
+  import { getConfiguredSingleTenantId, isSingleTenantMode } from '$lib/config/tenantMode';
 
   let email = '';
   let password = '';
@@ -340,8 +341,8 @@
         return 'platform_admin';
       }
 
-      // No MongoDB memberships yet — create first organization (same as /tenant-setup) so users aren't stuck on tenant selector
-      if (tenants.length === 0) {
+      // No memberships yet — auto-create first org (multitenant). Skipped in single-tenant mode (org is fixed in env).
+      if (tenants.length === 0 && !(isSingleTenantMode() && getConfiguredSingleTenantId())) {
         try {
           console.log('[Login Page] No tenant memberships — creating default organization from email domain');
           await createAutomaticTenant(user, email);
@@ -352,16 +353,15 @@
         }
       }
 
-      // Check if we have a saved tenant in localStorage
+      // Prefer tenant already resolved by tenantStore (e.g. single-tenant mode in loadUserTenants)
       const savedTenantId = localStorage.getItem('selectedTenantId');
-      let currentTenant = null;
+      let currentTenant = get(tenantStore).currentTenant;
 
-      if (savedTenantId) {
-        // Try to find the saved tenant in the loaded list
-        currentTenant = tenants.find((t) => t.id === savedTenantId);
+      if (!currentTenant && savedTenantId) {
+        currentTenant = tenants.find((t) => t.id === savedTenantId) || null;
         if (currentTenant) {
           console.log('[Login Page] Found saved tenant:', currentTenant.displayName);
-          tenantStore.setCurrentTenant(currentTenant);
+          tenantStore.setCurrentTenant(currentTenant, { source: 'local-storage' });
         } else {
           console.warn('[Login Page] Saved tenant not found in user tenants, clearing saved tenant');
           localStorage.removeItem('selectedTenantId');
@@ -371,16 +371,20 @@
 
       // If no current tenant set yet, try auto-selection
       if (!currentTenant && tenants.length > 0) {
-        // Auto-select single tenant for non-admin users
+        const singleId = isSingleTenantMode() ? getConfiguredSingleTenantId() : null;
         if (tenants.length === 1) {
           console.log('[Login Page] Auto-selecting single tenant:', tenants[0].displayName);
           currentTenant = tenants[0];
-          tenantStore.setCurrentTenant(currentTenant);
+          tenantStore.setCurrentTenant(currentTenant, { source: 'load-user-tenants' });
+        } else if (singleId) {
+          const match = tenants.find((t) => t.id === singleId);
+          currentTenant = match || tenants[0];
+          console.log('[Login Page] Single-tenant mode, pinning org:', currentTenant.displayName);
+          tenantStore.setCurrentTenant(currentTenant, { source: 'single-tenant-env' });
         } else if (tenants.length > 0) {
-          // Multiple tenants - use first tenant as default if none selected
           console.log('[Login Page] Multiple tenants available, using first as default');
           currentTenant = tenants[0];
-          tenantStore.setCurrentTenant(currentTenant);
+          tenantStore.setCurrentTenant(currentTenant, { source: 'load-user-tenants' });
         }
       }
 

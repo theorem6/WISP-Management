@@ -35,12 +35,23 @@ export async function extractTenantContext(req: any): Promise<TenantContext | nu
     const userId = decodedToken.uid;
     const userEmail = decodedToken.email || '';
 
-    // Get tenant ID from request
+    // Get tenant ID from request (query/body, then header, then default user, then single-tenant env)
     let tenantId = req.query.tenantId || req.body?.tenantId;
-    
-    // If no tenant ID provided, get user's default tenant
+    const headerTenant = req.headers?.['x-tenant-id'] || req.headers?.['X-Tenant-ID'];
+    if (!tenantId && typeof headerTenant === 'string' && headerTenant.trim()) {
+      tenantId = headerTenant.trim();
+    }
+
     if (!tenantId) {
       tenantId = await getDefaultTenantForUser(userId);
+    }
+
+    const singleFromEnv =
+      typeof process.env.SINGLE_TENANT_ID === 'string' && process.env.SINGLE_TENANT_ID.trim() !== ''
+        ? process.env.SINGLE_TENANT_ID.trim()
+        : null;
+    if (!tenantId && singleFromEnv) {
+      tenantId = singleFromEnv;
     }
 
     if (!tenantId) {

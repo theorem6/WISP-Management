@@ -7,6 +7,11 @@ import { browser } from '$app/environment';
 import type { Tenant } from '../models/tenant';
 import { isPlatformAdmin } from '../services/adminService';
 import { debug } from '../utils/debug';
+import { getConfiguredSingleTenantId, isSingleTenantMode } from '../config/tenantMode';
+import {
+	notifyAfterTenantResolved,
+	type TenantResolutionSource
+} from '../tenant/multitenantExtensionHooks';
 
 export interface TenantState {
   // Current tenant
@@ -52,14 +57,19 @@ function createTenantStore() {
       update(state => ({ ...state, isLoading: true }));
       
       try {
-        // Check localStorage for saved tenant
+        // Check localStorage for saved tenant (single-tenant mode may override id via env)
         const selectedTenantId = localStorage.getItem('selectedTenantId');
         const setupCompleted = localStorage.getItem('tenantSetupCompleted') === 'true';
-        
-        if (selectedTenantId) {
+        const configuredId = isSingleTenantMode() ? getConfiguredSingleTenantId() : null;
+        const effectiveTenantId = configuredId || selectedTenantId || '';
+
+        if (effectiveTenantId) {
+          if (configuredId && selectedTenantId && selectedTenantId !== configuredId) {
+            localStorage.setItem('selectedTenantId', configuredId);
+          }
           // Lazy load tenantService to avoid circular dependencies
           const { tenantService } = await import('../services/tenantService');
-          const result = await tenantService.getTenant(selectedTenantId);
+          const result = await tenantService.getTenant(effectiveTenantId);
           const tenant = result.tenant;
 
           if (tenant) {
@@ -79,6 +89,10 @@ function createTenantStore() {
             localStorage.setItem('tenantSetupCompleted', 'true');
 
             debug.log('[TenantStore] Initialized with tenant:', tenant.displayName);
+            notifyAfterTenantResolved({
+              tenantId: tenant.id,
+              source: configuredId ? 'single-tenant-env' : 'local-storage'
+            });
           } else if (result.error === 'not_found') {
             // Tenant not found (404) - clear localStorage
             console.warn('[TenantStore] Tenant not found, clearing localStorage');
@@ -209,7 +223,42 @@ function createTenantStore() {
           }));
           return [];
         }
-        
+
+        if (isSingleTenantMode() && getConfiguredSingleTenantId()) {
+          const singleId = getConfiguredSingleTenantId()!;
+          const { tenantService } = await import('../services/tenantService');
+          let result = await tenantService.getTenant(singleId);
+          let tenant = result.tenant;
+          if (!tenant) {
+            const list = await tenantService.getUserTenants(userId);
+            tenant = list.find((t) => t.id === singleId) || null;
+          } else {
+            const list = await tenantService.getUserTenants(userId);
+            const match = list.find((t) => t.id === singleId);
+            if (match) tenant = match;
+          }
+          if (tenant) {
+            update((state) => ({
+              ...state,
+              userTenants: [tenant],
+              currentTenant: tenant,
+              setupCompleted: true,
+              isLoading: false,
+              error: null
+            }));
+            localStorage.setItem('selectedTenantId', tenant.id);
+            localStorage.setItem('selectedTenantName', tenant.displayName);
+            localStorage.setItem('tenantSetupCompleted', 'true');
+            notifyAfterTenantResolved({ tenantId: tenant.id, source: 'single-tenant-env' });
+            debug.log('[TenantStore] Single-tenant mode resolved:', tenant.displayName);
+            return [tenant];
+          }
+          console.warn(
+            '[TenantStore] Single-tenant mode: tenant not found or no access for',
+            singleId
+          );
+        }
+
         const { tenantService } = await import('../services/tenantService');
         const tenants = await tenantService.getUserTenants(userId);
         
@@ -234,6 +283,7 @@ function createTenantStore() {
           localStorage.setItem('selectedTenantId', tenant.id);
           localStorage.setItem('selectedTenantName', tenant.displayName);
           localStorage.setItem('tenantSetupCompleted', 'true');
+          notifyAfterTenantResolved({ tenantId: tenant.id, source: 'load-user-tenants' });
         } else {
           // Platform admin or multi-tenant user - no auto-selection
           update(state => ({
@@ -279,7 +329,10 @@ function createTenantStore() {
     /**
      * Set the current tenant
      */
-    setCurrentTenant(tenant: Tenant | null): void {
+    setCurrentTenant(
+      tenant: Tenant | null,
+      resolution?: { source?: TenantResolutionSource }
+    ): void {
       if (!browser) return;
       
       update(state => ({
@@ -295,6 +348,10 @@ function createTenantStore() {
         localStorage.setItem('selectedTenantName', tenant.displayName);
         localStorage.setItem('tenantSetupCompleted', 'true');
         debug.log('[TenantStore] Current tenant set to:', tenant.displayName);
+        notifyAfterTenantResolved({
+          tenantId: tenant.id,
+          source: resolution?.source ?? 'manual'
+        });
       } else {
         // Clear localStorage
         localStorage.removeItem('selectedTenantId');

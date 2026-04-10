@@ -9,6 +9,7 @@
   import { coverageMapService } from '../modules/coverage-map/lib/coverageMapService.mongodb';
   import SiteEditModal from '../modules/coverage-map/components/SiteEditModal.svelte';
   import type { TowerSite } from '../modules/coverage-map/lib/models';
+  import { getConfiguredSingleTenantId, isSingleTenantMode } from '$lib/config/tenantMode';
 
   let isLoading = false;
   let error = '';
@@ -40,6 +41,12 @@
     if (!currentUser) {
       console.log('[Tenant Setup] User not authenticated, redirecting to login');
       await goto('/login');
+      return;
+    }
+
+    if (isSingleTenantMode() && getConfiguredSingleTenantId()) {
+      console.log('[Tenant Setup] Single-tenant deployment: org creation is disabled');
+      await goto('/dashboard', { replaceState: true });
       return;
     }
 
