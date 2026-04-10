@@ -22,6 +22,10 @@ This repository supports **one fixed organization** per deployment while keeping
 3. Deploy env vars for the web app, API, and Functions consistently.  
 4. Test login: you should land on the dashboard with the correct org without visiting `/tenant-selector`.
 
+## Test / demo stack
+
+For a full test site with seeded data and Hosting deploy steps, see [docs/deployment/DEMO_SITE.md](../deployment/DEMO_SITE.md).
+
 ## Multitenant again
 
 See [docs/multitenant-fork/README.md](../multitenant-fork/README.md) and [MULTITENANT_RESTORATION.md](../multitenant-fork/MULTITENANT_RESTORATION.md).
