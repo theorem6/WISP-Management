@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node billing-api.js",
     "init-plans": "node initialize-billing-plans.js",
+    "demo:seed": "node scripts/demo/seed-demo-data.js",
+    "demo:reset": "node scripts/demo/seed-demo-data.js --reset",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

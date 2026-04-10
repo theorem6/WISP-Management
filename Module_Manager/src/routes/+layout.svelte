@@ -7,6 +7,8 @@
   import { tenantStore } from '$lib/stores/tenantStore';
   import { themeManager } from '$lib/stores/themeStore';
   import '../app.css';
+  import DemoSiteBanner from '$lib/components/DemoSiteBanner.svelte';
+  import { env } from '$env/dynamic/public';
   
   let isInitializing = true;
   let isAuthenticated = false;
@@ -31,6 +33,13 @@
 
   // Check if we're on an admin route
   $: isAdminRoute = $page.url.pathname.startsWith('/admin');
+
+  /** Demo / test deployment banner (PUBLIC_DEMO_SITE=true) */
+  $: showDemoBanner =
+    browser &&
+    !isInitializing &&
+    isAuthenticated &&
+    (env.PUBLIC_DEMO_SITE === 'true' || env.PUBLIC_DEMO_SITE === '1');
   
   // Enforce that every new session must pass through the login page at least once,
   // regardless of any cached Firebase auth state.
@@ -128,6 +137,9 @@
     <p>Initializing authentication...</p>
   </div>
 {:else}
+  {#if showDemoBanner}
+    <DemoSiteBanner />
+  {/if}
   <!-- Let TenantGuard handle authentication and tenant logic -->
   <slot />
 {/if}
