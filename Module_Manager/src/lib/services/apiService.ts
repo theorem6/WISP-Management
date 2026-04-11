@@ -2,7 +2,7 @@
 // Automatically adds Firebase JWT token and tenant context to all requests
 
 import { browser } from '$app/environment';
-import { env } from '$env/dynamic/public';
+import { getPublicEnv } from '$lib/config/publicEnv';
 import { authService } from './authService';
 
 export class ApiService {
@@ -29,8 +29,8 @@ export class ApiService {
     if (!browser) return null;
     const stored = localStorage.getItem('selectedTenantId');
     if (stored && stored.trim() !== '') return stored;
-    const fromEnv = env.PUBLIC_SINGLE_TENANT_ID;
-    if (fromEnv != null && String(fromEnv).trim() !== '') return String(fromEnv).trim();
+    const fromEnv = getPublicEnv('PUBLIC_SINGLE_TENANT_ID');
+    if (fromEnv != null && fromEnv.trim() !== '') return fromEnv.trim();
     return null;
   }
 
